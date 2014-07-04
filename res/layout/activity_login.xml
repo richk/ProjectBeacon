@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:background="#0Dff0000"
+        android:background="#2633b5e5"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp" >
     
@@ -23,7 +23,7 @@
         android:layout_marginTop="14dp"
         android:textColor="#ffffff"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Login. Here we go!" />
+        android:text="@string/login_hint" />
 
     <EditText
         android:id="@+id/etEmail"
@@ -34,7 +34,7 @@
         android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="textEmailAddress"
-        android:hint="E-mail Address" />
+        android:hint="@string/login_user_hint" />
 
     <EditText
         android:id="@+id/etPwd"
@@ -44,7 +44,7 @@
         android:layout_below="@+id/etEmail"
         android:layout_marginTop="20dp"
         android:ems="10"
-        android:hint="Password"
+        android:hint="@string/password_hint"
         android:inputType="textPassword" />
 
     <Button
@@ -55,7 +55,7 @@
         android:layout_marginLeft="17dp"
         android:layout_marginTop="20dp"
         android:layout_below="@id/etPwd"
-        android:text="Cancel" />
+        android:text="@string/cancel_button_string" />
 
     <Button
         android:id="@+id/btnLogin"
@@ -68,7 +68,7 @@
         android:layout_marginTop="20dp"
         android:background="#287AA9"
         android:layout_below="@id/etPwd"
-        android:text="Login" />
+        android:text="@string/login_button_string" />
 
     <TextView
         android:id="@+id/tvForgotPassword"
@@ -81,7 +81,7 @@
         android:textColor="@android:color/white"
         android:layout_marginBottom="20dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="I forgot my password?" />
+        android:text="@string/forgot_passwd_hint" />
     </RelativeLayout>
 
 </RelativeLayout>
