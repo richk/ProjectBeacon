@@ -9,12 +9,13 @@
         android:targetSdkVersion="19" />
 
     <application
+        android:name="com.codepath.beacon.BeaconApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.codepath.beacon.ScanBeaconActivity"
+            android:name="com.codepath.beacon.ui.LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
