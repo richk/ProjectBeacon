@@ -47,41 +47,29 @@
         android:hint="@string/password_hint"
         android:inputType="textPassword" />
 
-    <Button
-        android:id="@+id/btnCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="17dp"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/etPwd"
-        android:text="@string/cancel_button_string" />
-
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btnCancel"
-        android:layout_alignBottom="@+id/btnCancel"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="17dp"
-        android:layout_marginTop="20dp"
-        android:background="#287AA9"
-        android:layout_below="@id/etPwd"
-        android:text="@string/login_button_string" />
-
     <TextView
         android:id="@+id/tvForgotPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignRight="@+id/tvLoginText"
-        android:layout_below="@+id/btnCancel"
+        android:layout_below="@+id/btnLogin"
         android:layout_marginTop="20dp"
         android:textColor="@android:color/white"
         android:layout_marginBottom="20dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/forgot_passwd_hint" />
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etPwd"
+        android:layout_centerHorizontal="true"
+        android:background="#287AA9"
+        android:text="@string/login_button_string" />
+
     </RelativeLayout>
 
 </RelativeLayout>
