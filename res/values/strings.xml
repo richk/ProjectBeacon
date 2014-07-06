@@ -18,7 +18,7 @@
     
    	<string name="action_refresh">Refresh</string>
 	<string name="scanning">Looking for devices. Please wait..</string>
-	<string name="no_devices">No devices found.</string>
+	<string name="no_devices">No devices found</string>
     
 
 </resources>
