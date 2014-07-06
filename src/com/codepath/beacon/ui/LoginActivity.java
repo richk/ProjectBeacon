@@ -4,6 +4,7 @@ import com.codepath.beacon.R;
 import com.codepath.beacon.R.id;
 import com.codepath.beacon.R.layout;
 import com.codepath.beacon.R.menu;
+import com.codepath.beacon.scan.BleActivity;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -41,20 +42,10 @@ public class LoginActivity extends Activity {
 			etUserName.setText(uname);
 			etPwd.setText(pwd);
 		}
-//		ParseUser currentUser = ParseUser.getCurrentUser();
-//		if (currentUser != null) {
-//		    // do stuff with the user
-//		} else {
-//		    // show the signup or login screen
-//		}
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.scan_beacon, menu);
-		return true;
+		ParseUser currentUser = ParseUser.getCurrentUser();
+		if (currentUser != null) {
+		  handleSuccessfulLogin();
+		}
 	}
 
 	@Override
@@ -112,6 +103,8 @@ public class LoginActivity extends Activity {
 
 	protected void handleSuccessfulLogin() {
 		Toast.makeText(getApplicationContext(), "Hooray..the user can login", Toast.LENGTH_SHORT).show();
+		Intent scanIntent = new Intent(this, BleActivity.class);
+		startActivity(scanIntent);
 		
 	}
 

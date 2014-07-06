@@ -9,8 +9,13 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+	
+	<uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+    
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="18"
         android:targetSdkVersion="19" />
 
     <application
@@ -33,6 +38,13 @@
             android:label="@string/title_activity_sign_up"
             android:parentActivityName="com.codepath.beacon.ui.LoginActivity" >
         </activity>
+        <service android:name="com.codepath.beacon.scan.BleService">
+		</service>
+		
+       <activity android:name="com.codepath.beacon.scan.BleActivity">
+            </activity>
+        
+        
     </application>
 
 </manifest>
