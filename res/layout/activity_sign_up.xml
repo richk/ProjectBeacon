@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.codepath.beacon.ui.SignUpActivity" 
+    android:background="@drawable/img_background">
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:background="#2633b5e5"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp" >
+    
+    <TextView
+        android:id="@+id/tvSignUpText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:textColor="#ffffff"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/sign_up_link_hint" />
+
+    <EditText
+        android:id="@+id/etSignUpEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSignUpText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:hint="@string/login_user_hint" />
+
+    <EditText
+        android:id="@+id/etSignUpPwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etSignUpEmail"
+        android:layout_below="@+id/etSignUpEmail"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="@string/password_hint"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/btnSignUp"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etSignUpPwd"
+        android:layout_centerHorizontal="true"
+        android:background="#287AA9"
+        android:onClick="onSignup"
+        android:text="@string/signup_button_string" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
+

@@ -47,7 +47,7 @@
         android:hint="@string/password_hint"
         android:inputType="textPassword" />
 
-    <TextView
+<!--     <TextView
         android:id="@+id/tvForgotPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -59,6 +59,37 @@
         android:layout_marginBottom="20dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/forgot_passwd_hint" />
+ -->    
+ 
+   <TextView
+        android:id="@+id/tvNewUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/btnLogin"
+        android:layout_alignLeft="@id/tvLoginText"
+        android:layout_marginTop="20dp"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="20dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/new_user_hint" />
+   
+   <TextView
+        android:id="@+id/tvSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/btnLogin"
+        android:layout_toRightOf="@id/tvNewUser"
+        android:layout_marginTop="20dp"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:onClick="onSigningUp"
+        android:textStyle="italic"
+        android:clickable="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/sign_up_link_hint" />
 
     <Button
         android:id="@+id/btnLogin"
@@ -68,6 +99,7 @@
         android:layout_below="@id/etPwd"
         android:layout_centerHorizontal="true"
         android:background="#287AA9"
+        android:onClick="onLogin"
         android:text="@string/login_button_string" />
 
     </RelativeLayout>

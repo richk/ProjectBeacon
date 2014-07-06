@@ -1,7 +1,10 @@
 package com.codepath.beacon;
 
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import android.app.Application;
 import android.util.Log;
@@ -17,8 +20,5 @@ public class BeaconApplication extends Application {
 		super.onCreate();
 		Log.d(LOG_TAG, "onCreate(). Initializing Parse");
 		Parse.initialize(this, APP_ID, CLIENT_KEY);
-		ParseObject testObject = new ParseObject("TestObject");
-		testObject.put("foo", "bar");
-		testObject.saveInBackground();
 	}
 }

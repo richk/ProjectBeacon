@@ -10,7 +10,10 @@
     <string name="password_hint">Password</string>
     <string name="forgot_passwd_hint">I forgot my password</string>
     <string name="login_button_string">Login</string>
+    <string name="signup_button_string">Sign Up</string>
     <string name="cancel_button_string">Cancel</string>
-    
+    <string name="new_user_hint">New User?</string>
+    <string name="sign_up_link_hint">"Sign up here"</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
 
 </resources>
