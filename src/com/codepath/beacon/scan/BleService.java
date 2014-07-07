@@ -1,5 +1,12 @@
 package com.codepath.beacon.scan;
 
+import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -13,12 +20,6 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 
-import java.lang.ref.WeakReference;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 public class BleService extends Service implements BluetoothAdapter.LeScanCallback {
 	public static final String TAG = "BleService";
 	static final int MSG_REGISTER = 1;
@@ -29,12 +30,12 @@ public class BleService extends Service implements BluetoothAdapter.LeScanCallba
 
 	private static final long SCAN_PERIOD = 5000;
 
-	public static final String KEY_MAC_ADDRESSES = "KEY_MAC_ADDRESSES";
+	public static final String KEY_DEVICE_DETAILS = "device_details";
 
 	private final IncomingHandler mHandler;
 	private final Messenger mMessenger;
 	private final List<Messenger> mClients = new LinkedList<Messenger>();
-	private final Map<String, BluetoothDevice> mDevices = new HashMap<String, BluetoothDevice>();
+	private final Map<String, BleDeviceInfo> mDevices = new HashMap<String, BleDeviceInfo>();
 
 	public enum State {
 		UNKNOWN,
@@ -115,14 +116,27 @@ public class BleService extends Service implements BluetoothAdapter.LeScanCallba
 
 	@Override
 	public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
-		if (device != null && !mDevices.containsValue(device)) {
-			mDevices.put(device.getAddress(), device);
+		if (device != null && !mDevices.containsKey(device.getAddress())) {
+		    BleDeviceInfo deviceInfo = new BleDeviceInfo(device.getName(), 
+		        device.getAddress(), String.valueOf(rssi));
+			mDevices.put(device.getAddress(), deviceInfo);
 			Message msg = Message.obtain(null, MSG_DEVICE_FOUND);
 			if (msg != null) {
 				Bundle bundle = new Bundle();
-				String[] addresses = mDevices.keySet().toArray(new String[mDevices.size()]);
-				bundle.putStringArray(KEY_MAC_ADDRESSES, addresses);
-				msg.setData(bundle);
+//				String[] addresses = mDevices.keySet().toArray(new String[mDevices.size()]);
+//				bundle.putStringArray(KEY_MAC_ADDRESSES, addresses);
+//				msg.setData(bundle);
+				
+				int i = 0;
+                BleDeviceInfo[] deviceDataArr = new BleDeviceInfo[mDevices.size()];
+                for(Entry<String, BleDeviceInfo> e : mDevices.entrySet()){
+                  BleDeviceInfo info = e.getValue();
+                  deviceDataArr[i++] = info;
+                }
+                
+                bundle.putParcelableArray(KEY_DEVICE_DETAILS, deviceDataArr);
+                msg.setData(bundle);
+
 				sendMessage(msg);
 			}
 			Log.d(TAG, "Added " + device.getName() + ": " + device.getAddress());

@@ -147,7 +147,7 @@ public class BleActivity extends Activity implements DeviceListFragment.OnDevice
 	}
 
 	@Override
-	public void onDeviceListFragmentInteraction(String macAddress) {
+	public void onDeviceListFragmentInteraction(BleDeviceInfo deviceInfo) {
 
 	}
 
@@ -168,8 +168,10 @@ public class BleActivity extends Activity implements DeviceListFragment.OnDevice
 						break;
 					case BleService.MSG_DEVICE_FOUND:
 						Bundle data = msg.getData();
-						if (data != null && data.containsKey(BleService.KEY_MAC_ADDRESSES)) {
-							activity.mDeviceList.setDevices(activity, data.getStringArray(BleService.KEY_MAC_ADDRESSES));
+						if (data != null && data.containsKey(BleService.KEY_DEVICE_DETAILS)) {
+						  BleDeviceInfo[] devices = (BleDeviceInfo[])
+						      data.getParcelableArray(BleService.KEY_DEVICE_DETAILS);
+						  activity.mDeviceList.setDevices(activity, devices);
 						}
 						break;
 					default:

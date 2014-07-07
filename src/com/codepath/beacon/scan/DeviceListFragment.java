@@ -32,7 +32,7 @@ public class DeviceListFragment extends Fragment implements AbsListView.OnItemCl
 
 	private ListAdapter mAdapter;
 
-	private String[] mDevices = null;
+	private BleDeviceInfo[] mDevices = null;
 
 	public static DeviceListFragment newInstance() {
 		return new DeviceListFragment();
@@ -93,17 +93,15 @@ public class DeviceListFragment extends Fragment implements AbsListView.OnItemCl
 		}
 	}
 
-	public void setDevices(Context context, String[] devices) {
+	public void setDevices(Context context, BleDeviceInfo[] devices) {
 		mDevices = devices;
-		List<Map<String, String>> items = new ArrayList<Map<String, String>>();
+		List<BleDeviceInfo> items = new ArrayList<BleDeviceInfo>();
 		if (devices != null) {
-			for (String device : devices) {
-				Map<String, String> item = new HashMap<String, String>();
-				item.put(KEY_MAC_ADDRESS, device);
-				items.add(item);
+			for (BleDeviceInfo device : devices) {
+				items.add(device);
 			}
 		}
-		mAdapter = new SimpleAdapter(context, items, android.R.layout.simple_list_item_1, KEYS, IDS);
+		mAdapter = new BleItemArrayAdapter(context, items);
 		mListView.setAdapter(mAdapter);
 	}
 
@@ -114,7 +112,7 @@ public class DeviceListFragment extends Fragment implements AbsListView.OnItemCl
 	}
 
 	public interface OnDeviceListFragmentInteractionListener {
-		public void onDeviceListFragmentInteraction(String macAddress);
+		public void onDeviceListFragmentInteraction(BleDeviceInfo macAddress);
 	}
 
 	public void setScanning(boolean scanning) {
