@@ -26,8 +26,8 @@ public class BleItemArrayAdapter extends ArrayAdapter<BleDeviceInfo> {
     TextView tvRssi = (TextView)bleView.findViewById(R.id.tvRssi);
     TextView tvMacAddress = (TextView)bleView.findViewById(R.id.tvMacAddress);
     
-    tvRssi.setText(item.getRssi());
-    tvMacAddress.setText(item.getMacAddress());
+    tvRssi.setText(String.valueOf(item.getRssi()));
+    tvMacAddress.setText(item.getKey());
     
     return bleView;
   }

@@ -1,11 +1,13 @@
 package com.codepath.beacon.scan;
 
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
@@ -116,31 +118,78 @@ public class BleService extends Service implements BluetoothAdapter.LeScanCallba
 
 	@Override
 	public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
-		if (device != null && !mDevices.containsKey(device.getAddress())) {
-		    BleDeviceInfo deviceInfo = new BleDeviceInfo(device.getName(), 
-		        device.getAddress(), String.valueOf(rssi));
-			mDevices.put(device.getAddress(), deviceInfo);
-			Message msg = Message.obtain(null, MSG_DEVICE_FOUND);
-			if (msg != null) {
-				Bundle bundle = new Bundle();
-//				String[] addresses = mDevices.keySet().toArray(new String[mDevices.size()]);
-//				bundle.putStringArray(KEY_MAC_ADDRESSES, addresses);
-//				msg.setData(bundle);
-				
-				int i = 0;
-                BleDeviceInfo[] deviceDataArr = new BleDeviceInfo[mDevices.size()];
-                for(Entry<String, BleDeviceInfo> e : mDevices.entrySet()){
-                  BleDeviceInfo info = e.getValue();
-                  deviceDataArr[i++] = info;
-                }
-                
-                bundle.putParcelableArray(KEY_DEVICE_DETAILS, deviceDataArr);
-                msg.setData(bundle);
+	  
+	  if(device == null)
+	    return;
 
-				sendMessage(msg);
-			}
-			Log.d(TAG, "Added " + device.getName() + ": " + device.getAddress());
-		}
+	  BleDeviceInfo deviceInfo = getDeviceInfo(device, rssi, scanRecord);
+
+	  if (deviceInfo != null && !mDevices.containsKey(deviceInfo.getKey())) {
+
+	    mDevices.put(deviceInfo.getKey(), deviceInfo);
+
+	    Message msg = Message.obtain(null, MSG_DEVICE_FOUND);
+	    if (msg != null) {
+	      Bundle bundle = new Bundle();
+	      int i = 0;
+	      BleDeviceInfo[] deviceDataArr = new BleDeviceInfo[mDevices.size()];
+	      for(Entry<String, BleDeviceInfo> e : mDevices.entrySet()){
+	        BleDeviceInfo info = e.getValue();
+	        deviceDataArr[i++] = info;
+	      }
+
+	      bundle.putParcelableArray(KEY_DEVICE_DETAILS, deviceDataArr);
+	      msg.setData(bundle);
+
+	      sendMessage(msg);
+	    }
+
+	    Log.d(TAG, "Added " + device.getName() + ": " + deviceInfo.getKey());
+	  }
+	}
+
+	private BleDeviceInfo getDeviceInfo(BluetoothDevice device, int rssi, byte[] scanRecord){
+
+	  final byte MANUFACTURE_DATA1 = 0x02;
+	  final byte MANUFACTURE_DATA2 = 0x15;
+
+	  int majorID = 0;
+	  int minorID = 0;
+
+	  UUID uuid=null;
+
+	  byte[] subArray;
+	  String tmpStr = "";
+
+	  /* "Filter" out beacons */
+	  if( (scanRecord[7] == MANUFACTURE_DATA1) && (scanRecord[8] == MANUFACTURE_DATA2) ) {
+
+	    /* Temp Parsing Code to Get UUID */
+	    subArray = Arrays.copyOfRange(scanRecord, 9, 25);
+
+	    for(int i=0; i<subArray.length; i++) {
+	      if( (i == 4) || (i == 6) || (i == 8) ||(i == 10) ) {
+	        tmpStr = tmpStr + "-";
+	      }
+	      /* Take care of Sign */ 
+	      tmpStr = tmpStr + String.format("%02x", subArray[i]);
+	    }
+
+	    /* Update UUID, Major ID, and Minor ID */
+	    uuid = UUID.fromString(tmpStr);
+	    majorID = ((scanRecord[25] & 0xff) << 8) | (scanRecord[26] & 0xff) ;
+	    minorID =((scanRecord[27] & 0xff) << 8) | (scanRecord[28] & 0xff) ;
+	  }
+	  
+	  //this is not an iBeacon
+	  if(uuid == null){
+	    return null;
+	  }
+
+	  BleDeviceInfo info = new BleDeviceInfo(device.getName(), 
+          device.getAddress(), uuid.toString(), majorID, minorID, rssi);
+	  
+	  return info;
 	}
 
 	private void setState(State newState) {

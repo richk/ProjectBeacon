@@ -7,24 +7,58 @@ public class BleDeviceInfo implements Parcelable{
   
   private String name;
   private String macAddress;
-  private String rssi;
+  private int rssi;
+  private String uuid;
+  private int majorId;
+  private int minorId;
   
-  public BleDeviceInfo(String name, String macAddress, String rssi){
+  public BleDeviceInfo(String name, String macAddress,String uuid,  
+      int majorId, int minorId, int rssi){
     this.name = name;
     this.macAddress = macAddress;
+    this.uuid = uuid;
     this.rssi = rssi;
+    this.majorId = majorId;
+    this.minorId = minorId;
   }
   
   public BleDeviceInfo(Parcel in){
-    String[] data = new String[3];
-
-    in.readStringArray(data);
-    this.name = data[0];
-    this.macAddress = data[1];
-    this.rssi = data[2];
-
+    this.name = in.readString();
+    this.macAddress = in.readString();
+    this.uuid = in.readString();
+    this.majorId = in.readInt();
+    this.minorId = in.readInt();
+    this.rssi = in.readInt();
   }
   
+  public int getRssi() {
+    return rssi;
+  }
+  
+  public String getName(){
+    return name;
+  }
+  
+  public String getUUID(){
+    return uuid;
+  }
+  
+  public int getMajorId(){
+    return majorId;
+  }
+  
+  public int getMinorId(){
+    return minorId;
+  }
+
+  public String getMacAddress() {
+    return macAddress;
+  }
+  
+  public String getKey(){
+    return uuid + ":" + majorId+ ":" + minorId;
+  }
+
   @Override
   public int describeContents() {
     return 0;
@@ -33,9 +67,12 @@ public class BleDeviceInfo implements Parcelable{
 
   @Override
   public void writeToParcel(Parcel dest, int flags) {
-      dest.writeStringArray(new String[] {this.name,
-                                          this.macAddress,
-                                          this.rssi});
+    dest.writeString(name);
+    dest.writeString(macAddress);
+    dest.writeString(uuid);
+    dest.writeInt(majorId);
+    dest.writeInt(minorId);
+    dest.writeInt(rssi);
   }
   
   public static final Parcelable.Creator<BleDeviceInfo> CREATOR = 
@@ -49,14 +86,5 @@ public class BleDeviceInfo implements Parcelable{
       public BleDeviceInfo[] newArray(int size) {
           return new BleDeviceInfo[size];
       }
-    };
-
-  public String getRssi() {
-    return rssi;
-  }
-
-  public String getMacAddress() {
-    return macAddress;
-  }
-  
+    };  
 }
