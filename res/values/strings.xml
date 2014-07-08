@@ -19,6 +19,22 @@
    	<string name="action_refresh">Refresh</string>
 	<string name="scanning">Looking for devices. Please wait..</string>
 	<string name="no_devices">No devices found</string>
-    
+	
+    <string name="beacon_label">BeaconFriendlyName</string>
+    <string name="trigger_label">Approaching</string>
+    <string name="action_label">send notification</string>
+    <string name="tb_label">On</string>
+    <string name="title_activity_recipe_detail">RecipeDetailActivity</string>
+    <string name="if_label">IF</string>
+    <string name="then_label">Then</string>
+    <string name="tvActivateOn">"Activated on:"</string>
+    <string name="tvDate">Date</string>
+    <string name="tvTriggered">Triggered:</string>
+    <string name="tvTiggerCount">Count</string>
+    <string name="tvDistance">Distance:</string>
+    <string name="tvBeaconDistance">Beacon Distance</string>
+    <string name="receive_label">Receive Notification with this beacon</string>
+    <string name="beaconname_label">Beacon Name and UUID</string>
+	
 
 </resources>

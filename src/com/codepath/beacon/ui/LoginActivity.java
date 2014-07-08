@@ -1,28 +1,18 @@
 package com.codepath.beacon.ui;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
+
 import com.codepath.beacon.R;
-import com.codepath.beacon.R.id;
-import com.codepath.beacon.R.layout;
-import com.codepath.beacon.R.menu;
-import com.codepath.beacon.scan.BleActivity;
+import com.codepath.beacon.activity.MyRecipeActivity;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
-
-import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.Toast;
-import android.os.Build;
 
 public class LoginActivity extends Activity {
 	private static final String LOG_TAG = LoginActivity.class.getSimpleName();
@@ -103,8 +93,10 @@ public class LoginActivity extends Activity {
 
 	protected void handleSuccessfulLogin() {
 		Toast.makeText(getApplicationContext(), "Hooray..the user can login", Toast.LENGTH_SHORT).show();
-		Intent scanIntent = new Intent(this, BleActivity.class);
-		startActivity(scanIntent);
+//		Intent scanIntent = new Intent(this, BleActivity.class);
+//		startActivity(scanIntent);
+		Intent recipeIntent = new Intent(this, MyRecipeActivity.class);
+		startActivity(recipeIntent);
 		
 	}
 
