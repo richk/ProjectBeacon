@@ -1,7 +1,9 @@
 package com.codepath.beacon.scan;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.codepath.beacon.R;
