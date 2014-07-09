@@ -104,36 +104,10 @@ public class DeviceListFragment extends Fragment implements
       return;
     }
 
-    Map<String, BleDeviceInfo> updatedDeviceMap = new HashMap<String, BleDeviceInfo>();
-    for (BleDeviceInfo newDevice : devices) {
-      updatedDeviceMap.put(newDevice.getKey(), newDevice);
-      // Log.d("AutoScan", "old device" + newDevice.getKey());
-    }
-
-    List<BleDeviceInfo> updatedDeviceList = new ArrayList<BleDeviceInfo>();
-    Set<String> added = new HashSet<String>();
-
-    for (int i = 0; i < mAdapter.getCount(); ++i) {
-      BleDeviceInfo oldDeviceInfo = mAdapter.getItem(i);
-      if (updatedDeviceMap.containsKey(oldDeviceInfo.getKey())) {
-        updatedDeviceList.add(updatedDeviceMap.get(oldDeviceInfo.getKey()));
-        added.add(oldDeviceInfo.getKey());
-        // Log.d("AutoScan", "Found old device, added =" +
-        // oldDeviceInfo.getKey());
-      }
-    }
-
-    for (BleDeviceInfo newDevice : devices) {
-      if (!added.contains(newDevice.getKey())) {
-        updatedDeviceList.add(newDevice);
-        // Log.d("AutoScan", "Adding new device, added =" + newDevice.getKey());
-      }
-    }
-
-    // Log.d("AutoScan", "updated list" + updatedDeviceList.toString());
-
     mAdapter.clear();
-    mAdapter.addAll(updatedDeviceList);
+    for(BleDeviceInfo device : devices){
+      mAdapter.add(device);
+    }
   }
 
   public void setEmptyText(CharSequence emptyText) {

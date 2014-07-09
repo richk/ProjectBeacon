@@ -36,7 +36,7 @@ public class BleService extends Service implements
 
   static final int MSG_DEVICE_FOUND = 5;
 
-  private static final long SCAN_PERIOD = 3000;
+  private static final long SCAN_PERIOD = 5000;
 
   public static final String KEY_DEVICE_DETAILS = "device_details";
 

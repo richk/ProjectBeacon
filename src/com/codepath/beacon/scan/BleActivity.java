@@ -88,7 +88,7 @@ public class BleActivity extends Activity implements
       }
     };
 
-    scanScheduler.scheduleAtFixedRate(scanner, 5, 5, TimeUnit.SECONDS);
+    //scanScheduler.scheduleAtFixedRate(scanner, 5, 5, TimeUnit.SECONDS);
   }
 
   @Override
@@ -149,7 +149,7 @@ public class BleActivity extends Activity implements
   }
 
   private void sendScanMessage() {
-    Log.d("AutoScan", "Sending scan message to service");
+    //Log.d("AutoScan", "Sending scan message to service");
     Message msg = Message.obtain(null, BleService.MSG_START_SCAN);
     if (msg != null) {
       try {
