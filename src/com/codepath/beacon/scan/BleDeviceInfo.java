@@ -13,9 +13,9 @@ public class BleDeviceInfo implements Parcelable {
   private String uuid;
   private int majorId;
   private int minorId;
-
   public BleDeviceInfo(String name, String macAddress, String uuid,
       int majorId, int minorId, int rssi) {
+  
     this.name = name;
     this.macAddress = macAddress;
     this.uuid = uuid;
