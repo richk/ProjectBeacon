@@ -23,10 +23,14 @@ public class BleItemArrayAdapter extends ArrayAdapter<BleDeviceInfo> {
 
     LayoutInflater inflator = LayoutInflater.from(getContext());
     View bleView = inflator.inflate(R.layout.ble_list_item, parent, false);
-    TextView tvRssi = (TextView) bleView.findViewById(R.id.tvRssi);
-    TextView tvMacAddress = (TextView) bleView.findViewById(R.id.tvMacAddress);
-
-    tvRssi.setText(String.valueOf(item.getRssi()));
+    TextView tvRssi = (TextView)bleView.findViewById(R.id.tvRssi);
+    TextView tvMacAddress = (TextView)bleView.findViewById(R.id.tvMacAddress);
+    
+    if (item.getName() != null) {
+        tvRssi.setText(String.valueOf(item.getName()));
+    } else {
+	    tvRssi.setText(String.valueOf(item.getRssi()));
+    }
     tvMacAddress.setText(item.getKey());
 
     return bleView;

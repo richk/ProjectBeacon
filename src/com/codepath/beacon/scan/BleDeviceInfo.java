@@ -1,10 +1,12 @@
 package com.codepath.beacon.scan;
 
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
 public class BleDeviceInfo implements Parcelable {
-
   private String name;
 
   private String macAddress;
@@ -80,6 +82,10 @@ public class BleDeviceInfo implements Parcelable {
       return getKey().equals(((BleDeviceInfo) o).getKey());
     }
     return false;
+  }
+
+  public void setName(String nm) {
+	  name = nm;
   }
 
   @Override

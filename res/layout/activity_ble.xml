@@ -1,6 +1,38 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			 xmlns:tools="http://schemas.android.com/tools"
-			 android:id="@+id/main_content"
-			 android:layout_width="match_parent"
-			 android:layout_height="match_parent"
-			 tools:context="${packageName}.${activityClass}"/>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/tv_saved_devices_list_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:text="Saved Devices" >
+    </TextView>
+
+    <FrameLayout
+        android:id="@+id/fl_saved_devices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_saved_devices_list_header" >
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_new_devices_list_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fl_saved_devices"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:text="New Devices" >
+    </TextView>
+
+
+    <FrameLayout
+        android:id="@+id/fl_new_devices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+	    android:layout_below="@id/tv_new_devices_list_header" >
+    </FrameLayout>
+
+</RelativeLayout>

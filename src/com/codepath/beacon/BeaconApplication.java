@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.codepath.beacon.models.Recipe;
+import com.codepath.beacon.data.Beacon;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -18,6 +19,8 @@ public class BeaconApplication extends Application {
 		super.onCreate();
 		Log.d(LOG_TAG, "onCreate(). Initializing Parse");
 		ParseObject.registerSubclass(Recipe.class);
+//		Parse.enableLocalDatastore(this);
+		ParseObject.registerSubclass(Beacon.class);
 		Parse.initialize(this, APP_ID, CLIENT_KEY);
 	}
 }
