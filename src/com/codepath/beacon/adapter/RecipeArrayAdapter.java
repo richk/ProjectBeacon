@@ -36,13 +36,13 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 		}
 
 		// find the views within template
-
 		TextView tvBeaconName = (TextView) v.findViewById(R.id.tvbeaconname);
 		TextView tvTrigger = (TextView) v.findViewById(R.id.tvtrigger);
 		TextView tvNotification = (TextView) v.findViewById(R.id.tvnotification);
 		ToggleButton tbTrigger = (ToggleButton) v.findViewById(R.id.tbtrigger);
 		
-/*	  ImageView ivBeaconImage = (ImageView) v.findViewById(R.id.ivbeaconimage);
+    //TODO add image to the list later
+ /*  ImageView ivBeaconImage = (ImageView) v.findViewById(R.id.ivbeaconimage);
 		ivBeaconImage.setImageResource(android.R.color.transparent);
 		ImageLoader imageLoader = ImageLoader.getInstance();
 

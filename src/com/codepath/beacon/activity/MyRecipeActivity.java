@@ -21,11 +21,10 @@ public class MyRecipeActivity extends FragmentActivity {
 		setContentView(R.layout.activity_my_recipe);
 		
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		// hardcode the userID for now
+		// TODO: hardcode the userID for now, will pass in additional parameters
 		RecipeListFragment newFragment = RecipeListFragment.newInstance("rcao");
 		transaction.replace(R.id.flrecipelist, newFragment);
 		transaction.commit();
-		
 		
 	}
 	
@@ -39,19 +38,5 @@ public class MyRecipeActivity extends FragmentActivity {
 		
 		Intent scanIntent = new Intent(this, BleActivity.class);
 		startActivity(scanIntent);
-/*		
-		Recipe recipe = new Recipe();
-		
-		Random r = new Random();
-		int Low = 100;
-		int High = 1000;
-		int R = r.nextInt(High-Low) + Low;
-		recipe.setFriendlyName("test"+Integer.toString(R));
-		recipe.setStatus(true);
-		recipe.setTrigger("approaching");
-		recipe.setUUID("123");
-//		recipe.setOwner(currentUser);
-		recipe.saveInBackground();
-		*/
 	}
 }

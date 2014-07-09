@@ -8,7 +8,6 @@ import com.parse.ParseUser;
 
 @ParseClassName("Recipe")
 public class Recipe extends ParseObject {
-//	private static final long serialVersionUID = 1L;
 
 	private String notification;
 
@@ -22,10 +21,6 @@ public class Recipe extends ParseObject {
 		setUUID(UUID);
 	}
 
-/*	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-*/
 	public String getFriendlyName() {
 		return getString("FN");
 	}
@@ -112,68 +107,6 @@ public class Recipe extends ParseObject {
 	public ParseUser getOwner()  {
 		return getParseUser("owner");
 	}
-
-
-	/*	public static void getRecipeDetail(String recipeID){
-	// Specify which class to query
-		ParseQuery<Recipe> query = ParseQuery.getQuery(Recipe.class);
-		// Specify the object id
-		query.getInBackground(recipeID, new GetCallback<Recipe>() {
-		  public void done(Recipe recipe, ParseException e) {
-		    if (e == null) {
-		      // Access data using the `get` methods for the object
-		      String friendlyname = recipe.getFriendlyName();
-		      // Access special values that are built-in to each object
-		      // Do whatever you want with the data...
-		    } else {
-		      // something went wrong
-		    }
-		  }
-		});
-	}
-	 */
-
-	/*	public static ArrayList<Recipe> fromJSONArray(JSONArray jsonArray) throws ParseException {
-		int len = jsonArray.length();
-		ArrayList<Recipe> recipes = new ArrayList<Recipe>(len);
-		Recipe recipe;
-		JSONObject recipeJson;
-
-		for (int i=0; i<len; i++) {
-			recipeJson = null;
-			try{
-				recipeJson = jsonArray.getJSONObject(i);				
-			}catch (JSONException e){
-				e.printStackTrace();
-			} 
-			recipe = Recipe.fromJSON(recipeJson);
-			if (recipe!= null)
-				recipes.add(recipe);
-		}
-		return recipes;
-	}
-
-	public static Recipe fromJSON(JSONObject jsonObject) throws ParseException {
-
-		Recipe recipe = new Recipe();
-		try {
-			recipe.status = jsonObject.getBoolean("status");
-			recipe.friendlyName = jsonObject.getString("friendlyname");
-			recipe.setPushNotification(jsonObject.getBoolean("notification"));
-			recipe.setSms(jsonObject.getBoolean("sms"));
-			recipe.trigger = jsonObject.getString("trigger");
-			recipe.status = jsonObject.getBoolean("status");
-			recipe.ActivationDate = jsonObject.getString("activationdate");
-//			recipe.relativeDate = new ParseRelativeDate().getRelativeTimeAgo(recipe.ActivationDate);
-
-
-		} catch (JSONException e){
-			e.printStackTrace();
-			return null;
-		}
-		return recipe;
-	}
-	 */
 
 }
 

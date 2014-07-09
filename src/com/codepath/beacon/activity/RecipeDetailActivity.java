@@ -14,13 +14,11 @@ public class RecipeDetailActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_recipe_detail);
-		
 		populateRecipeDetail(recipe);
 	}
 
 	private void populateRecipeDetail(Recipe recipe) {
 		// populate recipe detail page with recipe data
-		
 		String fn = getIntent().getStringExtra("fn");
 		String UUID = getIntent().getStringExtra("UUID");
 		String activationDate = getIntent().getStringExtra("activationDate");;
@@ -36,7 +34,7 @@ public class RecipeDetailActivity extends Activity {
 		TextView tvBeaconnameandUUID = (TextView) findViewById(R.id.tvBeaconnameandUUID);
 		tvBeaconnameandUUID.setText(fn+"---"+UUID);
 		
-		// Need to call 3rd party lib to get distance
+		//TODO: Need to call 3rd party lib to get distance or other beacon related information
 		TextView tvBeaconDistance = (TextView) findViewById(R.id.tvBeaconDistance);
 	}
 	
