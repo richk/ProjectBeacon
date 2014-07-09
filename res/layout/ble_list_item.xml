@@ -6,20 +6,20 @@
     <TextView
         android:id="@+id/tvRssi"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"        
+        android:layout_centerVertical="true"
         android:text="" />
 
     <TextView
         android:id="@+id/tvMacAddress"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_alignBottom="@id/tvRssi"
         android:layout_toRightOf="@id/tvRssi"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="25dp"
         android:text="" />
 

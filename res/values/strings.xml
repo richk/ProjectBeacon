@@ -15,10 +15,13 @@
     <string name="new_user_hint">New User?</string>
     <string name="sign_up_link_hint">"Sign up here"</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
-    
-   	<string name="action_refresh">Refresh</string>
-	<string name="scanning">Looking for devices. Please wait..</string>
-	<string name="no_devices">No devices found</string>
-    
+    <string name="action_refresh">Refresh</string>
+    <string name="scanning">Looking for devices. Please wait..</string>
+    <string name="no_devices">No devices found</string>
+    <string name="btn_add_beacon_string">Done</string>
+    <string name="mac_address_string">MAC ADDRESS:</string>
+    <string name="major_id_string">MAJOR ID:</string>
+    <string name="minor_id_string">MINOR ID:</string>
+    <string name="title_activity_recipe_action">RecipeActionActivity</string>
 
 </resources>

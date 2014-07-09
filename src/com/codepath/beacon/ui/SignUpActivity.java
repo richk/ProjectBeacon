@@ -4,6 +4,7 @@ import com.codepath.beacon.R;
 import com.codepath.beacon.R.id;
 import com.codepath.beacon.R.layout;
 import com.codepath.beacon.R.menu;
+import com.codepath.beacon.scan.BleActivity;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
@@ -104,6 +105,7 @@ public class SignUpActivity extends Activity {
 	}
 
 	protected void handleSuccessfulSignup() {
-		Toast.makeText(this, "Signup Successful. Login to use the app now", Toast.LENGTH_SHORT).show();
+		Intent scanIntent = new Intent(this, BleActivity.class);
+		startActivity(scanIntent);
 	}
 }

@@ -1,8 +1,11 @@
 package com.codepath.beacon.scan;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
@@ -17,11 +20,23 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.codepath.beacon.R;
+import com.codepath.beacon.data.Beacon;
+import com.codepath.beacon.scan.AddBeaconFragment.OnAddBeaconListener;
+import com.codepath.beacon.scan.MyDeviceListFragment.OnMyDeviceListFragmentInteractionListener;
+import com.parse.FindCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 
-public class BleActivity extends Activity implements DeviceListFragment.OnDeviceListFragmentInteractionListener {
+public class BleActivity extends Activity implements DeviceListFragment.OnDeviceListFragmentInteractionListener, OnAddBeaconListener,
+    OnMyDeviceListFragmentInteractionListener {
 	public static final String TAG = "BluetoothLE";
 	private final int ENABLE_BT = 1;
 
@@ -32,7 +47,8 @@ public class BleActivity extends Activity implements DeviceListFragment.OnDevice
 
 	private MenuItem mRefreshItem = null;
 
-	private DeviceListFragment mDeviceList = DeviceListFragment.newInstance();
+	private DeviceListFragment mNewDeviceList = DeviceListFragment.newInstance();
+	private MyDeviceListFragment mMyDeviceList = MyDeviceListFragment.newInstance();
 
 	private ServiceConnection mConnection = new ServiceConnection() {
 		@Override
@@ -68,9 +84,13 @@ public class BleActivity extends Activity implements DeviceListFragment.OnDevice
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ble);
 		mServiceIntent = new Intent(this, BleService.class);
-		FragmentTransaction tx = getFragmentManager().beginTransaction();
-		tx.add(R.id.main_content, mDeviceList);
-		tx.commit();
+		loadMyDevices();
+		FragmentTransaction txNew = getFragmentManager().beginTransaction();
+		txNew.add(R.id.fl_new_devices, mNewDeviceList);
+		txNew.commit();
+		FragmentTransaction txSaved = getFragmentManager().beginTransaction();
+		txSaved.add(R.id.fl_saved_devices, mMyDeviceList);
+		txSaved.commit();
 	}
 
 	@Override
@@ -115,18 +135,19 @@ public class BleActivity extends Activity implements DeviceListFragment.OnDevice
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_refresh) {
+			mRefreshItem.setEnabled(false);
 			if (mService != null) {
 				startScan();
 			}
+			loadMyDevices();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	private void startScan() {
-		mRefreshItem.setEnabled(false);
-		mDeviceList.setDevices(this, null);
-		mDeviceList.setScanning(true);
+		mNewDeviceList.setDevices(this, null);
+		mNewDeviceList.setScanning(true);
 		Message msg = Message.obtain(null, BleService.MSG_START_SCAN);
 		if (msg != null) {
 			try {
@@ -136,6 +157,23 @@ public class BleActivity extends Activity implements DeviceListFragment.OnDevice
 				unbindService(mConnection);
 			}
 		}
+	}
+
+	private void loadMyDevices() {
+		ParseUser currentUser = ParseUser.getCurrentUser();
+		ParseRelation<ParseObject> relation = currentUser.getRelation("beacons");
+		relation.getQuery().findInBackground(new FindCallback<ParseObject>() {
+			@Override
+			public void done(List<ParseObject> beacons, ParseException exception) {
+				if (exception != null) {
+			        Log.e(TAG, "Parse Excetion getting saved beacons for user", exception);
+			        Toast.makeText(getApplicationContext(), "Parse Excetion getting saved beacons for user:" + exception.getMessage(), Toast.LENGTH_SHORT).show();;
+			    } else {
+			        BleDeviceInfo[] items = Beacon.toBleDeviceInfoList(beacons);
+			        mMyDeviceList.setDevices(getApplicationContext(), items);
+			    }
+			}
+		});
 	}
 
 	@Override
@@ -148,7 +186,10 @@ public class BleActivity extends Activity implements DeviceListFragment.OnDevice
 
 	@Override
 	public void onDeviceListFragmentInteraction(BleDeviceInfo deviceInfo) {
-
+		// Show dialog fragment to the user to set a name to the bledevice and save it
+		FragmentManager manager = getFragmentManager();
+		AddBeaconFragment fragment = AddBeaconFragment.newInstance("Add Beacon", deviceInfo);
+		fragment.show(manager, "add_beacon");
 	}
 
 	private static class IncomingHandler extends Handler {
@@ -171,7 +212,7 @@ public class BleActivity extends Activity implements DeviceListFragment.OnDevice
 						if (data != null && data.containsKey(BleService.KEY_DEVICE_DETAILS)) {
 						  BleDeviceInfo[] devices = (BleDeviceInfo[])
 						      data.getParcelableArray(BleService.KEY_DEVICE_DETAILS);
-						  activity.mDeviceList.setDevices(activity, devices);
+						  activity.mNewDeviceList.setDevices(activity, devices);
 						}
 						break;
 					default:
@@ -188,7 +229,7 @@ public class BleActivity extends Activity implements DeviceListFragment.OnDevice
 		switch (mState) {
 			case SCANNING:
 				mRefreshItem.setEnabled(true);
-				mDeviceList.setScanning(true);
+				mNewDeviceList.setScanning(true);
 				break;
 			case BLUETOOTH_OFF:
 				Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -196,7 +237,7 @@ public class BleActivity extends Activity implements DeviceListFragment.OnDevice
 				break;
 			case IDLE:
 				mRefreshItem.setEnabled(true);
-				mDeviceList.setScanning(false);
+				mNewDeviceList.setScanning(false);
 				break;
 			default:
 			  Log.d("BleActivity", "Current state="+mState);
@@ -217,5 +258,18 @@ public class BleActivity extends Activity implements DeviceListFragment.OnDevice
 		} else {
 			super.onActivityResult(requestCode, resultCode, data);
 		}
+	}
+
+	@Override
+	public void onBeaconAdded(final BleDeviceInfo device) {
+		final Beacon beacon = Beacon.fromBleDeviceInfo(device);
+		beacon.saveBeaconInBackground();
+	}
+
+	@Override
+	public void onMyDeviceListFragmentInteraction(BleDeviceInfo deviceInfo) {
+		FragmentManager manager = getFragmentManager();
+		AddBeaconFragment fragment = AddBeaconFragment.newInstance("Update Beacon", deviceInfo);
+		fragment.show(manager, "update_beacon");
 	}
 }
