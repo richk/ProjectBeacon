@@ -1,5 +1,8 @@
 package com.codepath.beacon.scan;
 
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
