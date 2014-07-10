@@ -30,6 +30,8 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
 
 public class BleActivity extends Activity implements DeviceListFragment.OnDeviceListFragmentInteractionListener, OnAddBeaconListener,
     OnMyDeviceListFragmentInteractionListener {
