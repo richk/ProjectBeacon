@@ -1,0 +1,130 @@
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.codepath.beacon.RecipeActionActivity"
+    tools:ignore="MergeRootFrame" >
+
+    <TextView
+        android:id="@+id/tv_track_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingTop="15dp"
+        android:text="Track My Key" />
+
+    <TextView
+        android:id="@+id/tv_trigger"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_track_text"
+        android:layout_marginTop="15dp"
+        android:text="Trigger"
+        android:textColor="@android:color/holo_blue_light" >
+
+    </TextView>
+
+    <RadioGroup
+        android:id="@+id/rg_triggers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:orientation="horizontal"
+        android:layout_below="@+id/tv_trigger"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="20dp" >
+
+        <RadioButton
+            android:id="@+id/radio0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Approaching" />
+
+        <RadioButton
+            android:id="@+id/radio1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Leaving" />
+
+    </RadioGroup>
+    
+    <TextView
+        android:id="@+id/tv_action"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rg_triggers"
+        android:layout_marginTop="15dp"
+        android:text="Action"
+        android:textColor="@android:color/holo_blue_light" >
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/tv_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tv_action"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:text="Message" />
+
+    <EditText
+        android:id="@+id/et_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tv_message"
+        android:layout_below="@+id/tv_message"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:hint="Type in notification message here" >
+
+        <requestFocus />
+    </EditText>
+
+    <CheckBox
+        android:id="@+id/cb_notification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/et_message"
+        android:layout_below="@+id/et_message"
+        android:layout_marginTop="15dp"
+        android:checked="true"
+        android:text="Notification" />
+
+    <CheckBox
+        android:id="@+id/cb_sms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/cb_notification"
+        android:layout_below="@+id/cb_notification"
+        android:layout_marginTop="15dp"
+        android:text="SMS" />
+
+    <EditText
+        android:id="@+id/et_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/cb_sms"
+        android:layout_below="@id/cb_notification"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/cb_sms"
+        android:ems="10"
+        android:hint="Phone Numbe here"
+        android:inputType="phone" />
+
+    <Button
+        android:id="@+id/btn_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_phone"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:onClick="onNotify"
+        android:text="Test" />
+
+</RelativeLayout>
