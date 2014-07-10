@@ -36,7 +36,7 @@ public class MyRecipeActivity extends FragmentActivity {
 	
 	public void onAddAction(MenuItem mi) {
 		
-		Intent scanIntent = new Intent(this, BleActivity.class);
+		Intent scanIntent = new Intent(this, RecipeDetailActivity.class);
 		startActivity(scanIntent);
 	}
 }

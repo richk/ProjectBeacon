@@ -25,6 +25,7 @@
         android:layout_toRightOf="@+id/textView1"
         android:maxHeight="50dp"
         android:maxWidth="50dp"
+        android:onClick="onScanBeacon"
         android:src="@drawable/ic_beacon_btn" />
 
     <ImageButton

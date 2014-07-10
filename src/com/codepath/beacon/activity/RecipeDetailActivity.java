@@ -1,12 +1,15 @@
 package com.codepath.beacon.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.codepath.beacon.R;
 import com.codepath.beacon.models.Recipe;
+import com.codepath.beacon.scan.BleActivity;
 
 public class RecipeDetailActivity extends Activity {
 	private Recipe recipe;
@@ -38,4 +41,8 @@ public class RecipeDetailActivity extends Activity {
 		TextView tvBeaconDistance = (TextView) findViewById(R.id.tvBeaconDistance);
 	}
 	
+	public void onScanBeacon(View view) {
+		Intent scanIntent = new Intent(this, BleActivity.class);
+		startActivity(scanIntent);
+	}
 }
