@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.codepath.beacon.R;
 import com.codepath.beacon.adapter.RecipeArrayAdapter;
@@ -21,12 +22,10 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import eu.erikw.PullToRefreshListView;
-
 public class RecipeListFragment extends Fragment {
 	protected ArrayList<Recipe> recipes;
 	protected ArrayAdapter<Recipe> aRecipes;
-	protected PullToRefreshListView lvRecipes;
+	protected ListView lvRecipes;
 	protected int repCount =20;
 
 	public static RecipeListFragment newInstance(String userID) {
@@ -52,11 +51,7 @@ public class RecipeListFragment extends Fragment {
 				if (e == null) {
 					// Access the array of results here		        	
 					recipes = new ArrayList<Recipe>(itemList);
-					if (refresh)
-						aRecipes.clear();
 					aRecipes.addAll(recipes);
-					if (refresh)
-						lvRecipes.onRefreshComplete();
 				} else {
 					Log.d("item", "Error: " + e.getMessage());
 				}
@@ -77,7 +72,7 @@ public class RecipeListFragment extends Fragment {
 
 		// Defines the xml file for the fragment
 		View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
-		lvRecipes = (PullToRefreshListView) view.findViewById(R.id.lvRecipes);
+		lvRecipes = (ListView) view.findViewById(R.id.lvRecipes);
 		lvRecipes.setAdapter(aRecipes);
 		findMyRecipes("0", false);  
 		return view;
