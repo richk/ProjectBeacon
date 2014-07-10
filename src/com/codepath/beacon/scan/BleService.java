@@ -2,6 +2,7 @@ package com.codepath.beacon.scan;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,6 +15,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -27,26 +29,26 @@ public class BleService extends Service implements
   public static final String TAG = "BleService";
 
   static final int MSG_REGISTER = 1;
-
   static final int MSG_UNREGISTER = 2;
-
   static final int MSG_START_SCAN = 3;
-
   static final int MSG_STATE_CHANGED = 4;
-
   static final int MSG_DEVICE_FOUND = 5;
+  static final int MSG_MONITOR_ENTRY = 6;
+  static final int MSG_MONITOR_EXIT = 7;
 
-  private static final long SCAN_PERIOD = 5000;
+  private long lastScanTime = 0;
+  private static final long SCAN_PERIOD = 2000;
+  private static final long SCAN_INTERVAL = 10000;
 
   public static final String KEY_DEVICE_DETAILS = "device_details";
 
   private final IncomingHandler mHandler;
-
   private final Messenger mMessenger;
-
   private final List<Messenger> mClients = new LinkedList<Messenger>();
-
-  private final Map<String, BleDeviceInfo> mDevices = new HashMap<String, BleDeviceInfo>();
+  
+  
+  private final Map<String, BleDeviceInfo> currentScannedDevices = new HashMap<String, BleDeviceInfo>();
+  private final Map<String, BleDeviceInfo> lastScannedDevices = new HashMap<String, BleDeviceInfo>();
 
   public enum State {
     UNKNOWN, IDLE, SCANNING, BLUETOOTH_OFF, CONNECTING, CONNECTED, DISCONNECTING
@@ -98,7 +100,9 @@ public class BleService extends Service implements
   }
 
   private void startScan() {
-    mDevices.clear();
+    currentScannedDevices.clear();
+    Log.d(TAG, "Invoking scan at " + new Date());
+    lastScanTime = new Date().getTime();
     setState(State.SCANNING);
     if (mBluetooth == null) {
       BluetoothManager bluetoothMgr = (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
@@ -110,13 +114,91 @@ public class BleService extends Service implements
       mHandler.postDelayed(new Runnable() {
         @Override
         public void run() {
-          if (mState == State.SCANNING) {
-            mBluetooth.stopLeScan(BleService.this);
-            setState(State.IDLE);
-          }
+          endScan();
         }
       }, SCAN_PERIOD);
       mBluetooth.startLeScan(this);
+    }
+  }
+  
+  private void endScan(){
+    if (mState == State.SCANNING) {
+      mBluetooth.stopLeScan(this);
+      setState(State.IDLE);
+    }
+    
+    Map<String, BleDeviceInfo> currDevices = new HashMap<String, BleDeviceInfo>();    
+    Map<String, BleDeviceInfo> prevDevices = new HashMap<String, BleDeviceInfo>();
+    
+    currDevices.putAll(currentScannedDevices);
+    prevDevices.putAll(lastScannedDevices);
+
+    lastScannedDevices.clear();
+    lastScannedDevices.putAll(currentScannedDevices);
+    
+    new ScanProcessor().execute(new ScanData(currDevices, prevDevices));
+    
+    long nextScanTime = lastScanTime + SCAN_INTERVAL;
+    long diff = nextScanTime - new Date().getTime(); 
+    if(diff > 0){
+      mHandler.postDelayed(new Runnable() {
+        @Override
+        public void run() {
+            startScan();
+        }
+      }, diff);
+    }   
+  }
+  
+  private class ScanProcessor extends AsyncTask<ScanData, Void, Void>{
+
+    @Override
+    protected Void doInBackground(ScanData... params) {
+      ScanData scanData = params[0];
+      
+      for(BleDeviceInfo device : scanData.currentDevices.values()){
+        if(!scanData.previousDevices.containsKey(device.getKey())){
+          Log.d(TAG, "Found new device! " + device.getKey());
+        }
+      }
+      
+      for(BleDeviceInfo device : scanData.previousDevices.values()){
+        if(!scanData.currentDevices.containsKey(device.getKey())){
+          Log.d(TAG, "Last a device! " + device.getKey());
+        }
+      }
+      return null;
+    }    
+  }
+  
+  private class ScanData{
+    private final Map<String, BleDeviceInfo> currentDevices;
+    private final Map<String, BleDeviceInfo> previousDevices;
+    
+    public ScanData(Map<String, BleDeviceInfo> currDevices, 
+        Map<String, BleDeviceInfo> prevDevices){      
+      this.currentDevices = currDevices;
+      this.previousDevices = prevDevices;
+    }
+  }
+  
+  private void handleNewFoundDevice(BleDeviceInfo deviceInfo){
+    currentScannedDevices.put(deviceInfo.getKey(), deviceInfo);
+
+    Message msg = Message.obtain(null, MSG_DEVICE_FOUND);
+    if (msg != null) {
+      Bundle bundle = new Bundle();
+      int i = 0;
+      BleDeviceInfo[] deviceDataArr = new BleDeviceInfo[currentScannedDevices.size()];
+      for (Entry<String, BleDeviceInfo> e : currentScannedDevices.entrySet()) {
+        BleDeviceInfo info = e.getValue();
+        deviceDataArr[i++] = info;
+      }
+
+      bundle.putParcelableArray(KEY_DEVICE_DETAILS, deviceDataArr);
+      msg.setData(bundle);
+
+      sendMessage(msg);
     }
   }
 
@@ -128,27 +210,9 @@ public class BleService extends Service implements
 
     BleDeviceInfo deviceInfo = getDeviceInfo(device, rssi, scanRecord);
 
-    if (deviceInfo != null && !mDevices.containsKey(deviceInfo.getKey())) {
-
-      mDevices.put(deviceInfo.getKey(), deviceInfo);
-
-      Message msg = Message.obtain(null, MSG_DEVICE_FOUND);
-      if (msg != null) {
-        Bundle bundle = new Bundle();
-        int i = 0;
-        BleDeviceInfo[] deviceDataArr = new BleDeviceInfo[mDevices.size()];
-        for (Entry<String, BleDeviceInfo> e : mDevices.entrySet()) {
-          BleDeviceInfo info = e.getValue();
-          deviceDataArr[i++] = info;
-        }
-
-        bundle.putParcelableArray(KEY_DEVICE_DETAILS, deviceDataArr);
-        msg.setData(bundle);
-
-        sendMessage(msg);
-      }
-
-      Log.d(TAG, "Added " + device.getName() + ": " + deviceInfo.getKey());
+    if (deviceInfo != null && !currentScannedDevices.containsKey(deviceInfo.getKey())) {
+      handleNewFoundDevice(deviceInfo);
+      //Log.d(TAG, "Added " + device.getName() + ": " + deviceInfo.getKey());
     }
   }
 

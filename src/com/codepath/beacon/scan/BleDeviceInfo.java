@@ -1,22 +1,14 @@
 package com.codepath.beacon.scan;
 
-import com.parse.ParseClassName;
-import com.parse.ParseObject;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 public class BleDeviceInfo implements Parcelable {
   private String name;
-
   private String macAddress;
-
   private int rssi;
-
   private String uuid;
-
   private int majorId;
-
   private int minorId;
 
   public BleDeviceInfo(String name, String macAddress, String uuid,
@@ -91,6 +83,11 @@ public class BleDeviceInfo implements Parcelable {
   @Override
   public int describeContents() {
     return 0;
+  }
+  
+  public BleDeviceInfo clone(){
+    return new BleDeviceInfo(this.name, this.macAddress, 
+        this.uuid, this.majorId, this.minorId, this.rssi);
   }
 
   @Override
