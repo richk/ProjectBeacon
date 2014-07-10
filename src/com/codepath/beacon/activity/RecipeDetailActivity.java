@@ -10,6 +10,7 @@ import android.widget.ToggleButton;
 import com.codepath.beacon.R;
 import com.codepath.beacon.models.Recipe;
 import com.codepath.beacon.scan.BleActivity;
+import com.codepath.beacon.ui.RecipeActionActivity;
 
 public class RecipeDetailActivity extends Activity {
 	private Recipe recipe;
@@ -43,6 +44,11 @@ public class RecipeDetailActivity extends Activity {
 	
 	public void onScanBeacon(View view) {
 		Intent scanIntent = new Intent(this, BleActivity.class);
+		startActivity(scanIntent);
+	}
+
+	public void onSetAction(View view) {
+		Intent scanIntent = new Intent(this, RecipeActionActivity.class);
 		startActivity(scanIntent);
 	}
 }
