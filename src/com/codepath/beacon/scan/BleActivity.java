@@ -31,6 +31,7 @@ import com.parse.ParseObject;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
+
 public class BleActivity extends Activity implements DeviceListFragment.OnDeviceListFragmentInteractionListener, OnAddBeaconListener,
     OnMyDeviceListFragmentInteractionListener {
 	public static final String TAG = "BluetoothLE";
