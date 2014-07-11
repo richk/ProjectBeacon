@@ -164,7 +164,7 @@ public class BleService extends Service implements
       
       for(BleDeviceInfo device : scanData.previousDevices.values()){
         if(!scanData.currentDevices.containsKey(device.getKey())){
-          Log.d(TAG, "Last a device! " + device.getKey());
+          Log.d(TAG, "Lost a device! " + device.getKey());
         }
       }
       return null;
@@ -212,7 +212,7 @@ public class BleService extends Service implements
 
     if (deviceInfo != null && !currentScannedDevices.containsKey(deviceInfo.getKey())) {
       handleNewFoundDevice(deviceInfo);
-      //Log.d(TAG, "Added " + device.getName() + ": " + deviceInfo.getKey());
+      Log.d(TAG, "Added " + device.getName() + ": " + deviceInfo.getKey());
     }
   }
 
