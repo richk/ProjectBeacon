@@ -15,6 +15,9 @@
     <string name="new_user_hint">New User?</string>
     <string name="sign_up_link_hint">"Sign up here"</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="scanning">Looking for devices. Please wait..</string>
+    <string name="no_devices">No devices found</string>
     <string name="beacon_label">BeaconFriendlyName</string>
     <string name="trigger_label">Approaching</string>
     <string name="action_label">send notification</string>
@@ -30,13 +33,11 @@
     <string name="tvBeaconDistance">Beacon Distance</string>
     <string name="receive_label">Receive Notification with this beacon</string>
     <string name="beaconname_label">Beacon Name and UUID</string>
-    <string name="action_refresh">Refresh</string>
-    <string name="scanning">Looking for devices. Please wait..</string>
-    <string name="no_devices">No devices found</string>
     <string name="btn_add_beacon_string">Done</string>
     <string name="mac_address_string">MAC ADDRESS:</string>
     <string name="major_id_string">MAJOR ID:</string>
     <string name="minor_id_string">MINOR ID:</string>
     <string name="title_activity_recipe_action">RecipeActionActivity</string>
+    <string name="title_activity_create_recipe">CreateRecipeActivity</string>
 
 </resources>

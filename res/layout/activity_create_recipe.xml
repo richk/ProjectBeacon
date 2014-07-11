@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${packageName}.${activityClass}" >
+
+        <TextView
+        android:id="@+id/tvIFLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="27dp"
+        android:layout_marginTop="90dp"
+        android:text="@string/if_label"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ImageButton
+        android:id="@+id/btn_add1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tvIFLabel"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@+id/tvIFLabel"
+        android:maxHeight="50dp"
+        android:maxWidth="50dp"
+        android:onClick="onPickBeacon"
+        android:src="@drawable/ic_add" />
+
+    <TextView
+        android:id="@+id/tvThenLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/btn_add1"
+        android:layout_centerHorizontal="true"
+        android:text="@string/then_label"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ImageButton
+        android:id="@+id/btn_add2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tvThenLabel"
+        android:layout_marginLeft="24dp"
+        android:layout_toRightOf="@+id/tvThenLabel"
+        android:onClick="onPickAction"
+        android:src="@drawable/ic_add" />
+
+    <TextView
+        android:id="@+id/tvTriggerandNotification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btn_add1"
+        android:layout_below="@+id/btn_add1"
+        android:layout_marginTop="32dp"
+        android:text="recipeDetail" />
+
+
+</RelativeLayout>

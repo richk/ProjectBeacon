@@ -40,7 +40,21 @@ public class Recipe extends ParseObject {
 		return getString("UUID");
 	}
 	public void setUUID(String UUID) {
-		put("UUID", UUID);
+		put("MajorID", UUID);
+	}
+	
+	public String getMajorID() {
+		return getString("MajorID");
+	}
+	public void setMajorID(String majorID) {
+		put("MajorID", majorID);
+	}
+	
+	public String getMinorID() {
+		return getString("MinorID");
+	}
+	public void setMinorID(String minorID) {
+		put("MinorID", minorID);
 	}
 
 	public boolean isPushNotification() {
