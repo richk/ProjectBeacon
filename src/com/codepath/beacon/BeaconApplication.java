@@ -3,8 +3,8 @@ package com.codepath.beacon;
 import android.app.Application;
 import android.util.Log;
 
-import com.codepath.beacon.models.Recipe;
 import com.codepath.beacon.data.Beacon;
+import com.codepath.beacon.models.Recipe;
 import com.parse.Parse;
 import com.parse.ParseObject;
 

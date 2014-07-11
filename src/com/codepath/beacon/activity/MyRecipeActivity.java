@@ -10,7 +10,7 @@ import android.view.Window;
 
 import com.codepath.beacon.R;
 import com.codepath.beacon.fragments.RecipeListFragment;
-import com.codepath.beacon.scan.BleActivity;
+import com.codepath.beacon.activity.*;
 
 public class MyRecipeActivity extends FragmentActivity {
 
@@ -36,7 +36,9 @@ public class MyRecipeActivity extends FragmentActivity {
 	
 	public void onAddAction(MenuItem mi) {
 		
-		Intent scanIntent = new Intent(this, RecipeDetailActivity.class);
-		startActivity(scanIntent);
+//		Intent scanIntent = new Intent(this, RecipeDetailActivity.class);
+//		startActivity(scanIntent);
+		Intent createRecipeIntent = new Intent(this, CreateRecipeActivity.class);
+		startActivity(createRecipeIntent);
 	}
 }

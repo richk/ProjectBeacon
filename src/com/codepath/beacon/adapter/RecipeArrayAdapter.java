@@ -1,6 +1,7 @@
 package com.codepath.beacon.adapter;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
@@ -41,15 +42,6 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 		TextView tvNotification = (TextView) v.findViewById(R.id.tvnotification);
 		ToggleButton tbTrigger = (ToggleButton) v.findViewById(R.id.tbtrigger);
 		
-    //TODO add image to the list later
- /*  ImageView ivBeaconImage = (ImageView) v.findViewById(R.id.ivbeaconimage);
-		ivBeaconImage.setImageResource(android.R.color.transparent);
-		ImageLoader imageLoader = ImageLoader.getInstance();
-
-		// populate views with recipe data
-		imageLoader.displayImage("http://www.pendragon-it.com/wp-content/uploads/2014/06/ibeacon-660x375.png", ivBeaconImage);	
-	*/
-		
 		tvBeaconName.setText(recipe.getFriendlyName());
 		tvTrigger.setText(recipe.getTrigger());
 		tvNotification.setText(recipe.getNotification());
@@ -60,18 +52,20 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 
 		v.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				Date activationDate = null;
+				
 				Recipe recipe = (Recipe) v.getTag();
 				String fn = recipe.getFriendlyName();
 				String UUID = recipe.getUUID();
-				SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-				String activationDate = df.format(recipe.getActivationDate());
-				String triggerCount = Integer.toString(recipe.getTriggeredCount());
+				if (recipe.getActivationDate()!= null)
+				  activationDate = recipe.getActivationDate();
+				int triggerCount = recipe.getTriggeredCount();
 				boolean status = recipe.isStatus();
 				
 				Intent i = new Intent(getContext(), RecipeDetailActivity.class);
 				i.putExtra("fn", fn);
 				i.putExtra("UUID", UUID);
-				i.putExtra("activationDate", activationDate);
+				i.putExtra("activationDate", activationDate.getTime());
 				i.putExtra("triggerCount", triggerCount);
 				i.putExtra("status", status);
 				getContext().startActivity(i);

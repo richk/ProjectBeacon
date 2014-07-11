@@ -18,7 +18,6 @@ import com.codepath.beacon.models.Recipe;
 import com.codepath.beacon.util.EndlessScrollListener;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -51,6 +50,9 @@ public class RecipeListFragment extends Fragment {
 				if (e == null) {
 					// Access the array of results here		        	
 					recipes = new ArrayList<Recipe>(itemList);
+					aRecipes.addAll(recipes);
+					if (refresh)
+						aRecipes.clear();
 					aRecipes.addAll(recipes);
 				} else {
 					Log.d("item", "Error: " + e.getMessage());
@@ -89,13 +91,6 @@ public class RecipeListFragment extends Fragment {
 				customLoadMoreDataFromApi(totalItemsCount); 
 			}
 		});
-
-/*		lvRecipes.setOnRefreshListener(new OnRefreshListener() { 
-			@Override
-			public void onRefresh() {
-				findMyRecipes("0", true);
-			}
-		}); */
 	}
 		
 	// Append more data into the adapter
