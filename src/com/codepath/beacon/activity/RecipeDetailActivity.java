@@ -74,7 +74,7 @@ public class RecipeDetailActivity extends Activity {
 		tbStatus.setChecked(recipe.isStatus());
 
 		TextView tvBeaconnameandUUID = (TextView) findViewById(R.id.tvBeaconnameandUUID);
-		tvBeaconnameandUUID.setText(recipe.getFriendlyName()+"---"+recipe.getUUID());
+		tvBeaconnameandUUID.setText(recipe.getFriendlyName()+" ("+recipe.getUUID() + " )");
 
 		TextView tvSelectedBeacon = (TextView) findViewById(R.id.tvSelectedBeacon);
 		tvSelectedBeacon.setText(recipe.getFriendlyName());

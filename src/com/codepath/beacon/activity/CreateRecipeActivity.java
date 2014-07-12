@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.codepath.beacon.R;
 import com.codepath.beacon.models.Recipe;
+import com.codepath.beacon.scan.BleActivity;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -48,12 +49,12 @@ public class CreateRecipeActivity extends Activity {
 	}
 
 	public void onScanBeacon(View v) {
-		//	Intent scanIntent = new Intent(this, BleActivity.class);
-		//	startActivity(scanIntent);
+	//		Intent scanIntent = new Intent(this, BleActivity.class);
+	//		startActivity(scanIntent);
 		//TODO: integration: calll start beacon activity, return UUID, MajorID, MinorID and friendly name
 		// set: String uuid, String majorID, String minorID, String fn 
-		recipe.setBeacon("qwerty", "123", "456", "FN1");
-		showRecipe();
+		 recipe.setBeacon("qwerty", "123", "456", "FN1");
+		 showRecipe();
 	}
 
 	public void onChooseAction(View v) {
