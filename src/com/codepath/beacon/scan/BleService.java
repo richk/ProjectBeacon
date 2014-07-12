@@ -89,6 +89,7 @@ public class BleService extends Service implements
         case MSG_REGISTER:
           service.mClients.add(msg.replyTo);
           Log.d(TAG, "Registered");
+          service.startScan();
           break;
         case MSG_UNREGISTER:
           service.mClients.remove(msg.replyTo);

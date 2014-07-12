@@ -65,12 +65,11 @@ public class BleActivity extends Activity implements
 	@Override
 	protected void onStart() {
 		super.onStart();
-		beaconManager.readyToListen();
+		beaconManager.startListening();
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.scan_list, menu);
 		mRefreshItem = menu.findItem(R.id.action_refresh);
@@ -86,7 +85,7 @@ public class BleActivity extends Activity implements
 		int id = item.getItemId();
 		if (id == R.id.action_refresh) {
 			mRefreshItem.setEnabled(false);
-			beaconManager.startScanning();
+			startScan();
 			loadMyDevices();
 			return true;
 		}

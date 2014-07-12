@@ -17,11 +17,8 @@ import android.util.Log;
 public class BeaconManager {
 
   public static final String TAG = "BeaconManager";
-
   private final Messenger mMessenger;
-
   private Intent mServiceIntent;
-
   private Messenger mService = null;
 
   private Context ctxt;
@@ -30,6 +27,7 @@ public class BeaconManager {
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
       mService = new Messenger(service);
+      Log.d(TAG, "Service connected... ");
       try {
         Message msg = Message.obtain(null, BleService.MSG_REGISTER);
         if (msg != null) {
@@ -56,8 +54,11 @@ public class BeaconManager {
     mServiceIntent = new Intent(ctxt, BleService.class);
   }
 
-  public void readyToListen() {
-    ctxt.bindService(mServiceIntent, mConnection, Context.BIND_AUTO_CREATE);
+  public void startListening() {
+    boolean started = ctxt.bindService(mServiceIntent, mConnection, Context.BIND_AUTO_CREATE);
+    if(started){
+      Log.d(TAG, "Service successfully bound...");
+    }
   }
 
   public void stopListenening() {
