@@ -19,10 +19,13 @@ public class BeaconManager {
   public static final String TAG = "BeaconManager";
 
   private final Messenger mMessenger;
+
   private Intent mServiceIntent;
+
   private Messenger mService = null;
+
   private Context ctxt;
-  
+
   private ServiceConnection mConnection = new ServiceConnection() {
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
@@ -46,7 +49,6 @@ public class BeaconManager {
       mService = null;
     }
   };
-
 
   public BeaconManager(Context ctxt, BeaconListener listener) {
     this.ctxt = ctxt;
@@ -75,16 +77,46 @@ public class BeaconManager {
     }
   }
 
+  public void monitorDeviceEntry(BleDeviceInfo device) {
+    Message msg = Message.obtain(null, BleService.MSG_MONITOR_ENTRY);
+    if (msg != null) {
+      try {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(BleService.KEY_DEVICE_DETAILS, device);
+        msg.setData(bundle);
+        mService.send(msg);
+      } catch (RemoteException e) {
+        Log.w(TAG, "Lost connection to service", e);
+        ctxt.unbindService(mConnection);
+      }
+    }
+  }
+
+  public void monitorDeviceExit(BleDeviceInfo device) {
+    Message msg = Message.obtain(null, BleService.MSG_MONITOR_EXIT);
+    if (msg != null) {
+      try {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(BleService.KEY_DEVICE_DETAILS, device);
+        msg.setData(bundle);
+        mService.send(msg);
+      } catch (RemoteException e) {
+        Log.w(TAG, "Lost connection to service", e);
+        ctxt.unbindService(mConnection);
+      }
+    }
+  }
+
   public void startScanning() {
     Message msg = Message.obtain(null, BleService.MSG_START_SCAN);
     if (msg != null) {
-        try {
-            mService.send(msg);
-        } catch (RemoteException e) {
-            Log.w(TAG, "Lost connection to service", e);
-            ctxt.unbindService(mConnection);
-        }
-    }    
+      try {
+        mService.send(msg);
+      } catch (RemoteException e) {
+        Log.w(TAG, "Lost connection to service", e);
+        ctxt.unbindService(mConnection);
+      }
+    }
   }
 
   private static class IncomingHandler extends Handler {
@@ -103,12 +135,27 @@ public class BeaconManager {
           listener.onStateChanged(BleService.State.values()[msg.arg1]);
           break;
         case BleService.MSG_DEVICE_FOUND:
-          Log.d(TAG, "Got message");
           Bundle data = msg.getData();
           if (data != null && data.containsKey(BleService.KEY_DEVICE_DETAILS)) {
             BleDeviceInfo[] devices = (BleDeviceInfo[]) data
                 .getParcelableArray(BleService.KEY_DEVICE_DETAILS);
-            listener.onDevicesFound(devices);
+            listener.onNewDeviceDiscovered(devices);
+          }
+          break;
+        case BleService.MSG_MONITOR_ENTRY:
+          data = msg.getData();
+          if (data != null && data.containsKey(BleService.KEY_DEVICE_DETAILS)) {
+            BleDeviceInfo[] devices = (BleDeviceInfo[]) data
+                .getParcelableArray(BleService.KEY_DEVICE_DETAILS);
+            listener.onDeviceFound(devices);
+          }
+          break;
+        case BleService.MSG_MONITOR_EXIT:
+          data = msg.getData();
+          if (data != null && data.containsKey(BleService.KEY_DEVICE_DETAILS)) {
+            BleDeviceInfo[] devices = (BleDeviceInfo[]) data
+                .getParcelableArray(BleService.KEY_DEVICE_DETAILS);
+            listener.onDeviceLost(devices);
           }
           break;
         default:

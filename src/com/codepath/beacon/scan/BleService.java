@@ -1,13 +1,16 @@
 package com.codepath.beacon.scan;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.UUID;
 
 import android.app.Service;
@@ -49,6 +52,9 @@ public class BleService extends Service implements
   
   private final Map<String, BleDeviceInfo> currentScannedDevices = new HashMap<String, BleDeviceInfo>();
   private final Map<String, BleDeviceInfo> lastScannedDevices = new HashMap<String, BleDeviceInfo>();
+  
+  private final Set<BleDeviceInfo> monitoringEntry = new HashSet<BleDeviceInfo>();
+  private final Set<BleDeviceInfo> monitoringExit = new HashSet<BleDeviceInfo>();
 
   public enum State {
     UNKNOWN, IDLE, SCANNING, BLUETOOTH_OFF, CONNECTING, CONNECTED, DISCONNECTING
@@ -91,6 +97,16 @@ public class BleService extends Service implements
         case MSG_START_SCAN:
           service.startScan();
           Log.d(TAG, "Start Scan");
+          break;
+        case MSG_MONITOR_ENTRY:
+          BleDeviceInfo device = (BleDeviceInfo)msg.getData().getParcelable(KEY_DEVICE_DETAILS);
+          Log.d(TAG, "Adding device for monitoring entry = " + device.getKey());
+          service.monitoringEntry.add(device);
+          break;
+        case MSG_MONITOR_EXIT:
+          device = (BleDeviceInfo)msg.getData().getParcelable(KEY_DEVICE_DETAILS);
+          Log.d(TAG, "Adding device for monitoring exit = " + device.getKey());
+          service.monitoringExit.add(device);
           break;
         default:
           super.handleMessage(msg);
@@ -156,19 +172,44 @@ public class BleService extends Service implements
     protected Void doInBackground(ScanData... params) {
       ScanData scanData = params[0];
       
+      List<BleDeviceInfo> foundDevices = new ArrayList<BleDeviceInfo>();
       for(BleDeviceInfo device : scanData.currentDevices.values()){
         if(!scanData.previousDevices.containsKey(device.getKey())){
           Log.d(TAG, "Found new device! " + device.getKey());
+          if(monitoringEntry.contains(device))
+            foundDevices.add(device);
         }
       }
+      sendDeviceMessage(foundDevices, BleService.MSG_MONITOR_ENTRY);
       
+      List<BleDeviceInfo> lostDevices = new ArrayList<BleDeviceInfo>();
       for(BleDeviceInfo device : scanData.previousDevices.values()){
         if(!scanData.currentDevices.containsKey(device.getKey())){
           Log.d(TAG, "Lost a device! " + device.getKey());
+          if(monitoringExit.contains(device))
+            lostDevices.add(device);          
         }
       }
+      sendDeviceMessage(lostDevices, BleService.MSG_MONITOR_EXIT);
+      
       return null;
-    }    
+    }
+    
+    private void sendDeviceMessage(List<BleDeviceInfo> devices, int what){
+
+      if(devices != null && devices.size() > 0){
+        Message msg = Message.obtain(null, what);      
+        Bundle bundle = new Bundle();
+        int i = 0;
+        BleDeviceInfo[] deviceDataArr = new BleDeviceInfo[devices.size()];
+        for (BleDeviceInfo info : devices) {
+          deviceDataArr[i++] = info;
+        }
+        bundle.putParcelableArray(KEY_DEVICE_DETAILS, deviceDataArr);
+        msg.setData(bundle);
+        sendMessage(msg);
+      }
+    }
   }
   
   private class ScanData{

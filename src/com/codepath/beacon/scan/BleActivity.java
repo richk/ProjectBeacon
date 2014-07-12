@@ -1,6 +1,5 @@
 package com.codepath.beacon.scan;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
 
 import android.app.Activity;
@@ -25,7 +24,8 @@ import com.parse.ParseObject;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
-public class BleActivity extends Activity implements DeviceListFragment.OnDeviceListFragmentInteractionListener, OnAddBeaconListener,
+public class BleActivity extends Activity implements 
+  DeviceListFragment.OnDeviceListFragmentInteractionListener, OnAddBeaconListener,
     OnMyDeviceListFragmentInteractionListener, BeaconListener {
 	public static final String TAG = "BluetoothLE";
 	private final int ENABLE_BT = 1;
@@ -130,6 +130,8 @@ public class BleActivity extends Activity implements DeviceListFragment.OnDevice
 		FragmentManager manager = getFragmentManager();
 		AddBeaconFragment fragment = AddBeaconFragment.newInstance("Add Beacon", deviceInfo);
 		fragment.show(manager, "add_beacon");
+		beaconManager.monitorDeviceEntry(deviceInfo);
+		beaconManager.monitorDeviceExit(deviceInfo);
 	}
 
 	private void stateChanged(BleService.State newState) {
@@ -178,6 +180,8 @@ public class BleActivity extends Activity implements DeviceListFragment.OnDevice
 		FragmentManager manager = getFragmentManager();
 		AddBeaconFragment fragment = AddBeaconFragment.newInstance("Update Beacon", deviceInfo);
 		fragment.show(manager, "update_beacon");
+		beaconManager.monitorDeviceEntry(deviceInfo);
+		beaconManager.monitorDeviceExit(deviceInfo);
 	}
 
   @Override
@@ -186,7 +190,17 @@ public class BleActivity extends Activity implements DeviceListFragment.OnDevice
   }
 
   @Override
-  public void onDevicesFound(BleDeviceInfo[] devices) {
+  public void onNewDeviceDiscovered(BleDeviceInfo[] devices) {
     mNewDeviceList.setDevices(this, devices);
+  }
+
+  @Override
+  public void onDeviceLost(BleDeviceInfo[] devices) {    
+    Toast.makeText(this, "Lost Device!", Toast.LENGTH_SHORT).show();
+  }
+
+  @Override
+  public void onDeviceFound(BleDeviceInfo[] devices) {
+    Toast.makeText(this, "Found Device!", Toast.LENGTH_SHORT).show();
   }
 }
