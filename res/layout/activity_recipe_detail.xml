@@ -129,4 +129,23 @@
         android:layout_marginBottom="18dp"
         android:text="@string/beaconname_label" />
 
+    <TextView
+        android:id="@+id/tvSelectedBeacon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_beacon"
+        android:layout_alignLeft="@+id/btn_beacon"
+        android:layout_marginBottom="21dp"
+        android:text="@string/tvBeacon_lab" 
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tvSelectedAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvSelectedBeacon"
+        android:layout_alignLeft="@+id/btn_notification"
+        android:text="@string/tvAction_lab" 
+        android:textSize="12sp" />
+
 </RelativeLayout>

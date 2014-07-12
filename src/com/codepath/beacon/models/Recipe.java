@@ -1,13 +1,17 @@
 package com.codepath.beacon.models;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import android.util.Log;
 
 import com.codepath.beacon.data.Beacon;
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -137,14 +141,11 @@ public class Recipe extends ParseObject {
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("FN:" + getFriendlyName()).append(";");
-		sb.append("Major ID:" + getMajorID()).append(";");
-		sb.append("Minor ID:" + getMinorID());
-		sb.append("Trigger:" + getTrigger());
-		sb.append("Message:" + getMessage());
-		sb.append("Notification:" + getNotification());
-		sb.append("Contact:" + getContactNum());
-		
+		sb.append("Beacon " + getFriendlyName());
+		if (getNotification() != null)
+		  sb.append(" receive " + getNotification());
+		if (getTrigger() != null)
+		sb.append(" on " + getTrigger());		
 		
 		return sb.toString();
 	}

@@ -34,6 +34,7 @@
         android:layout_alignTop="@+id/btn_add1"
         android:layout_centerHorizontal="true"
         android:text="@string/then_label"
+        android:textSize="20sp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ImageButton
@@ -50,9 +51,31 @@
         android:id="@+id/tvTriggerandNotification"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvIFLabel"
+        android:layout_alignRight="@+id/btn_add2"
         android:layout_below="@+id/btn_add1"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="45dp"
-        android:text="recipeDetail" />
+        android:text="" 
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tvSelectedBeacon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_add1"
+        android:layout_alignLeft="@+id/btn_add1"
+        android:layout_marginBottom="30dp"
+        android:text="@string/tvBeacon_lab" 
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tvSelectedAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tvSelectedBeacon"
+        android:layout_alignBottom="@+id/tvSelectedBeacon"
+        android:layout_alignLeft="@+id/btn_add2"
+        android:text="@string/tvAction_lab" 
+        android:textSize="12sp" />
 
 </RelativeLayout>
