@@ -16,6 +16,14 @@ public class RecipeEditDetailFragment extends Fragment {
 	Recipe recipe = null;
 	View view;
 
+	public static RecipeEditDetailFragment newInstance(String recipe_id) {
+		RecipeEditDetailFragment recipeEditDetailFragment = new RecipeEditDetailFragment();
+		Bundle args = new Bundle();
+		args.putString("recipe_id", recipe_id);
+		recipeEditDetailFragment.setArguments(args);
+		return recipeEditDetailFragment;
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,27 +48,7 @@ public class RecipeEditDetailFragment extends Fragment {
 		showRecipe(recipe);
 	}
 
-	public static RecipeEditDetailFragment newInstance(String recipe_id) {
-		RecipeEditDetailFragment recipeEditDetailFragment = new RecipeEditDetailFragment();
-		Bundle args = new Bundle();
-		args.putString("recipe_id", recipe_id);
-		recipeEditDetailFragment.setArguments(args);
-		return recipeEditDetailFragment;
-	}
-
-	protected void findRecipebyID(String recipeID) {
-
-	}
-	
-	protected void updateRecipes(Recipe r) {
-
-	}
-
-	protected void deleteRecipe(Recipe r) {
-	}
-
 	public void showRecipe(Recipe recipe) {
-
 		if (recipe != null) {
 			String fn = recipe.getFriendlyName();		
 			String UUID = recipe.getUUID();
@@ -79,12 +67,22 @@ public class RecipeEditDetailFragment extends Fragment {
 		}
 		else
 		{
-			// display default
+			// display error message
 		}
 
 		//TODO: Need to call 3rd party lib to get distance or other beacon related information
 
 	}
 
+	protected void findRecipebyID(String recipeID) {
+
+	}
+
+	protected void updateRecipes(Recipe r) {
+
+	}
+
+	protected void deleteRecipe(Recipe r) {
+	}
 
 }

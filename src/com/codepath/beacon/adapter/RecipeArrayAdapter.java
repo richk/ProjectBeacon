@@ -1,9 +1,9 @@
 package com.codepath.beacon.adapter;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -19,7 +19,7 @@ import com.codepath.beacon.activity.RecipeDetailActivity;
 import com.codepath.beacon.models.Recipe;
 
 public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
-	private final int REQUEST_CODE = 20;
+	private final int REQUEST_CODE = 21;
 	public RecipeArrayAdapter(Context context, List<Recipe> recipes) {
 		super(context, R.layout.recipe_item, recipes);
 	}
@@ -55,25 +55,29 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 				Date activationDate = null;
 				
 				Recipe recipe = (Recipe) v.getTag();
-				String fn = recipe.getFriendlyName();
+				String objID = recipe.getObjectId();
+        String fn = recipe.getFriendlyName();
 				String UUID = recipe.getUUID();
-				if (recipe.getActivationDate()!= null)
-				  activationDate = recipe.getActivationDate();
+				activationDate = recipe.getActivationDate();
+				if (activationDate == null)
+					activationDate = new Date();
 				int triggerCount = recipe.getTriggeredCount();
 				boolean status = recipe.isStatus();
 				
 				Intent i = new Intent(getContext(), RecipeDetailActivity.class);
 				i.putExtra("fn", fn);
 				i.putExtra("UUID", UUID);
+				i.putExtra("ObjectID", objID);
 				i.putExtra("activationDate", activationDate.getTime());
 				i.putExtra("triggerCount", triggerCount);
 				i.putExtra("status", status);
-				getContext().startActivity(i);
+				((Activity)getContext()).startActivityForResult(i,REQUEST_CODE);
 			}
 		});
 		
 		return v;
 
 	}
+
 
 }

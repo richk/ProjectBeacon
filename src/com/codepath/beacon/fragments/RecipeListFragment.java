@@ -27,20 +27,19 @@ public class RecipeListFragment extends Fragment {
 	protected ListView lvRecipes;
 	protected int repCount =20;
 
-	public static RecipeListFragment newInstance(String userID) {
+	public static RecipeListFragment newInstance() {
 		RecipeListFragment recipeListFragment = new RecipeListFragment();
 		Bundle args = new Bundle();
-		args.putString("user_id", userID);
 		recipeListFragment.setArguments(args);
 		return recipeListFragment;
 	}
 
-	protected void findMyRecipes(final String max_id, final boolean refresh) {
+	public void findMyRecipes(final String max_id, final boolean refresh) {
 
 		ParseQuery<Recipe> query = ParseQuery.getQuery(Recipe.class);
-		ParseUser currentUser = ParseUser.getCurrentUser();
-		query.addDescendingOrder("FN");
-		//		query.whereEqualTo("owner", ParseUser.getCurrentUser());
+		String currentUserID = ParseUser.getCurrentUser().getObjectId();
+		query.whereEqualTo("userID", currentUserID);
+		query.addAscendingOrder("FN");
 		if (!max_id.equals("0"))
 			query.whereGreaterThan("FN", max_id);
 
@@ -50,7 +49,6 @@ public class RecipeListFragment extends Fragment {
 				if (e == null) {
 					// Access the array of results here		        	
 					recipes = new ArrayList<Recipe>(itemList);
-					aRecipes.addAll(recipes);
 					if (refresh)
 						aRecipes.clear();
 					aRecipes.addAll(recipes);
@@ -87,7 +85,6 @@ public class RecipeListFragment extends Fragment {
 		// Attach the listener to the AdapterView onCreate
 		lvRecipes.setOnScrollListener(new EndlessScrollListener() {
 			public void onLoadMore(int page, int totalItemsCount) {
-				// Triggered only when new data needs to be appended to the list
 				customLoadMoreDataFromApi(totalItemsCount); 
 			}
 		});
@@ -102,11 +99,6 @@ public class RecipeListFragment extends Fragment {
 			max_id = ((Recipe) recipes.get(recipeLen-1)).getFriendlyName();
 			findMyRecipes(max_id, false);
 		}
-	}
-
-	public void insertRecipetoTop(Recipe r) {
-		aRecipes.insert(r, 0);
-		lvRecipes.setSelection(0);		
 	}
 
 	// should be called when an async task started

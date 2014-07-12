@@ -2,9 +2,15 @@ package com.codepath.beacon.models;
 
 import java.util.Date;
 
+import android.util.Log;
+
+import com.codepath.beacon.data.Beacon;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 @ParseClassName("Recipe")
 public class Recipe extends ParseObject {
@@ -40,7 +46,7 @@ public class Recipe extends ParseObject {
 		return getString("UUID");
 	}
 	public void setUUID(String UUID) {
-		put("MajorID", UUID);
+		put("UUID", UUID);
 	}
 	
 	public String getMajorID() {
@@ -81,14 +87,6 @@ public class Recipe extends ParseObject {
 		put("contactnumber", contactNum);
 	}
 
-	public String getNotification() {
-		if (isPushNotification())
-			notification = "Notification";
-		if (isSms())	
-			notification = "SMS";
-		return notification;
-	}
-
 	public boolean isStatus() {
 		return getBoolean("status");
 	}
@@ -113,14 +111,58 @@ public class Recipe extends ParseObject {
 		put("triggercount", triggeredCount);
 	}
 
-	public void setOwner(ParseUser user) {
-		put("owner", user);
+	public void setUserID(String userID) {
+		put("userID", userID);
 	}
 
-	// Get the user for this comment
-	public ParseUser getOwner()  {
-		return getParseUser("owner");
+	public String getUserID()  {
+		return getString("userID");
 	}
 
+	public String getMessage() {
+		return getString("message");
+	}
+	
+	public void setMessage(String message) {
+		put("message", message);
+	}
+	
+	public String getNotification() {
+		if (isPushNotification())
+			notification = "Notification";
+		if (isSms())	
+			notification = "SMS";
+		return notification;
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("FN:" + getFriendlyName()).append(";");
+		sb.append("Major ID:" + getMajorID()).append(";");
+		sb.append("Minor ID:" + getMinorID());
+		sb.append("Trigger:" + getTrigger());
+		sb.append("Message:" + getMessage());
+		sb.append("Notification:" + getNotification());
+		sb.append("Contact:" + getContactNum());
+		
+		
+		return sb.toString();
+	}
+
+	public void setBeacon(String uuid, String majorID, String minorID, String fn) {
+		setUUID(uuid);
+		setMajorID(majorID);
+		setMinorID(minorID);
+		setFriendlyName(fn);
+	}
+	
+	public void setBeaconAction(String trigger, String message, boolean sms, boolean push, String contact){
+		setTrigger(trigger);
+		setMessage(message);
+		setSms(sms);
+		setPushNotification(push);
+		setContactNum(contact);
+	}
+	
 }
 
