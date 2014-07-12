@@ -1,10 +1,6 @@
 package com.codepath.beacon.scan;
 
 import java.lang.ref.WeakReference;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -30,12 +26,10 @@ import com.codepath.beacon.data.Beacon;
 import com.codepath.beacon.scan.AddBeaconFragment.OnAddBeaconListener;
 import com.codepath.beacon.scan.MyDeviceListFragment.OnMyDeviceListFragmentInteractionListener;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 public class BleActivity extends Activity implements DeviceListFragment.OnDeviceListFragmentInteractionListener, OnAddBeaconListener,
     OnMyDeviceListFragmentInteractionListener {

@@ -35,7 +35,7 @@
         android:layout_alignTop="@+id/tvThenLabel"
         android:layout_marginLeft="24dp"
         android:layout_toRightOf="@+id/tvThenLabel"
-        android:onClick="onPickAction"
+        android:onClick="onChooseAction"
         android:src="@drawable/ic_notification" />
 
     <TextView

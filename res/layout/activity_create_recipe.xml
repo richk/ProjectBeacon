@@ -24,7 +24,7 @@
         android:layout_toRightOf="@+id/tvIFLabel"
         android:maxHeight="50dp"
         android:maxWidth="50dp"
-        android:onClick="onPickBeacon"
+        android:onClick="onScanBeacon"
         android:src="@drawable/ic_add" />
 
     <TextView
@@ -43,17 +43,16 @@
         android:layout_alignTop="@+id/tvThenLabel"
         android:layout_marginLeft="24dp"
         android:layout_toRightOf="@+id/tvThenLabel"
-        android:onClick="onPickAction"
+        android:onClick="onChooseAction"
         android:src="@drawable/ic_add" />
 
     <TextView
         android:id="@+id/tvTriggerandNotification"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/btn_add1"
         android:layout_below="@+id/btn_add1"
-        android:layout_marginTop="32dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp"
         android:text="recipeDetail" />
-
 
 </RelativeLayout>

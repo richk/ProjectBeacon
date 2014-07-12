@@ -13,6 +13,9 @@ import com.codepath.beacon.fragments.RecipeListFragment;
 import com.codepath.beacon.activity.*;
 
 public class MyRecipeActivity extends FragmentActivity {
+	private final int REQUEST_CODE = 20;
+	private final int REQUEST_CODE1 = 21;
+	RecipeListFragment newFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -21,11 +24,9 @@ public class MyRecipeActivity extends FragmentActivity {
 		setContentView(R.layout.activity_my_recipe);
 		
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		// TODO: hardcode the userID for now, will pass in additional parameters
-		RecipeListFragment newFragment = RecipeListFragment.newInstance("rcao");
+		newFragment = RecipeListFragment.newInstance();
 		transaction.replace(R.id.flrecipelist, newFragment);
 		transaction.commit();
-		
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -35,10 +36,21 @@ public class MyRecipeActivity extends FragmentActivity {
 	}
 	
 	public void onAddAction(MenuItem mi) {
-		
-//		Intent scanIntent = new Intent(this, RecipeDetailActivity.class);
-//		startActivity(scanIntent);
 		Intent createRecipeIntent = new Intent(this, CreateRecipeActivity.class);
-		startActivity(createRecipeIntent);
+		createRecipeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivityForResult(createRecipeIntent, REQUEST_CODE);
 	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// REQUEST_CODE is defined above
+		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+			// Extract name and position values from result extras
+			newFragment.findMyRecipes("0", true);
+		}
+		if (resultCode == RESULT_OK && requestCode == REQUEST_CODE1) {
+			// Extract name and position values from result extras
+			newFragment.findMyRecipes("0", true);
+		}
+	}	
+	
 }
