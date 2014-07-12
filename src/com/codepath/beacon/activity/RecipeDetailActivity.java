@@ -1,7 +1,7 @@
 package com.codepath.beacon.activity;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -19,7 +19,10 @@ import com.codepath.beacon.models.Recipe;
 import com.codepath.beacon.scan.BleActivity;
 import com.codepath.beacon.ui.RecipeActionActivity;
 import com.parse.DeleteCallback;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 public class RecipeDetailActivity extends Activity {
@@ -33,7 +36,6 @@ public class RecipeDetailActivity extends Activity {
 		ab.setDisplayHomeAsUpEnabled(true);
 		recipe = new Recipe();
 		populateRecipeDetail();
-		showRecipe();
 	}
 
 	@Override
@@ -54,22 +56,8 @@ public class RecipeDetailActivity extends Activity {
 	}
 
 	private void populateRecipeDetail() {
-		// populate recipe detail page with recipe data
 		String objID = getIntent().getStringExtra("ObjectID");
-		String fn = getIntent().getStringExtra("fn");
-		String UUID = getIntent().getStringExtra("UUID");		
-		Date activationDate = new Date(getIntent().getLongExtra("activationDate", -1));
-		int triggerCount = getIntent().getIntExtra("triggerCount", 0);
-		boolean status = getIntent().getBooleanExtra("status", false);
-
-		if (fn != null)
-			recipe.setFriendlyName(fn);
-		if (UUID != null)
-			recipe.setUUID(UUID);
-		recipe.setObjectId(objID);
-		recipe.setActivationDate(activationDate);
-		recipe.setTriggeredCount(triggerCount);
-		recipe.setStatus(status);
+		findRecipeInBackground(objID);
 	}
 
 	private void showRecipe() {
@@ -88,14 +76,21 @@ public class RecipeDetailActivity extends Activity {
 		TextView tvBeaconnameandUUID = (TextView) findViewById(R.id.tvBeaconnameandUUID);
 		tvBeaconnameandUUID.setText(recipe.getFriendlyName()+"---"+recipe.getUUID());
 
+		TextView tvSelectedBeacon = (TextView) findViewById(R.id.tvSelectedBeacon);
+		tvSelectedBeacon.setText(recipe.getFriendlyName());
+
+		TextView tvSelectedAction = (TextView) findViewById(R.id.tvSelectedAction);
+		if (recipe.getNotification() != null && recipe.getTrigger() != null)
+			tvSelectedAction.setText(recipe.getNotification() + " on " + recipe.getTrigger());
+
 		//TODO: Change image depends on beacon UUID/MajorID/MonorID and on SMS/Push notification
 		//TODO: Need to call 3rd party lib to get distance or other beacon related information
-		TextView tvBeaconDistance = (TextView) findViewById(R.id.tvBeaconDistance);
+		// TextView tvBeaconDistance = (TextView) findViewById(R.id.tvBeaconDistance);
 	}
 
 	public void onScanBeacon(View view) {
-//		Intent scanIntent = new Intent(this, BleActivity.class);
-//		startActivity(scanIntent);
+		//		Intent scanIntent = new Intent(this, BleActivity.class);
+		//		startActivity(scanIntent);
 		//TODO: integration: calll start beacon activity, return UUID, MajorID, MinorID and friendly name
 		// set: String uuid, String majorID, String minorID, String fn 
 		recipe.setBeacon("123-123-1234-123456", "111", "222", "changed FN");
@@ -103,10 +98,25 @@ public class RecipeDetailActivity extends Activity {
 	}
 
 	public void onChooseAction(View view) {
-	  //TODO: integration: call startAction activity, return trigger, message, sms, pushnotification and phone number
+		//TODO: integration: call startAction activity, return trigger, message, sms, pushnotification and phone number
 		// set: String trigger, String message, boolean sms, boolean push, String contact
 		recipe.setBeaconAction("leaving", "Your beacon is leaving", false, true, "555-444-3333");		
 		showRecipe();
+	}
+
+	public void findRecipeInBackground(final String recipeID) {
+		ParseQuery<Recipe> query = ParseQuery.getQuery(Recipe.class);
+		query.getInBackground(recipeID, new GetCallback<Recipe>() {
+			public void done(Recipe item, ParseException e) {
+				if (e == null) {
+					// Access data using the `get` methods for the object
+					recipe = item;
+					showRecipe();
+				} else {
+					// something went wrong
+				}
+			}
+		});
 	}
 
 	public void onSaveAction(MenuItem mi) {

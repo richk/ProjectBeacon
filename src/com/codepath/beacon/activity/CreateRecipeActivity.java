@@ -68,6 +68,13 @@ public class CreateRecipeActivity extends Activity {
 		if (recipe != null) {
 			TextView tvTriggerandNotification = (TextView) findViewById(R.id.tvTriggerandNotification);
 			tvTriggerandNotification.setText(recipe.toString());
+			
+			TextView tvSelectedBeacon = (TextView) findViewById(R.id.tvSelectedBeacon);
+			tvSelectedBeacon.setText(recipe.getFriendlyName());
+			
+			TextView tvSelectedAction = (TextView) findViewById(R.id.tvSelectedAction);
+			if (recipe.getNotification() != null && recipe.getTrigger() != null)
+			tvSelectedAction.setText(recipe.getNotification() + " on " + recipe.getTrigger());
 			//TODO: change image buttons
 		}
 
