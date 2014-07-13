@@ -2,6 +2,9 @@ package com.codepath.beacon.scan;
 
 import java.lang.ref.WeakReference;
 
+import android.R;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -52,6 +55,7 @@ public class BeaconManager {
     this.ctxt = ctxt;
     mMessenger = new Messenger(new IncomingHandler(listener));
     mServiceIntent = new Intent(ctxt, BleService.class);
+    ctxt.startService(mServiceIntent);
   }
 
   public void startListening() {

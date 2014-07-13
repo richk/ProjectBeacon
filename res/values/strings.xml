@@ -38,5 +38,7 @@
     <string name="major_id_string">MAJOR ID:</string>
     <string name="minor_id_string">MINOR ID:</string>
     <string name="title_activity_recipe_action">RecipeActionActivity</string>
+    <string name="notification_title">BLE magic running</string>
+    <string name="notification_text">You will know when you see it</string>
 
 </resources>
