@@ -4,25 +4,37 @@ import java.util.Date;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.R;
 import com.codepath.beacon.models.Recipe;
+import com.codepath.beacon.scan.BeaconListener;
+import com.codepath.beacon.scan.BeaconManager;
 import com.codepath.beacon.scan.BleActivity;
 import com.codepath.beacon.scan.BleDeviceInfo;
+import com.codepath.beacon.scan.BleService.State;
 import com.codepath.beacon.ui.RecipeActionActivity;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-public class CreateRecipeActivity extends Activity {
+public class CreateRecipeActivity extends Activity implements BeaconListener {
 	Recipe recipe;
+	BeaconManager beaconManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +43,21 @@ public class CreateRecipeActivity extends Activity {
 		ActionBar ab = getActionBar(); 
 		ab.setDisplayHomeAsUpEnabled(true);
 		recipe = new Recipe();
+		beaconManager = new BeaconManager(this, this);
 	}
+	
+	   @Override
+	    protected void onStop() {
+	        beaconManager.stopListenening();
+	        super.onStop();
+	    }
+
+	    @Override
+	    protected void onStart() {
+	        super.onStart();
+	        beaconManager.startListening();
+	    }
+
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) { 
@@ -143,6 +169,52 @@ public class CreateRecipeActivity extends Activity {
 			Log.e("RecipeDetailActivity", "Invalid request code:" + requestCode);
 		}
 	}
+	   @Override
+	    public void onStateChanged(State newState) {
+	    }
+
+	    @Override
+	    public void onNewDeviceDiscovered(BleDeviceInfo[] devices) {
+	    }
+
+	    @Override
+	    public void onDeviceLost(BleDeviceInfo[] device) {
+	        Toast.makeText(BeaconApplication.getApplication(), "Lost a device..." + device[0], Toast.LENGTH_SHORT).show();
+	        sendNotification("Lost a device" + device[0].getUUID());
+	    }
+
+	    @Override
+	    public void onDeviceFound(BleDeviceInfo[] device) {
+	        Toast.makeText(BeaconApplication.getApplication(), "Found a device..." + device[0], Toast.LENGTH_SHORT).show();
+	        sendNotification("Found a device" + device[0].getUUID());       
+	    }
+
+	    private void sendNotification(String message) {
+	        NotificationCompat.Builder mBuilder =
+	                new NotificationCompat.Builder(BeaconApplication.getApplication())
+	                .setSmallIcon(R.drawable.notification_icon)
+	                .setContentTitle("Beacon Magic")
+	                .setContentText(message);
+	        Intent resultIntent = new Intent(BeaconApplication.getApplication(), RecipeDetailActivity.class);
+
+	        TaskStackBuilder stackBuilder = TaskStackBuilder.create(BeaconApplication.getApplication());
+	        stackBuilder.addParentStack(RecipeActionActivity.class);
+	        stackBuilder.addNextIntent(resultIntent);
+	        PendingIntent resultPendingIntent =
+	                stackBuilder.getPendingIntent(
+	                    0,
+	                    PendingIntent.FLAG_UPDATE_CURRENT
+	                );
+	        mBuilder.setContentIntent(resultPendingIntent);
+	        NotificationManager mNotificationManager =
+	            (NotificationManager) BeaconApplication.getApplication().getSystemService(Context.NOTIFICATION_SERVICE);
+	        mNotificationManager.notify(0, mBuilder.build());
+	    }
+
+	    private void sendSMS(String phoneNumber, String message) {
+	        SmsManager sms = SmsManager.getDefault();
+	           sms.sendTextMessage(phoneNumber, null, message, null, null);
+	    }
 
 
 }
