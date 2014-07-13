@@ -6,7 +6,7 @@ import android.util.Log;
 import com.codepath.beacon.data.Beacon;
 import com.codepath.beacon.models.Recipe;
 import com.codepath.beacon.scan.BeaconManager;
-import com.codepath.beacon.scan.UniversalBeaconListener;
+import com.codepath.beacon.scan.BeaconNotifier;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -35,8 +35,8 @@ public class BeaconApplication extends Application {
     Parse.initialize(this, APP_ID, CLIENT_KEY);
     beaconApplication = this;
 
-    UniversalBeaconListener listener = new UniversalBeaconListener();
-    beaconManager = new BeaconManager(this, listener);
+//    UniversalBeaconListener listener = new UniversalBeaconListener();
+//    beaconManager = new BeaconManager(this, listener);
 //    beaconManager.startListening();
   }
   

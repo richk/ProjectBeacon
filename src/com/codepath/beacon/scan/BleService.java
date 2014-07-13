@@ -255,6 +255,7 @@ public class BleService extends Service implements
     
     private void sendDeviceMessage(List<BleDeviceInfo> devices, int what){
 
+      BeaconNotifier uu = new BeaconNotifier();
       if(devices != null && devices.size() > 0){
         Message msg = Message.obtain(null, what);      
         Bundle bundle = new Bundle();
@@ -265,7 +266,13 @@ public class BleService extends Service implements
         }
         bundle.putParcelableArray(KEY_DEVICE_DETAILS, deviceDataArr);
         msg.setData(bundle);
-        sendMessage(msg);
+        //sendMessage(msg);
+        if(what == MSG_MONITOR_EXIT){
+          uu.sendNotification("Lost device = " + devices.get(0).getKey());
+        }
+        else if(what == MSG_MONITOR_ENTRY){
+          uu.sendNotification("Found device = " + devices.get(0).getKey()); 
+        }          
       }
     }
   }

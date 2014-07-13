@@ -7,38 +7,15 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.telephony.SmsManager;
-import android.widget.Toast;
 
 import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.R;
 import com.codepath.beacon.activity.RecipeDetailActivity;
-import com.codepath.beacon.models.Recipe;
-import com.codepath.beacon.scan.BleService.State;
 import com.codepath.beacon.ui.RecipeActionActivity;
 
-public class UniversalBeaconListener implements BeaconListener{
+public class BeaconNotifier{
 
-	@Override
-	public void onStateChanged(State newState) {
-	}
-
-	@Override
-	public void onNewDeviceDiscovered(BleDeviceInfo[] devices) {
-	}
-
-	@Override
-	public void onDeviceLost(BleDeviceInfo[] device) {
-		//Toast.makeText(BeaconApplication.getApplication(), "Lost a device..." + device[0], Toast.LENGTH_SHORT).show();
-		sendNotification("Lost a device" + device[0].getUUID());
-	}
-
-	@Override
-	public void onDeviceFound(BleDeviceInfo[] device) {
-		//Toast.makeText(BeaconApplication.getApplication(), "Found a device..." + device[0], Toast.LENGTH_SHORT).show();
-		sendNotification("Found a device" + device[0].getUUID());		
-	}
-
-	private void sendNotification(String message) {
+	public void sendNotification(String message) {
 		NotificationCompat.Builder mBuilder =
 		        new NotificationCompat.Builder(BeaconApplication.getApplication())
 		        .setSmallIcon(R.drawable.notification_icon)
@@ -60,7 +37,7 @@ public class UniversalBeaconListener implements BeaconListener{
 		mNotificationManager.notify(0, mBuilder.build());
 	}
 
-	private void sendSMS(String phoneNumber, String message) {
+	public void sendSMS(String phoneNumber, String message) {
 		SmsManager sms = SmsManager.getDefault();
 	       sms.sendTextMessage(phoneNumber, null, message, null, null);
 	}
