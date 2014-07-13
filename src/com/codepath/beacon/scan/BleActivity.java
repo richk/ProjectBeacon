@@ -1,6 +1,5 @@
 package com.codepath.beacon.scan;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
 
 import android.app.Activity;
@@ -9,12 +8,13 @@ import android.app.FragmentTransaction;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.R;
 import com.codepath.beacon.data.Beacon;
 import com.codepath.beacon.scan.AddBeaconFragment.OnAddBeaconListener;
@@ -39,9 +39,13 @@ public class BleActivity extends Activity implements
 	private MenuItem mRefreshItem = null;
 	private DeviceListFragment mNewDeviceList = DeviceListFragment.newInstance();
 	private MyDeviceListFragment mMyDeviceList = MyDeviceListFragment.newInstance();
+	
+    private Handler uiThreadHandler; 
+
 
 	public BleActivity() {
 		super();
+		uiThreadHandler = new Handler(Looper.getMainLooper());
 	}
 
 	@Override
@@ -97,7 +101,7 @@ public class BleActivity extends Activity implements
 	}
 
 	private void startScan() {
-		mNewDeviceList.setDevices(this, null);
+		mNewDeviceList.setDevices(null);
 		mNewDeviceList.setScanning(true);
 		beaconManager.startScanning();
 	}
@@ -192,13 +196,26 @@ public class BleActivity extends Activity implements
 	}
 
   @Override
-  public void onStateChanged(State newState) {
-    stateChanged(newState);
+  public void onStateChanged(final State newState) {
+    uiThreadHandler.post(new Runnable(){
+
+      @Override
+      public void run() {
+        stateChanged(newState);
+      }
+      
+    });    
   }
 
   @Override
-  public void onNewDeviceDiscovered(BleDeviceInfo[] devices) {
-    mNewDeviceList.setDevices(this, devices);
+  public void onNewDeviceDiscovered(final BleDeviceInfo[] devices) {
+    
+    uiThreadHandler.post(new Runnable(){
+      @Override
+      public void run() {
+        mNewDeviceList.setDevices(devices);
+      }      
+    });    
   }
 
   @Override

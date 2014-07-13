@@ -1,17 +1,12 @@
 package com.codepath.beacon.scan;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,7 +92,7 @@ public class DeviceListFragment extends Fragment implements
     }
   }
 
-  public void setDevices(Context context, BleDeviceInfo[] devices) {
+  public void setDevices(BleDeviceInfo[] devices) {
 
     if (devices == null) {
       mAdapter.clear();

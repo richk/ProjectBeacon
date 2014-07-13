@@ -2,16 +2,15 @@ package com.codepath.beacon.scan;
 
 import java.lang.ref.WeakReference;
 
-import android.R;
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
@@ -53,7 +52,11 @@ public class BeaconManager {
 
   public BeaconManager(Context ctxt, BeaconListener listener) {
     this.ctxt = ctxt;
-    mMessenger = new Messenger(new IncomingHandler(listener));
+    
+    HandlerThread thread = new HandlerThread("BeaconManagerHandler", android.os.Process.THREAD_PRIORITY_BACKGROUND);
+    thread.start();
+
+    mMessenger = new Messenger(new IncomingHandler(thread.getLooper(), listener));
     mServiceIntent = new Intent(ctxt, BleService.class);
     ctxt.startService(mServiceIntent);
   }
@@ -127,7 +130,8 @@ public class BeaconManager {
   private static class IncomingHandler extends Handler {
     private final WeakReference<BeaconListener> beaconListener;
 
-    public IncomingHandler(BeaconListener listener) {
+    public IncomingHandler(Looper looper, BeaconListener listener) {
+      super(looper);
       beaconListener = new WeakReference<BeaconListener>(listener);
     }
 
