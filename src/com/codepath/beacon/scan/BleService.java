@@ -23,7 +23,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
@@ -66,11 +68,15 @@ public class BleService extends Service implements
   }
 
   private BluetoothAdapter mBluetooth = null;
-
   private State mState = State.UNKNOWN;
+  
 
   public BleService() {
-    mHandler = new IncomingHandler(this);
+    
+    HandlerThread thread = new HandlerThread("ServiceHandlerThread", android.os.Process.THREAD_PRIORITY_BACKGROUND);
+    thread.start();
+    
+    mHandler = new IncomingHandler(thread.getLooper(), this);
     mMessenger = new Messenger(mHandler);
   }
   
@@ -94,6 +100,7 @@ public class BleService extends Service implements
     
     int notificationId = 1;
     startForeground(notificationId, buildForegroundNotification(pendingIntent));
+    startScan();
   }
   
   private Notification buildForegroundNotification(PendingIntent pendingIntent) {
@@ -124,7 +131,8 @@ public class BleService extends Service implements
   private static class IncomingHandler extends Handler {
     private final WeakReference<BleService> mService;
 
-    public IncomingHandler(BleService service) {
+    public IncomingHandler(Looper looper, BleService service) {
+      super(looper);
       mService = new WeakReference<BleService>(service);
     }
 
@@ -164,6 +172,8 @@ public class BleService extends Service implements
   }
 
   private void startScan() {
+    if(mState == State.SCANNING)
+      return;
     currentScannedDevices.clear();
     Log.d(TAG, "Invoking scan at " + new Date());
     lastScanTime = new Date().getTime();

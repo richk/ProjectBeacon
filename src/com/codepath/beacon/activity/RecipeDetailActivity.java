@@ -28,7 +28,6 @@ import com.codepath.beacon.scan.BeaconManager;
 import com.codepath.beacon.scan.BleActivity;
 import com.codepath.beacon.scan.BleDeviceInfo;
 import com.codepath.beacon.scan.BleService.State;
-import com.codepath.beacon.scan.UniversalBeaconListener;
 import com.codepath.beacon.ui.RecipeActionActivity;
 import com.parse.DeleteCallback;
 import com.parse.GetCallback;
@@ -48,7 +47,6 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 		ab.setDisplayHomeAsUpEnabled(true);
 		recipe = new Recipe();
 		populateRecipeDetail();
-		UniversalBeaconListener listener = new UniversalBeaconListener();
 		beaconManager = new BeaconManager(this, this);
 	}
 
