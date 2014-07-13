@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.R;
 import com.codepath.beacon.data.Beacon;
 import com.codepath.beacon.scan.AddBeaconFragment.OnAddBeaconListener;
@@ -175,6 +176,10 @@ public class BleActivity extends Activity implements
 	public void onBeaconAdded(final BleDeviceInfo device) {
 		final Beacon beacon = Beacon.fromBleDeviceInfo(device);
 		beacon.saveBeaconInBackground();
+		Intent returnIntent = new Intent();
+		returnIntent.putExtra("beacon", device);
+		setResult(RESULT_OK, returnIntent);
+		finish();
 	}
 
 	@Override

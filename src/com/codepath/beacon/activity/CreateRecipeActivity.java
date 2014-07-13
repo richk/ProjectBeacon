@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.codepath.beacon.R;
 import com.codepath.beacon.models.Recipe;
 import com.codepath.beacon.scan.BleActivity;
+import com.codepath.beacon.scan.BleDeviceInfo;
+import com.codepath.beacon.ui.RecipeActionActivity;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -49,12 +51,12 @@ public class CreateRecipeActivity extends Activity {
 	}
 
 	public void onScanBeacon(View v) {
-	//		Intent scanIntent = new Intent(this, BleActivity.class);
-	//		startActivity(scanIntent);
+		Intent scanIntent = new Intent(this, BleActivity.class);
+		startActivityForResult(scanIntent, 0);
 		//TODO: integration: calll start beacon activity, return UUID, MajorID, MinorID and friendly name
 		// set: String uuid, String majorID, String minorID, String fn 
-		 recipe.setBeacon("qwerty", "123", "456", "FN1");
-		 showRecipe();
+//		 recipe.setBeacon("qwerty", "123", "456", "FN1");
+//		 showRecipe();
 	}
 
 	public void onChooseAction(View v) {
@@ -63,6 +65,12 @@ public class CreateRecipeActivity extends Activity {
 		recipe.setBeaconAction("leaving", "Your beacon is leaving", false, true, "650-234-2343");
 		showRecipe();
 	}
+	
+	public void onSetAction(View view) {
+		Intent scanIntent = new Intent(this, RecipeActionActivity.class);
+		startActivityForResult(scanIntent, 1);
+	}
+
 
 	public void showRecipe() {
 
@@ -109,5 +117,32 @@ public class CreateRecipeActivity extends Activity {
 		setResult(RESULT_OK, data); // set result code and bundle data for response
 		finish(); // closes the activity, pass data to parent
 	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == 0) {
+			if (resultCode == RESULT_OK) {
+				BleDeviceInfo deviceInfo = (BleDeviceInfo) data.getParcelableExtra("beacon");
+				recipe.setBeacon(deviceInfo.getUUID(), String.valueOf(deviceInfo.getMajorId()), String.valueOf(deviceInfo.getMinorId()), deviceInfo.getName());		
+				showRecipe();
+			}
+		} else if (requestCode == 1) {
+			if (resultCode == RESULT_OK) {
+				String trigger = data.getStringExtra("trigger");
+				String message = data.getStringExtra("message");
+				Boolean isSms = data.getBooleanExtra("isSms", false);
+				Boolean isNotification = data.getBooleanExtra("isPush", true);
+				String phn = null;
+				if (isSms) {
+					phn = data.getStringExtra("phone");
+				}
+				recipe.setBeaconAction(trigger, message, isSms, isNotification, phn);
+				showRecipe();
+			}
+		} else {
+			Log.e("RecipeDetailActivity", "Invalid request code:" + requestCode);
+		}
+	}
+
 
 }

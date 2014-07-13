@@ -1,7 +1,6 @@
 package com.codepath.beacon.activity;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -14,19 +13,23 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.R;
 import com.codepath.beacon.models.Recipe;
+import com.codepath.beacon.scan.BeaconManager;
 import com.codepath.beacon.scan.BleActivity;
+import com.codepath.beacon.scan.BleDeviceInfo;
+import com.codepath.beacon.scan.UniversalBeaconListener;
 import com.codepath.beacon.ui.RecipeActionActivity;
 import com.parse.DeleteCallback;
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
-public class RecipeDetailActivity extends Activity {
+public class RecipeDetailActivity extends Activity{
 	private Recipe recipe;
+	BeaconManager mBeaconManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,7 @@ public class RecipeDetailActivity extends Activity {
 		ab.setDisplayHomeAsUpEnabled(true);
 		recipe = new Recipe();
 		populateRecipeDetail();
+		//mBeaconManager = BeaconApplication.getBeaconManager();
 	}
 
 	@Override
@@ -89,12 +93,12 @@ public class RecipeDetailActivity extends Activity {
 	}
 
 	public void onScanBeacon(View view) {
-		//		Intent scanIntent = new Intent(this, BleActivity.class);
-		//		startActivity(scanIntent);
-		//TODO: integration: calll start beacon activity, return UUID, MajorID, MinorID and friendly name
-		// set: String uuid, String majorID, String minorID, String fn 
-		recipe.setBeacon("123-123-1234-123456", "111", "222", "changed FN");
-		showRecipe();
+		Intent scanIntent = new Intent(this, BleActivity.class);
+		startActivityForResult(scanIntent, 0);
+		//		//TODO: integration: calll start beacon activity, return UUID, MajorID, MinorID and friendly name
+		//		// set: String uuid, String majorID, String minorID, String fn 
+		//		recipe.setBeacon("123-123-1234-123456", "111", "222", "changed FN");
+		//		showRecipe();
 	}
 
 	public void onChooseAction(View view) {
@@ -125,7 +129,18 @@ public class RecipeDetailActivity extends Activity {
 			public void done(ParseException exception) {
 				if (exception == null) {
 					Log.d("Recipe", "Recipe saved successfully");
+					BleDeviceInfo device = new BleDeviceInfo(
+							recipe.getFriendlyName(), null, recipe.getUUID(), 
+							Integer.parseInt(recipe.getMajorID()), 
+							Integer.parseInt(recipe.getMinorID()), 0);
+					if("approaching".equalsIgnoreCase(recipe.getTrigger())){
+						//mBeaconManager.monitorDeviceEntry(device);
+					}else if("leaving".equalsIgnoreCase(recipe.getTrigger())){
+						//mBeaconManager.monitorDeviceExit(device);
+					}
+					
 					returnToMyRecipe();
+					
 				} else {
 					Log.e("Recipe", "ParseException on save", exception);
 				}
@@ -135,7 +150,7 @@ public class RecipeDetailActivity extends Activity {
 
 	public void onSetAction(View view) {
 		Intent scanIntent = new Intent(this, RecipeActionActivity.class);
-		startActivity(scanIntent);
+		startActivityForResult(scanIntent, 1);
 	}
 
 	public void onDeleteAction(MenuItem mi) {
@@ -156,5 +171,31 @@ public class RecipeDetailActivity extends Activity {
 		Intent data = new Intent();
 		setResult(RESULT_OK, data); 
 		finish();
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == 0) {
+			if (resultCode == RESULT_OK) {
+				BleDeviceInfo deviceInfo = (BleDeviceInfo) data.getParcelableExtra("beacon");
+				recipe.setBeacon(deviceInfo.getUUID(), String.valueOf(deviceInfo.getMajorId()), String.valueOf(deviceInfo.getMinorId()), deviceInfo.getName());		
+				showRecipe();
+			}
+		} else if (requestCode == 1) {
+			if (resultCode == RESULT_OK) {
+				String trigger = data.getStringExtra("trigger");
+				String message = data.getStringExtra("message");
+				Boolean isSms = data.getBooleanExtra("isSms", false);
+				Boolean isNotification = data.getBooleanExtra("isPush", true);
+				String phn = null;
+				if (isSms) {
+					phn = data.getStringExtra("phone");
+				}
+				recipe.setBeaconAction(trigger, message, isSms, isNotification, phn);
+				showRecipe();
+			}
+		} else {
+			Log.e("RecipeDetailActivity", "Invalid request code:" + requestCode);
+		}
 	}
 }

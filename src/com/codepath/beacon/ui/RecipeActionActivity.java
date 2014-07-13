@@ -1,13 +1,6 @@
 package com.codepath.beacon.ui;
 
-import com.codepath.beacon.R;
-import com.codepath.beacon.R.id;
-import com.codepath.beacon.R.layout;
-import com.codepath.beacon.R.menu;
-
 import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -16,16 +9,15 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.telephony.SmsManager;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.Chronometer;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.os.Build;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+
+import com.codepath.beacon.R;
 
 public class RecipeActionActivity extends Activity {
 	private static final String LOG_TAG = RecipeActionActivity.class.getSimpleName();
@@ -34,6 +26,9 @@ public class RecipeActionActivity extends Activity {
 	private EditText etPhn;
 	private CheckBox cbSms;
 	private CheckBox cbNotification;
+	private RadioGroup rgTrigger;
+	private RadioButton rbLeaving;
+	private RadioButton rbApproaching;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +38,9 @@ public class RecipeActionActivity extends Activity {
 		etPhn = (EditText) findViewById(R.id.et_phone);
 		cbSms = (CheckBox) findViewById(R.id.cb_sms);
 		cbNotification = (CheckBox) findViewById(R.id.cb_notification);
+		rgTrigger = (RadioGroup) findViewById(R.id.rg_triggers);
+		rbLeaving = (RadioButton) findViewById(R.id.radio0);
+		rbApproaching = (RadioButton) findViewById(R.id.radio1);
 	}
 
 	@Override
@@ -66,36 +64,24 @@ public class RecipeActionActivity extends Activity {
 	}
 
 	public void onNotify(View view) {
-		if(cbNotification.isChecked()) {
-			sendNotification();
-		} else
-			sendSMS();
+		String trigger;
+		if (rbLeaving.isChecked()) {
+			trigger = "leaving";
+		} else {
+			trigger = "approaching";
+		}
+		String message = etMessage.getText().toString();
+		boolean isSms = cbSms.isChecked();
+		boolean isNotification = cbNotification.isChecked();
+		String phn = etPhn.getText().toString();
+		Intent returnIntent = new Intent();
+		returnIntent.putExtra("trigger", trigger);
+		returnIntent.putExtra("message", message);
+		returnIntent.putExtra("isSms", isSms);
+		returnIntent.putExtra("isNotification", isNotification);
+		returnIntent.putExtra("phone", phn);
+		setResult(RESULT_OK,returnIntent);
+		finish();
 	}
 
-	public void sendNotification() {
-		NotificationCompat.Builder mBuilder =
-		        new NotificationCompat.Builder(this)
-		        .setSmallIcon(R.drawable.notification_icon)
-		        .setContentTitle("Beacon Magic")
-		        .setContentText(etMessage.getText().toString());
-		Intent resultIntent = new Intent(this, RecipeActionActivity.class);
-
-		TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-		stackBuilder.addParentStack(RecipeActionActivity.class);
-		stackBuilder.addNextIntent(resultIntent);
-		PendingIntent resultPendingIntent =
-		        stackBuilder.getPendingIntent(
-		            0,
-		            PendingIntent.FLAG_UPDATE_CURRENT
-		        );
-		mBuilder.setContentIntent(resultPendingIntent);
-		NotificationManager mNotificationManager =
-		    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		mNotificationManager.notify(0, mBuilder.build());
-	}
-
-	public void sendSMS() {
-		SmsManager sms = SmsManager.getDefault();
-	       sms.sendTextMessage(etPhn.getText().toString(), null, etMessage.getText().toString(), null, null);
-	}
 }
