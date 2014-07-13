@@ -10,8 +10,8 @@ import com.parse.ParseObject;
 
 public class BeaconApplication extends Application {
 	private static final String LOG_TAG = BeaconApplication.class.getSimpleName();
-	private static final String APP_ID = "8Vhw6pjkVd9PuP1uwWj9KZM7qHS8MzJNSIjlsOLE";
-	private static final String CLIENT_KEY = "gcvfYTzH6OpR7LXCXyhUN2wWRvuYQqBbpZL7kz0E";
+	private static final String APP_ID = "KopNnh31P28DZMDp9njtWRDpgUkn2qwrMBNZ53VJ";
+	private static final String CLIENT_KEY = "MI66awL0XWsXnNrTn6KKjo27vOsCE9jwYsyk2b95";
 
 	@Override
 	public void onCreate() {
