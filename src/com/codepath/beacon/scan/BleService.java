@@ -13,6 +13,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -25,7 +27,10 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
+import com.codepath.beacon.R;
 
 public class BleService extends Service implements
     BluetoothAdapter.LeScanCallback {
@@ -67,6 +72,48 @@ public class BleService extends Service implements
   public BleService() {
     mHandler = new IncomingHandler(this);
     mMessenger = new Messenger(mHandler);
+  }
+  
+  @Override
+  public int onStartCommand(Intent intent, int flags, int startId) {
+      //handleCommand(intent);
+      // We want this service to continue running until it is explicitly
+      // stopped, so return sticky.
+    Log.d(TAG, "Starting service from onStartCommand...");
+    return START_STICKY;
+  }
+  
+  @Override
+  public void onCreate() {
+
+    super.onCreate();
+    
+    Intent notificationIntent = new Intent(this, BleActivity.class);
+    PendingIntent pendingIntent = PendingIntent.getActivity
+        (this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    
+    int notificationId = 1;
+    startForeground(notificationId, buildForegroundNotification(pendingIntent));
+  }
+  
+  private Notification buildForegroundNotification(PendingIntent pendingIntent) {
+    
+    NotificationCompat.Builder b=new NotificationCompat.Builder(this);
+
+    b.setOngoing(true);
+    
+    b.setContentTitle(getString(R.string.notification_title))
+     .setContentText(getString(R.string.notification_text))
+     .setSmallIcon(R.drawable.ble_notification)
+     .setContentIntent(pendingIntent);
+
+    return(b.build());
+  }
+  
+  @Override
+  public void onDestroy() {
+    Log.d(TAG, "Destroying service ...");
+    super.onDestroy();
   }
 
   @Override

@@ -38,6 +38,8 @@
     <string name="major_id_string">MAJOR ID:</string>
     <string name="minor_id_string">MINOR ID:</string>
     <string name="title_activity_recipe_action">RecipeActionActivity</string>
+    <string name="notification_title">BLE magic running</string>
+    <string name="notification_text">You will know when you see it</string>
     <string name="title_activity_create_recipe">CreateRecipeActivity</string>
     <string name="tvBeacon_lab">No Beacon Selected!</string>
     <string name="tvAction_lab">No Action!</string>

@@ -33,7 +33,7 @@ public class BleActivity extends Activity implements
 
 	private BleService.State mState = BleService.State.UNKNOWN;
 
-	BeaconManager beaconManager;
+	BeaconManager beaconManager = null;
 	
 	private MenuItem mRefreshItem = null;
 	private DeviceListFragment mNewDeviceList = DeviceListFragment.newInstance();
@@ -54,7 +54,9 @@ public class BleActivity extends Activity implements
 		FragmentTransaction txSaved = getFragmentManager().beginTransaction();
 		txSaved.add(R.id.fl_saved_devices, mMyDeviceList);
 		txSaved.commit();
-	    beaconManager = new BeaconManager(this, this);
+		if(beaconManager == null){
+	      beaconManager = new BeaconManager(this, this);
+		}
 	}
 
 	@Override
