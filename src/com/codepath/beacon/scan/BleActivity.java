@@ -1,5 +1,6 @@
 package com.codepath.beacon.scan;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import android.app.Activity;

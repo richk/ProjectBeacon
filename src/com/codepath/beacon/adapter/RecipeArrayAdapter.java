@@ -1,8 +1,9 @@
 package com.codepath.beacon.adapter;
 
-import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -18,7 +19,7 @@ import com.codepath.beacon.activity.RecipeDetailActivity;
 import com.codepath.beacon.models.Recipe;
 
 public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
-	private final int REQUEST_CODE = 20;
+	private final int REQUEST_CODE = 21;
 	public RecipeArrayAdapter(Context context, List<Recipe> recipes) {
 		super(context, R.layout.recipe_item, recipes);
 	}
@@ -41,15 +42,6 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 		TextView tvNotification = (TextView) v.findViewById(R.id.tvnotification);
 		ToggleButton tbTrigger = (ToggleButton) v.findViewById(R.id.tbtrigger);
 		
-    //TODO add image to the list later
- /*  ImageView ivBeaconImage = (ImageView) v.findViewById(R.id.ivbeaconimage);
-		ivBeaconImage.setImageResource(android.R.color.transparent);
-		ImageLoader imageLoader = ImageLoader.getInstance();
-
-		// populate views with recipe data
-		imageLoader.displayImage("http://www.pendragon-it.com/wp-content/uploads/2014/06/ibeacon-660x375.png", ivBeaconImage);	
-	*/
-		
 		tvBeaconName.setText(recipe.getFriendlyName());
 		tvTrigger.setText(recipe.getTrigger());
 		tvNotification.setText(recipe.getNotification());
@@ -60,26 +52,32 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 
 		v.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				Date activationDate = null;
+				
 				Recipe recipe = (Recipe) v.getTag();
-				String fn = recipe.getFriendlyName();
+				String objID = recipe.getObjectId();
+        String fn = recipe.getFriendlyName();
 				String UUID = recipe.getUUID();
-				SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-				String activationDate = df.format(recipe.getActivationDate());
-				String triggerCount = Integer.toString(recipe.getTriggeredCount());
+				activationDate = recipe.getActivationDate();
+				if (activationDate == null)
+					activationDate = new Date();
+				int triggerCount = recipe.getTriggeredCount();
 				boolean status = recipe.isStatus();
 				
 				Intent i = new Intent(getContext(), RecipeDetailActivity.class);
 				i.putExtra("fn", fn);
 				i.putExtra("UUID", UUID);
-				i.putExtra("activationDate", activationDate);
+				i.putExtra("ObjectID", objID);
+				i.putExtra("activationDate", activationDate.getTime());
 				i.putExtra("triggerCount", triggerCount);
 				i.putExtra("status", status);
-				getContext().startActivity(i);
+				((Activity)getContext()).startActivityForResult(i,REQUEST_CODE);
 			}
 		});
 		
 		return v;
 
 	}
+
 
 }
