@@ -1,14 +1,8 @@
 package com.codepath.beacon.ui;
 
 import android.app.Activity;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
-import android.telephony.SmsManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,8 +33,8 @@ public class RecipeActionActivity extends Activity {
 		cbSms = (CheckBox) findViewById(R.id.cb_sms);
 		cbNotification = (CheckBox) findViewById(R.id.cb_notification);
 		rgTrigger = (RadioGroup) findViewById(R.id.rg_triggers);
-		rbLeaving = (RadioButton) findViewById(R.id.radio0);
-		rbApproaching = (RadioButton) findViewById(R.id.radio1);
+		rbLeaving = (RadioButton) findViewById(R.id.rb_leaving);
+		rbApproaching = (RadioButton) findViewById(R.id.rb_approaching);
 	}
 
 	@Override

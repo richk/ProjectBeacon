@@ -1,20 +1,9 @@
 package com.codepath.beacon.models;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import android.util.Log;
-
-import com.codepath.beacon.data.Beacon;
-import com.parse.FindCallback;
 import com.parse.ParseClassName;
-import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseRelation;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 @ParseClassName("Recipe")
 public class Recipe extends ParseObject {
@@ -162,7 +151,9 @@ public class Recipe extends ParseObject {
 		setMessage(message);
 		setSms(sms);
 		setPushNotification(push);
-		setContactNum(contact);
+		if (contact != null) {
+		    setContactNum(contact);
+		}
 	}
 	
 }

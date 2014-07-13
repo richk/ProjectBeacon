@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="15dp"
         android:paddingTop="15dp"
-        android:text="Track My Key" />
+        android:text="@string/activity_recipe_action_header_label" />
 
     <TextView
         android:id="@+id/tv_trigger"
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_track_text"
         android:layout_marginTop="15dp"
-        android:text="Trigger"
+        android:text="@string/tv_trigger_label"
         android:textColor="@android:color/holo_blue_light" >
 
     </TextView>
@@ -37,17 +37,17 @@
         android:layout_marginTop="20dp" >
 
         <RadioButton
-            android:id="@+id/radio0"
+            android:id="@+id/rb_approaching"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="Approaching" />
+            android:text="@string/rb_approaching_label" />
 
         <RadioButton
-            android:id="@+id/radio1"
+            android:id="@+id/rb_leaving"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Leaving" />
+            android:text="@string/rb_leaving_label" />
 
     </RadioGroup>
     
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/rg_triggers"
         android:layout_marginTop="15dp"
-        android:text="Action"
+        android:text="@string/tv_action_label"
         android:textColor="@android:color/holo_blue_light" >
 
     </TextView>
@@ -71,7 +71,7 @@
         android:layout_below="@+id/tv_action"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="15dp"
-        android:text="Message" />
+        android:text="@string/tv_message_label" />
 
     <EditText
         android:id="@+id/et_message"
@@ -81,7 +81,7 @@
         android:layout_below="@+id/tv_message"
         android:layout_marginTop="15dp"
         android:ems="10"
-        android:hint="Type in notification message here" >
+        android:hint="@string/et_message_hint" >
 
         <requestFocus />
     </EditText>
@@ -94,7 +94,7 @@
         android:layout_below="@+id/et_message"
         android:layout_marginTop="15dp"
         android:checked="true"
-        android:text="Notification" />
+        android:text="@string/cb_notification_label" />
 
     <CheckBox
         android:id="@+id/cb_sms"
@@ -103,7 +103,7 @@
         android:layout_alignLeft="@+id/cb_notification"
         android:layout_below="@+id/cb_notification"
         android:layout_marginTop="15dp"
-        android:text="SMS" />
+        android:text="@string/cb_sms_label" />
 
     <EditText
         android:id="@+id/et_phone"
@@ -114,7 +114,7 @@
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/cb_sms"
         android:ems="10"
-        android:hint="Phone Numbe here"
+        android:hint="@string/et_phn_hint"
         android:inputType="phone" />
 
     <Button
@@ -125,6 +125,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:onClick="onNotify"
-        android:text="Test" />
+        android:text="@string/btn_done_label" />
 
 </RelativeLayout>
