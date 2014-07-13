@@ -152,6 +152,7 @@ public class BeaconManager {
           if (data != null && data.containsKey(BleService.KEY_DEVICE_DETAILS)) {
             BleDeviceInfo[] devices = (BleDeviceInfo[]) data
                 .getParcelableArray(BleService.KEY_DEVICE_DETAILS);
+            Log.d(TAG, "Relaying message back to listener about device entry");
             listener.onDeviceFound(devices);
           }
           break;
@@ -160,6 +161,7 @@ public class BeaconManager {
           if (data != null && data.containsKey(BleService.KEY_DEVICE_DETAILS)) {
             BleDeviceInfo[] devices = (BleDeviceInfo[]) data
                 .getParcelableArray(BleService.KEY_DEVICE_DETAILS);
+            Log.d(TAG, "Relaying message back to listener about device exit");
             listener.onDeviceLost(devices);
           }
           break;

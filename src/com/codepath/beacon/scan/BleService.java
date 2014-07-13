@@ -136,7 +136,7 @@ public class BleService extends Service implements
         case MSG_REGISTER:
           service.mClients.add(msg.replyTo);
           Log.d(TAG, "Registered");
-          service.startScan();
+          //service.startScan();
           break;
         case MSG_UNREGISTER:
           service.mClients.remove(msg.replyTo);
@@ -370,6 +370,7 @@ public class BleService extends Service implements
   }
 
   private void sendMessage(Message msg) {
+    Log.d(TAG, "Service sending message back to num clients = " + mClients.size());
     for (int i = mClients.size() - 1; i >= 0; i--) {
       Messenger messenger = mClients.get(i);
       if (!sendMessage(messenger, msg)) {

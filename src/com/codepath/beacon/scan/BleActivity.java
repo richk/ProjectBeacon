@@ -203,11 +203,11 @@ public class BleActivity extends Activity implements
 
   @Override
   public void onDeviceLost(BleDeviceInfo[] devices) {    
-    Toast.makeText(this, "Lost Device!", Toast.LENGTH_SHORT).show();
+    //Toast.makeText(this, "Lost Device!", Toast.LENGTH_SHORT).show();
   }
 
   @Override
   public void onDeviceFound(BleDeviceInfo[] devices) {
-    Toast.makeText(this, "Found Device!", Toast.LENGTH_SHORT).show();
+    //Toast.makeText(this, "Found Device!", Toast.LENGTH_SHORT).show();
   }
 }

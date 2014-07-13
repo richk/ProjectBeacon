@@ -28,13 +28,13 @@ public class UniversalBeaconListener implements BeaconListener{
 
 	@Override
 	public void onDeviceLost(BleDeviceInfo[] device) {
-		//Toast.makeText(BeaconApplication.getApplication(), "Lost a device", Toast.LENGTH_SHORT).show();
+		Toast.makeText(BeaconApplication.getApplication(), "Lost a device..." + device[0], Toast.LENGTH_SHORT).show();
 		sendNotification("Lost a device" + device[0].getUUID());
 	}
 
 	@Override
 	public void onDeviceFound(BleDeviceInfo[] device) {
-		//Toast.makeText(BeaconApplication.getApplication(), "Found a device", Toast.LENGTH_SHORT).show();
+		Toast.makeText(BeaconApplication.getApplication(), "Found a device..." + device[0], Toast.LENGTH_SHORT).show();
 		sendNotification("Found a device" + device[0].getUUID());		
 	}
 
