@@ -21,6 +21,7 @@ public class BeaconNotifier{
 		        .setSmallIcon(R.drawable.notification_icon)
 		        .setContentTitle("Beacon Magic")
 		        .setContentText(message);
+		
 		Intent resultIntent = new Intent(BeaconApplication.getApplication(), RecipeDetailActivity.class);
 
 		TaskStackBuilder stackBuilder = TaskStackBuilder.create(BeaconApplication.getApplication());

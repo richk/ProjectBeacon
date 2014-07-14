@@ -1,6 +1,9 @@
 package com.codepath.beacon.scan;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -39,6 +42,7 @@ public class BleActivity extends Activity implements
 	private MenuItem mRefreshItem = null;
 	private DeviceListFragment mNewDeviceList = DeviceListFragment.newInstance();
 	private MyDeviceListFragment mMyDeviceList = MyDeviceListFragment.newInstance();
+	private Set<BleDeviceInfo> savedDevices = new HashSet<BleDeviceInfo>();
 	
     private Handler uiThreadHandler; 
 
@@ -116,7 +120,8 @@ public class BleActivity extends Activity implements
 			        Log.e(TAG, "Parse Excetion getting saved beacons for user", exception);
 			        Toast.makeText(getApplicationContext(), "Parse Excetion getting saved beacons for user:" + exception.getMessage(), Toast.LENGTH_SHORT).show();;
 			    } else {
-			        BleDeviceInfo[] items = Beacon.toBleDeviceInfoList(beacons);
+			        List<BleDeviceInfo> items = Beacon.toBleDeviceInfoList(beacons);
+			        savedDevices.addAll(items);
 			        mMyDeviceList.setDevices(getApplicationContext(), items);
 			    }
 			}
@@ -213,7 +218,13 @@ public class BleActivity extends Activity implements
     uiThreadHandler.post(new Runnable(){
       @Override
       public void run() {
-        mNewDeviceList.setDevices(devices);
+    	List<BleDeviceInfo> newDevices = new ArrayList<BleDeviceInfo>();
+    	for(BleDeviceInfo device : devices){
+    		if(!savedDevices.contains(device)){
+    			newDevices.add(device);
+    		}
+    	}
+        mNewDeviceList.setDevices(newDevices);
       }      
     });    
   }

@@ -15,11 +15,11 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.codepath.beacon.R;
+import com.codepath.beacon.activity.MyRecipeActivity;
 import com.codepath.beacon.activity.RecipeDetailActivity;
 import com.codepath.beacon.models.Recipe;
 
 public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
-	private final int REQUEST_CODE = 21;
 	public RecipeArrayAdapter(Context context, List<Recipe> recipes) {
 		super(context, R.layout.recipe_item, recipes);
 	}
@@ -56,7 +56,7 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 				
 				Recipe recipe = (Recipe) v.getTag();
 				String objID = recipe.getObjectId();
-        String fn = recipe.getFriendlyName();
+                String fn = recipe.getFriendlyName();
 				String UUID = recipe.getUUID();
 				activationDate = recipe.getActivationDate();
 				if (activationDate == null)
@@ -71,7 +71,8 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 				i.putExtra("activationDate", activationDate.getTime());
 				i.putExtra("triggerCount", triggerCount);
 				i.putExtra("status", status);
-				((Activity)getContext()).startActivityForResult(i,REQUEST_CODE);
+				i.putExtra("recipe", recipe);
+				((Activity)getContext()).startActivityForResult(i,MyRecipeActivity.EDIT_REQUEST_CODE);
 			}
 		});
 		

@@ -1,10 +1,9 @@
 package com.codepath.beacon.data;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.codepath.beacon.scan.BleDeviceInfo;
 import com.parse.FindCallback;
@@ -49,12 +48,12 @@ public class Beacon extends ParseObject {
 		put("uuid", id);
 	}
 	
-	public static BleDeviceInfo[] toBleDeviceInfoList(
+	public static List<BleDeviceInfo> toBleDeviceInfoList(
 			List<ParseObject> beacons) {
-		BleDeviceInfo[] devices = new BleDeviceInfo[beacons.size()];
+		List<BleDeviceInfo> devices = new ArrayList<BleDeviceInfo>(beacons.size());
 		for (int i=0;i<beacons.size();++i) {
 			BleDeviceInfo device = toBleDeviceInfo((Beacon)(beacons.get(i)));
-			devices[i] = device;
+			devices.add(device);
 		}
 		return devices;
 	}

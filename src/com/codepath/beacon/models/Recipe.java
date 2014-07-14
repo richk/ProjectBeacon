@@ -1,12 +1,20 @@
 package com.codepath.beacon.models;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
+
+import com.codepath.beacon.scan.BleDeviceInfo;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
 @ParseClassName("Recipe")
-public class Recipe extends ParseObject {
+public class Recipe extends ParseObject implements Parcelable {
+	private static final String LOG_TAG = Recipe.class.getSimpleName();
 
 	private String notification;
 
@@ -18,6 +26,30 @@ public class Recipe extends ParseObject {
 		super();
 		setFriendlyName(fn);
 		setUUID(UUID);
+	}
+	
+	public Recipe(Parcel in) {
+		setFriendlyName(in.readString());
+		SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+		try {
+			String date = in.readString();
+			if (!date.isEmpty()) {
+				Date activationDate = sdf.parse(date);
+				setActivationDate(activationDate);
+			}
+		} catch (ParseException e) {
+			Log.e(LOG_TAG, "Error parsing date", e);
+		}
+		setUUID(in.readString());
+		setMajorID(in.readString());
+		setMinorID(in.readString());
+		setSms(Boolean.parseBoolean(in.readString()));
+		setPushNotification(Boolean.parseBoolean(in.readString()));
+		setTrigger(in.readString());
+		setStatus(Boolean.parseBoolean(in.readString()));
+		setMessage(in.readString());
+		setUserID(in.readString());
+		setContactNum(in.readString());
 	}
 
 	public String getFriendlyName() {
@@ -77,6 +109,9 @@ public class Recipe extends ParseObject {
 	}
 
 	public void setContactNum(String contactNum) {
+		if (contactNum == null) {
+			return;
+		}
 		put("contactnumber", contactNum);
 	}
 
@@ -155,6 +190,68 @@ public class Recipe extends ParseObject {
 		    setContactNum(contact);
 		}
 	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(getFriendlyName());
+		Date activationDate = getActivationDate();
+		if (activationDate != null) {
+			dest.writeString(getActivationDate().toString());	
+		} else {
+			dest.writeString("");
+		}
+		dest.writeString(getUUID());
+		dest.writeString(getMajorID());
+		dest.writeString(getMinorID());
+		dest.writeString(String.valueOf(isSms()));
+		dest.writeString(String.valueOf(isPushNotification()));
+		dest.writeString(getTrigger());
+		dest.writeString(String.valueOf(isStatus()));
+		dest.writeString(getMessage());
+		dest.writeString(getUserID());
+		dest.writeString(getContactNum());
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Recipe) {
+			Recipe otherRecipe = (Recipe) o;
+			if (otherRecipe.getKey().equals(getKey())) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
 	
+	public String getKey() {
+		return getFriendlyName() + ":" + getTrigger();
+	}
+
+	@Override
+	public int hashCode() {
+		return getKey().hashCode();
+	}
+	
+	public static final Parcelable.Creator<Recipe> CREATOR =
+
+			new Parcelable.Creator<Recipe>() {
+
+		public Recipe createFromParcel(Parcel in) {
+			return new Recipe(in);
+		}
+
+		public Recipe[] newArray(int size) {
+			return new Recipe[size];
+		}
+	};
+
 }
 

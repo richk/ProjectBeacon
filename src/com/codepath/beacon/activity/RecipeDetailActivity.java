@@ -4,14 +4,8 @@ import java.text.SimpleDateFormat;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
-import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +16,7 @@ import android.widget.ToggleButton;
 
 import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.R;
+import com.codepath.beacon.fragments.RecipeAlertDialog;
 import com.codepath.beacon.models.Recipe;
 import com.codepath.beacon.scan.BeaconListener;
 import com.codepath.beacon.scan.BeaconManager;
@@ -37,6 +32,7 @@ import com.parse.SaveCallback;
 
 public class RecipeDetailActivity extends Activity implements BeaconListener{
 	private Recipe recipe;
+	private Recipe oldRecipe;
 	BeaconManager beaconManager;
 
 	@Override
@@ -80,8 +76,27 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 	}
 
 	private void populateRecipeDetail() {
-		String objID = getIntent().getStringExtra("ObjectID");
-		findRecipeInBackground(objID);
+//		String objID = getIntent().getStringExtra("ObjectID");
+		oldRecipe = getIntent().getParcelableExtra("recipe");
+		recipe = new Recipe(oldRecipe.getFriendlyName(), oldRecipe.getUUID());
+	    recipe.setActivationDate(oldRecipe.getActivationDate());
+		recipe.setMajorID(oldRecipe.getMajorID());
+		recipe.setMinorID(oldRecipe.getMinorID());
+		recipe.setSms(oldRecipe.isSms());
+		recipe.setPushNotification(oldRecipe.isPushNotification());
+		recipe.setContactNum(oldRecipe.getContactNum());
+		recipe.setTrigger(oldRecipe.getTrigger());
+		recipe.setStatus(oldRecipe.isStatus());
+		recipe.setMessage(oldRecipe.getMessage());
+		Log.e("RecipeDetailActivity", "User ID for old recipe:" + oldRecipe.getUserID());
+		recipe.setUserID(oldRecipe.getUserID());
+		recipe.setTriggeredCount(oldRecipe.getTriggeredCount());
+		recipe.setObjectId(oldRecipe.getObjectId());
+
+		Log.d("RecipeDetailActivity", "populateRecipeDetail():Old recipe:" + oldRecipe.getFriendlyName());
+		Log.d("RecipeDetailActivity", "populateRecipeDetail():New recipe:" + recipe.getFriendlyName());
+		showRecipe();
+//		findRecipeInBackground(objID);
 	}
 
 	private void showRecipe() {
@@ -116,10 +131,6 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 	public void onScanBeacon(View view) {
 		Intent scanIntent = new Intent(this, BleActivity.class);
 		startActivityForResult(scanIntent, 0);
-		//		//TODO: integration: calll start beacon activity, return UUID, MajorID, MinorID and friendly name
-		//		// set: String uuid, String majorID, String minorID, String fn 
-		//		recipe.setBeacon("123-123-1234-123456", "111", "222", "changed FN");
-		//		showRecipe();
 	}
 
 	public void onChooseAction(View view) {
@@ -145,11 +156,21 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 	}
 
 	public void onSaveAction(MenuItem mi) {
+		if (BeaconApplication.getApplication().recipeExists(recipe)) {
+			RecipeAlertDialog alert = new RecipeAlertDialog();
+			Bundle args = new Bundle();
+			args.putString("message", "Recipe already exists. Check your recipe and try again");
+			alert.setArguments(args);
+			alert.show(getFragmentManager(), null);
+			return;
+		}
 		recipe.saveInBackground(new SaveCallback() {
 			@Override
 			public void done(ParseException exception) {
 				if (exception == null) {
 					Log.d("Recipe", "Recipe saved successfully");
+					BeaconApplication.getApplication().deleteRecipe(oldRecipe);
+					BeaconApplication.getApplication().addNewRecipe(recipe);
 					BleDeviceInfo device = new BleDeviceInfo(
 							recipe.getFriendlyName(), null, recipe.getUUID(), 
 							Integer.parseInt(recipe.getMajorID()), 
@@ -190,6 +211,8 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 
 	public void returnToMyRecipe() {
 		Intent data = new Intent();
+		data.putExtra("recipe", recipe);
+		data.putExtra("oldRecipe", oldRecipe);
 		setResult(RESULT_OK, data); 
 		finish();
 	}
@@ -243,39 +266,10 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 	    @Override
 	    public void onDeviceLost(BleDeviceInfo[] device) {
 	        Toast.makeText(BeaconApplication.getApplication(), "Lost a device..." + device[0], Toast.LENGTH_SHORT).show();
-	        sendNotification("Lost a device" + device[0].getUUID());
 	    }
 
 	    @Override
 	    public void onDeviceFound(BleDeviceInfo[] device) {
 	        Toast.makeText(BeaconApplication.getApplication(), "Found a device..." + device[0], Toast.LENGTH_SHORT).show();
-	        sendNotification("Found a device" + device[0].getUUID());       
-	    }
-
-	    private void sendNotification(String message) {
-	        NotificationCompat.Builder mBuilder =
-	                new NotificationCompat.Builder(BeaconApplication.getApplication())
-	                .setSmallIcon(R.drawable.notification_icon)
-	                .setContentTitle("Beacon Magic")
-	                .setContentText(message);
-	        Intent resultIntent = new Intent(BeaconApplication.getApplication(), RecipeDetailActivity.class);
-
-	        TaskStackBuilder stackBuilder = TaskStackBuilder.create(BeaconApplication.getApplication());
-	        stackBuilder.addParentStack(RecipeActionActivity.class);
-	        stackBuilder.addNextIntent(resultIntent);
-	        PendingIntent resultPendingIntent =
-	                stackBuilder.getPendingIntent(
-	                    0,
-	                    PendingIntent.FLAG_UPDATE_CURRENT
-	                );
-	        mBuilder.setContentIntent(resultPendingIntent);
-	        NotificationManager mNotificationManager =
-	            (NotificationManager) BeaconApplication.getApplication().getSystemService(Context.NOTIFICATION_SERVICE);
-	        mNotificationManager.notify(0, mBuilder.build());
-	    }
-
-	    private void sendSMS(String phoneNumber, String message) {
-	        SmsManager sms = SmsManager.getDefault();
-	           sms.sendTextMessage(phoneNumber, null, message, null, null);
 	    }
 }

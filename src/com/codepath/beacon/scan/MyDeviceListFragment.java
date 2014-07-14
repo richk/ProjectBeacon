@@ -37,7 +37,7 @@ public class MyDeviceListFragment extends Fragment implements OnItemClickListene
 
 	private ListAdapter mAdapter;
 
-	private BleDeviceInfo[] mDevices = null;
+	private List<BleDeviceInfo> mDevices = null;
 
 	public static MyDeviceListFragment newInstance() {
 		return new MyDeviceListFragment();
@@ -51,7 +51,7 @@ public class MyDeviceListFragment extends Fragment implements OnItemClickListene
 		super.onCreate(savedInstanceState);
 	}
 	
-	public void setDevices(Context context, BleDeviceInfo[] devices) {
+	public void setDevices(Context context, List<BleDeviceInfo> devices) {
 		mDevices = devices;
 		List<BleDeviceInfo> items = new ArrayList<BleDeviceInfo>();
 		if (devices != null) {
@@ -106,7 +106,7 @@ public class MyDeviceListFragment extends Fragment implements OnItemClickListene
 		if (null != mListener) {
 			// Notify the active callbacks interface (the activity, if the
 			// fragment is attached to one) that an item has been selected.
-			mListener.onMyDeviceListFragmentInteraction(mDevices[position]);
+			mListener.onMyDeviceListFragmentInteraction(mDevices.get(position));
 		}
 	}
 

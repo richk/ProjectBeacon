@@ -28,7 +28,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.codepath.beacon.ui.LoginActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:noHistory="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,28 +52,9 @@
         </activity>
         <activity
             android:name="com.codepath.beacon.activity.RecipeDetailActivity"
-            android:label="@string/title_activity_recipe_detail" >
+            android:label="@string/title_activity_recipe_detail"
+            android:parentActivityName="com.codepath.beacon.activity.MyRecipeActivity" >
         </activity>
-
-        <service android:name="com.parse.PushService" />
-
-        <receiver android:name="com.parse.ParseBroadcastReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.USER_PRESENT" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name="com.parse.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-
-                <!-- IMPORTANT: Change "com.parse.starter" to match your app's package name. -->
-                <category android:name="com.codepath.beacon" />
-            </intent-filter>
-        </receiver>
 
         <service android:name="com.codepath.beacon.scan.BleService" >
         </service>
@@ -85,7 +67,8 @@
         </activity>
         <activity
             android:name="com.codepath.beacon.activity.CreateRecipeActivity"
-            android:label="@string/title_activity_create_recipe" >
+            android:label="@string/title_activity_create_recipe"
+            android:parentActivityName="com.codepath.beacon.activity.MyRecipeActivity" >
         </activity>
     </application>
 

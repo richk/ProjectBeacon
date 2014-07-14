@@ -3,15 +3,20 @@ package com.codepath.beacon.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.R;
 import com.codepath.beacon.adapter.RecipeArrayAdapter;
 import com.codepath.beacon.models.Recipe;
@@ -33,7 +38,7 @@ public class RecipeListFragment extends Fragment {
 		recipeListFragment.setArguments(args);
 		return recipeListFragment;
 	}
-
+	
 	public void findMyRecipes(final String max_id, final boolean refresh) {
 
 		ParseQuery<Recipe> query = ParseQuery.getQuery(Recipe.class);
@@ -49,6 +54,7 @@ public class RecipeListFragment extends Fragment {
 				if (e == null) {
 					// Access the array of results here		        	
 					recipes = new ArrayList<Recipe>(itemList);
+					BeaconApplication.getApplication().addAllRecipes(recipes);
 					if (refresh)
 						aRecipes.clear();
 					aRecipes.addAll(recipes);
@@ -109,6 +115,17 @@ public class RecipeListFragment extends Fragment {
 	// Should be called when an async task has finished
 	public void hideProgressBar() {
 		getActivity().setProgressBarIndeterminateVisibility(false); 
+	}
+	
+	public void onNewRecipe(Recipe recipe) {
+		aRecipes.insert(recipe, 0);
+	}
+	
+	public void onUpdateRecipe(Recipe recipe, Recipe oldRecipe) {
+		Log.d("RecipeListFragment", "onUpdateRecipe(): Old recipe:" + oldRecipe.getFriendlyName() + 
+				", New recipe:" + recipe.getFriendlyName());
+		aRecipes.remove(oldRecipe);
+		aRecipes.insert(recipe, 0);
 	}
 
 }

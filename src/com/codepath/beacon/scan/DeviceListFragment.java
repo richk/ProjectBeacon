@@ -92,7 +92,7 @@ public class DeviceListFragment extends Fragment implements
     }
   }
 
-  public void setDevices(BleDeviceInfo[] devices) {
+  public void setDevices(List<BleDeviceInfo> devices) {
 
     if (devices == null) {
       mAdapter.clear();
