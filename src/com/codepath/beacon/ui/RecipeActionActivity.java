@@ -1,5 +1,6 @@
 package com.codepath.beacon.ui;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +29,11 @@ public class RecipeActionActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_recipe_action);
+
+		// for back button
+		ActionBar ab = getActionBar(); 
+		ab.setDisplayHomeAsUpEnabled(true);
+
 		etMessage = (EditText) findViewById(R.id.et_message);
 		etPhn = (EditText) findViewById(R.id.et_phone);
 		cbSms = (CheckBox) findViewById(R.id.cb_sms);
@@ -54,6 +60,11 @@ public class RecipeActionActivity extends Activity {
 		if (id == R.id.action_settings) {
 			return true;
 		}
+		if (id == android.R.id.home) {
+		  this.finish();
+	  	return true;
+  	}
+		
 		return super.onOptionsItemSelected(item);
 	}
 

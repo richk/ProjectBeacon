@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -56,6 +57,11 @@ public class BleActivity extends Activity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ble);
+		
+		// for back button
+		ActionBar ab = getActionBar(); 
+		ab.setDisplayHomeAsUpEnabled(true);
+		
 		loadMyDevices();
 		FragmentTransaction txNew = getFragmentManager().beginTransaction();
 		txNew.add(R.id.fl_new_devices, mNewDeviceList);
@@ -67,7 +73,7 @@ public class BleActivity extends Activity implements
 	      beaconManager = new BeaconManager(this, this);
 		}
 	}
-
+	
 	@Override
 	protected void onStop() {
 		beaconManager.stopListenening();
@@ -101,6 +107,12 @@ public class BleActivity extends Activity implements
 			loadMyDevices();
 			return true;
 		}
+		
+  	if (id == android.R.id.home) {
+		  this.finish();
+	  	return true;
+  	}
+  	
 		return super.onOptionsItemSelected(item);
 	}
 
