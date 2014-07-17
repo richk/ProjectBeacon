@@ -196,7 +196,7 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 					}else if(TRIGGERS.LEAVING.name().equalsIgnoreCase(recipe.getTrigger())){
 						beaconManager.monitorDeviceExit(recipe.getBeacon());
 					}
-					returnToMyRecipe();
+					returnToMyRecipe(RecipeContracts.RECIPE_ACTION_UPDATE);
 					
 				} else {
 					Log.e("Recipe", "ParseException on save", exception);
@@ -216,18 +216,21 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 			public void done(ParseException exception) {
 				if (exception == null) {
 					Log.d("Recipe", "Recipe saved successfully");
-					returnToMyRecipe();
+					returnToMyRecipe(RecipeContracts.RECIPE_ACTION_DELETE);
 				} else {
 					Log.e("Recipe", "ParseException on save", exception);
 				}
 			}				
 		});
+		BeaconApplication.getApplication().deleteRecipe(recipe);
+//		beaconManager.stopMonitoring(recipe.getBeacon());
 	}
 
-	public void returnToMyRecipe() {
+	public void returnToMyRecipe(String recipeAction) {
 		Intent data = new Intent();
 		data.putExtra("recipe", recipe);
 		data.putExtra("oldRecipe", oldRecipe);
+		data.putExtra(RecipeContracts.RECIPE_ACTION, recipeAction);
 		setResult(RESULT_OK, data); 
 		finish();
 	}

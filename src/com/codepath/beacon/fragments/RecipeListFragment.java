@@ -176,4 +176,9 @@ public class RecipeListFragment extends Fragment {
 		aRecipes.remove(oldRecipe);
 		aRecipes.insert(recipe, itemPos);
 	}
+
+	public void onDeleteRecipe(Recipe recipe) {
+		aRecipes.remove(recipe);
+	}
+
 }

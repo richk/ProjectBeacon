@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.Window;
 
 import com.codepath.beacon.R;
+import com.codepath.beacon.contracts.RecipeContracts;
 import com.codepath.beacon.fragments.RecipeListFragment;
 import com.codepath.beacon.models.Recipe;
 import com.codepath.beacon.scan.BeaconListener;
@@ -80,9 +81,15 @@ public class MyRecipeActivity extends Activity implements BeaconListener{
 				Log.d(LOG_TAG, "onEditRecipe");
 				Recipe newRecipe = data.getParcelableExtra("recipe");
 				Recipe oldRecipe = data.getParcelableExtra("oldRecipe");
-				if (newRecipe != null) {
+				String action = data.getStringExtra(RecipeContracts.RECIPE_ACTION);
+				if (RecipeContracts.RECIPE_ACTION_UPDATE.equals(action)) {
 					newFragment.onUpdateRecipe(newRecipe, oldRecipe);
+				} else if (RecipeContracts.RECIPE_ACTION_DELETE.equals(action)) {
+					newFragment.onDeleteRecipe(newRecipe);
+				} else {
+					Log.e(LOG_TAG, "Invalid Recipe action received:" + action + " , request code:" + EDIT_REQUEST_CODE);
 				}
+				
 				newRecipe.setEditState(false);
 			} else {
 				Log.e(LOG_TAG, "Invalid request code:" + requestCode);
