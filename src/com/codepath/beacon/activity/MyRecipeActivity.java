@@ -59,6 +59,8 @@ public class MyRecipeActivity extends FragmentActivity {
 				if (newRecipe != null) {
 					newFragment.onUpdateRecipe(newRecipe, oldRecipe);
 				}
+				else
+					newFragment.onDeleteRecipe(newRecipe);
 			} else {
 				Log.e(LOG_TAG, "Invalid request code:" + requestCode);
 			}

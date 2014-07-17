@@ -21,6 +21,9 @@ public class BeaconApplication extends Application {
 
   private static final String CLIENT_KEY = "MI66awL0XWsXnNrTn6KKjo27vOsCE9jwYsyk2b95";
   
+//  private static final String APP_ID = "8Vhw6pjkVd9PuP1uwWj9KZM7qHS8MzJNSIjlsOLE";
+//  private static final String CLIENT_KEY = "8Vhw6pjkVd9PuP1uwWj9KZM7qHS8MzJNSIjlsOLE";
+  		
   private final Set<Recipe> myRecipes = new HashSet<Recipe>();
 
   BeaconManager beaconManager;

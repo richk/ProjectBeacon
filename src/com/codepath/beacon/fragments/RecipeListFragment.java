@@ -121,6 +121,10 @@ public class RecipeListFragment extends Fragment {
 		aRecipes.insert(recipe, 0);
 	}
 	
+	public void onDeleteRecipe(Recipe recipe) {
+		aRecipes.remove(recipe);
+	}
+	
 	public void onUpdateRecipe(Recipe recipe, Recipe oldRecipe) {
 		Log.d("RecipeListFragment", "onUpdateRecipe(): Old recipe:" + oldRecipe.getFriendlyName() + 
 				", New recipe:" + recipe.getFriendlyName());
