@@ -15,3 +15,4 @@ The magic of beacons
     
 
 ![Video Walkthrough](anim_ble.gif)
+[![BLEBuddy in action](http://img.youtube.com/vi/T-PWfxCbwYyJ4/0.jpg)](https://www.youtube.com/watch?v=PWfxCbwYyJ4)

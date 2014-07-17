@@ -163,6 +163,7 @@ public class CreateRecipeActivity extends Activity implements BeaconListener {
 				BleDeviceInfo deviceInfo = (BleDeviceInfo) data.getParcelableExtra("beacon");
 				recipe.setBeacon(deviceInfo);
 				recipe.setDisplayName(deviceInfo.getName());
+				deviceInfo.setEditState(false);
 				showRecipe();
 			}
 		} else if (requestCode == 1) {

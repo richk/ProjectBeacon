@@ -72,6 +72,7 @@ public class MyRecipeActivity extends Activity {
 				if (newRecipe != null) {
 					newFragment.onUpdateRecipe(newRecipe, oldRecipe);
 				}
+				newRecipe.setEditState(false);
 			} else {
 				Log.e(LOG_TAG, "Invalid request code:" + requestCode);
 			}

@@ -242,6 +242,7 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 				}
 				recipe.setBeacon(deviceInfo);		
 				recipe.setDisplayName(deviceInfo.getName());
+				deviceInfo.setEditState(false);
 				showRecipe();
 			}
 		} else if (requestCode == 1) {
