@@ -14,12 +14,14 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import com.codepath.beacon.OnProgressListener;
 import com.codepath.beacon.R;
 
 public class DeviceListFragment extends Fragment implements
     AbsListView.OnItemClickListener {
 
   private OnDeviceListFragmentInteractionListener mListener;
+  private OnProgressListener mProgressListener;
 
   private AbsListView mListView;
 
@@ -39,7 +41,6 @@ public class DeviceListFragment extends Fragment implements
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
     deviceList = new ArrayList<BleDeviceInfo>();
     mAdapter = new BleItemArrayAdapter(getActivity(), deviceList);
   }
@@ -69,7 +70,8 @@ public class DeviceListFragment extends Fragment implements
   public void onAttach(Activity activity) {
     super.onAttach(activity);
     try {
-      mListener = (OnDeviceListFragmentInteractionListener) activity;
+    	mListener = (OnDeviceListFragmentInteractionListener) activity;	
+    	mProgressListener = (OnProgressListener) activity;
     } catch (ClassCastException e) {
       throw new ClassCastException(activity.toString()
           + " must implement OnFragmentInteractionListener");
@@ -103,6 +105,7 @@ public class DeviceListFragment extends Fragment implements
     for(BleDeviceInfo device : devices){
       mAdapter.add(device);
     }
+    mProgressListener.onProgressStart();
   }
 
   public void setEmptyText(CharSequence emptyText) {

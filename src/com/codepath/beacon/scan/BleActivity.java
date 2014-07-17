@@ -16,8 +16,11 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.codepath.beacon.OnProgressListener;
 import com.codepath.beacon.R;
 import com.codepath.beacon.contracts.ParseUserContracts;
 import com.codepath.beacon.fragments.RecipeAlertDialog;
@@ -32,7 +35,7 @@ import com.parse.ParseUser;
 
 public class BleActivity extends Activity implements 
   DeviceListFragment.OnDeviceListFragmentInteractionListener, OnAddBeaconListener,
-    OnMyDeviceListFragmentInteractionListener, BeaconListener {
+    OnMyDeviceListFragmentInteractionListener, BeaconListener, OnProgressListener {
 	public static final String TAG = BleActivity.class.getSimpleName();
 	private final int ENABLE_BT = 1;
 
@@ -41,13 +44,14 @@ public class BleActivity extends Activity implements
 	BeaconManager beaconManager = null;
 	
 	private MenuItem mRefreshItem = null;
+	private ProgressBar pbLoading;
+	
 	private DeviceListFragment mNewDeviceList = DeviceListFragment.newInstance();
 	private MyDeviceListFragment mMyDeviceList = MyDeviceListFragment.newInstance();
 	private Set<BleDeviceInfo> savedDevices = new HashSet<BleDeviceInfo>();
 	private Set<String> savedDeviceNames = new HashSet<String>();
 	
-    private Handler uiThreadHandler; 
-
+    private Handler uiThreadHandler;
 
 	public BleActivity() {
 		super();
@@ -58,6 +62,7 @@ public class BleActivity extends Activity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ble);
+		pbLoading = (ProgressBar) findViewById(R.id.pbDevicesLoading);
 		loadMyDevices();
 		FragmentTransaction txNew = getFragmentManager().beginTransaction();
 		txNew.add(R.id.fl_new_devices, mNewDeviceList);
@@ -109,12 +114,14 @@ public class BleActivity extends Activity implements
 	private void startScan() {
 		mNewDeviceList.setDevices(null);
 		mNewDeviceList.setScanning(true);
+		onProgressStart();
 		beaconManager.startScanning();
 	}
 
 	private void loadMyDevices() {
 		ParseUser currentUser = ParseUser.getCurrentUser();
 		ParseRelation<ParseObject> relation = currentUser.getRelation(ParseUserContracts.BLEDEVICES);
+		onProgressStart();
 		relation.getQuery().findInBackground(new FindCallback<ParseObject>() {
 			@Override
 			public void done(List<ParseObject> beacons, ParseException exception) {
@@ -256,4 +263,15 @@ public class BleActivity extends Activity implements
   public void onDeviceFound(BleDeviceInfo[] devices) {
     //Toast.makeText(this, "Found Device!", Toast.LENGTH_SHORT).show();
   }
+  
+	@Override
+	public void onProgressStart() {
+		pbLoading.setVisibility(ProgressBar.VISIBLE);
+		
+	}
+
+	@Override
+	public synchronized void onProgressEnd() {
+		pbLoading.setVisibility(ProgressBar.INVISIBLE);
+	}
 }

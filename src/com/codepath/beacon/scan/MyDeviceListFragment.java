@@ -3,6 +3,7 @@ package com.codepath.beacon.scan;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.codepath.beacon.OnProgressListener;
 import com.codepath.beacon.R;
 import com.codepath.beacon.data.Beacon;
 import com.codepath.beacon.scan.DeviceListFragment.OnDeviceListFragmentInteractionListener;
@@ -31,6 +32,7 @@ public class MyDeviceListFragment extends Fragment implements OnItemClickListene
 	private static final String LOG_TAG = MyDeviceListFragment.class.getSimpleName();
 	
 	private OnMyDeviceListFragmentInteractionListener mListener;
+	private OnProgressListener mProgressListener;
 
 	private AbsListView mListView;
 	private TextView mEmptyView;
@@ -61,6 +63,7 @@ public class MyDeviceListFragment extends Fragment implements OnItemClickListene
 		}
 		mAdapter = new BleItemArrayAdapter(context, items);
 		mListView.setAdapter(mAdapter);
+		mProgressListener.onProgressEnd();
 	}
 
 	@Override
@@ -88,6 +91,7 @@ public class MyDeviceListFragment extends Fragment implements OnItemClickListene
 		super.onAttach(activity);
 		try {
 			mListener = (OnMyDeviceListFragmentInteractionListener) activity;
+			mProgressListener = (OnProgressListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement OnFragmentInteractionListener");
