@@ -86,22 +86,23 @@ public class BeaconManager {
   }
 
   public void monitorDeviceEntry(BleDeviceInfo device) {
-    Message msg = Message.obtain(null, BleService.MSG_MONITOR_ENTRY);
-    if (msg != null) {
-      try {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(BleService.KEY_DEVICE_DETAILS, device);
-        msg.setData(bundle);
-        mService.send(msg);
-      } catch (RemoteException e) {
-        Log.w(TAG, "Lost connection to service", e);
-        ctxt.unbindService(mConnection);
-      }
-    }
+    sendMonitoringMessage(device, BleService.MSG_MONITOR_ENTRY);
   }
 
   public void monitorDeviceExit(BleDeviceInfo device) {
-    Message msg = Message.obtain(null, BleService.MSG_MONITOR_EXIT);
+    sendMonitoringMessage(device, BleService.MSG_MONITOR_EXIT);
+  }
+  
+  public void stopMonitorDeviceEntry(BleDeviceInfo device) {
+    sendMonitoringMessage(device, BleService.MSG_STOP_MONITOR_ENTRY);
+  }
+  
+  public void stopMonitorDeviceEexit(BleDeviceInfo device) {
+    sendMonitoringMessage(device, BleService.MSG_STOP_MONITOR_EXIT);
+  }
+  
+  private void sendMonitoringMessage(BleDeviceInfo device, int what){
+    Message msg = Message.obtain(null, what);
     if (msg != null) {
       try {
         Bundle bundle = new Bundle();

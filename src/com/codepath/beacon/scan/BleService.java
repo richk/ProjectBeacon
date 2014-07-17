@@ -45,6 +45,8 @@ public class BleService extends Service implements
   static final int MSG_DEVICE_FOUND = 5;
   static final int MSG_MONITOR_ENTRY = 6;
   static final int MSG_MONITOR_EXIT = 7;
+  static final int MSG_STOP_MONITOR_ENTRY = 8;
+  static final int MSG_STOP_MONITOR_EXIT = 9;
 
   private long lastScanTime = 0;
   private static final long SCAN_PERIOD = 2000;
@@ -163,6 +165,16 @@ public class BleService extends Service implements
           device = (BleDeviceInfo)msg.getData().getParcelable(KEY_DEVICE_DETAILS);
           Log.d(TAG, "Adding device for monitoring exit = " + device.getKey());
           service.monitoringExit.add(device);
+          break;
+        case MSG_STOP_MONITOR_ENTRY:
+          device = (BleDeviceInfo)msg.getData().getParcelable(KEY_DEVICE_DETAILS);
+          Log.d(TAG, "Removing device from monitoring entry = " + device.getKey());
+          service.monitoringEntry.remove(device);
+          break;
+        case MSG_STOP_MONITOR_EXIT:
+          device = (BleDeviceInfo)msg.getData().getParcelable(KEY_DEVICE_DETAILS);
+          Log.d(TAG, "Removing device from monitoring exit = " + device.getKey());
+          service.monitoringExit.remove(device);
           break;
         default:
           super.handleMessage(msg);
