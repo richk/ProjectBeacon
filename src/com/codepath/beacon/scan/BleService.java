@@ -315,7 +315,7 @@ public class BleService extends Service implements
       return;
 
     BleDeviceInfo deviceInfo = getDeviceInfo(device, rssi, scanRecord);
-
+    
     if (deviceInfo != null && !currentScannedDevices.containsKey(deviceInfo.getKey())) {
       handleNewFoundDevice(deviceInfo);
       Log.d(TAG, "Added " + device.getName() + ": " + deviceInfo.getKey());
