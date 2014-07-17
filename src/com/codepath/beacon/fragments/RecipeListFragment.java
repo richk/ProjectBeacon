@@ -3,16 +3,12 @@ package com.codepath.beacon.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -20,23 +16,30 @@ import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.R;
 import com.codepath.beacon.adapter.RecipeArrayAdapter;
 import com.codepath.beacon.models.Recipe;
+import com.codepath.beacon.scan.BeaconManager;
+import com.codepath.beacon.scan.BleDeviceInfo;
 import com.codepath.beacon.util.EndlessScrollListener;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-public class RecipeListFragment extends Fragment {
+public class RecipeListFragment extends Fragment{
 	protected ArrayList<Recipe> recipes;
 	protected ArrayAdapter<Recipe> aRecipes;
 	protected ListView lvRecipes;
 	protected int repCount =20;
+	BeaconManager beaconManager;
 
 	public static RecipeListFragment newInstance() {
 		RecipeListFragment recipeListFragment = new RecipeListFragment();
 		Bundle args = new Bundle();
 		recipeListFragment.setArguments(args);
 		return recipeListFragment;
+	}
+	
+	public void setBeaconManager(BeaconManager bm){
+	  beaconManager = bm;
 	}
 	
 	public void findMyRecipes(final String max_id, final boolean refresh) {
@@ -58,6 +61,23 @@ public class RecipeListFragment extends Fragment {
 					if (refresh)
 						aRecipes.clear();
 					aRecipes.addAll(recipes);
+					for(Recipe recipe : recipes){
+					  if("leaving".equalsIgnoreCase(recipe.getTrigger())){					    
+					    if(beaconManager != null){
+    					    beaconManager.monitorDeviceExit(new BleDeviceInfo(
+    					        null, null, recipe.getUUID(), 
+    					        Integer.parseInt(recipe.getMajorID()), 
+    					        Integer.parseInt(recipe.getMinorID()), -1));
+					    }
+					  }else if("approaching".equalsIgnoreCase(recipe.getTrigger())){
+					    if(beaconManager != null){
+                          beaconManager.monitorDeviceEntry(new BleDeviceInfo(
+                              null, null, recipe.getUUID(), 
+                              Integer.parseInt(recipe.getMajorID()), 
+                              Integer.parseInt(recipe.getMinorID()), -1));
+					    }
+  					  }
+					}
 				} else {
 					Log.d("item", "Error: " + e.getMessage());
 				}
@@ -82,6 +102,11 @@ public class RecipeListFragment extends Fragment {
 		lvRecipes.setAdapter(aRecipes);
 		findMyRecipes("0", false);  
 		return view;
+	}
+	
+	@Override
+	public void onStop() {
+    	super.onStop();
 	}
 
 	@Override
@@ -127,5 +152,4 @@ public class RecipeListFragment extends Fragment {
 		aRecipes.remove(oldRecipe);
 		aRecipes.insert(recipe, 0);
 	}
-
 }

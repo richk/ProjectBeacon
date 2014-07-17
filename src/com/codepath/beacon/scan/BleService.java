@@ -111,7 +111,7 @@ public class BleService extends Service implements
     
     b.setContentTitle(getString(R.string.notification_title))
      .setContentText(getString(R.string.notification_text))
-     .setSmallIcon(R.drawable.ble_notification)
+     .setSmallIcon(R.drawable.ic_launcher)
      .setContentIntent(pendingIntent);
 
     return(b.build());
@@ -172,8 +172,15 @@ public class BleService extends Service implements
   }
 
   private void startScan() {
-    if(mState == State.SCANNING)
-      return;
+    if(mState == State.SCANNING){
+        mHandler.postDelayed(new Runnable() {
+          @Override
+          public void run() {
+            startScan();
+          }
+        }, SCAN_INTERVAL);
+        return;
+    }
     currentScannedDevices.clear();
     Log.d(TAG, "Invoking scan at " + new Date());
     lastScanTime = new Date().getTime();
