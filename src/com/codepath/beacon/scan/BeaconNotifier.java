@@ -20,10 +20,10 @@ public class BeaconNotifier{
 
 	public void sendNotification(String message) {
 	    Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-		NotificationCompat.Builder mBuilder =
+		NotificationCompat.Builder notiBuilder =
 		        new NotificationCompat.Builder(BeaconApplication.getApplication())
-		        .setSmallIcon(R.drawable.notification_icon)
-		        .setContentTitle("Beacon Magic")
+		        .setSmallIcon(R.drawable.ic_launcher)
+		        .setContentTitle("Beacon Notification")
 		        .setContentText(message)
 		        .setSound(alarmSound)
 		        .setLights(Color.RED, 3000, 3000)
@@ -38,12 +38,31 @@ public class BeaconNotifier{
 		PendingIntent resultPendingIntent =
 		        stackBuilder.getPendingIntent(
 		            0,
-		            PendingIntent.FLAG_UPDATE_CURRENT
-		        );
-		mBuilder.setContentIntent(resultPendingIntent);
-		NotificationManager mNotificationManager =
-		    (NotificationManager) BeaconApplication.getApplication().getSystemService(Context.NOTIFICATION_SERVICE);
-		mNotificationManager.notify(0, mBuilder.build());
+		            PendingIntent.FLAG_UPDATE_CURRENT);
+		
+		notiBuilder.setContentIntent(resultPendingIntent);
+		
+        NotificationManager notificationManager =
+            (NotificationManager) BeaconApplication.getApplication()
+            .getSystemService(Context.NOTIFICATION_SERVICE);
+
+        //Group notifications
+//        NotificationCompat.InboxStyle inboxStyle =
+//            new NotificationCompat.InboxStyle();
+//        inboxStyle.setBigContentTitle("Beacon notifications");
+//
+
+//        // Moves events into the big view
+//        String[] events = new String[6];
+//    	for (int i=0; i < events.length; i++) {  
+//    	    inboxStyle.addLine("abcdaaaa");
+//    	}
+//    	
+//    	// Moves the big view style object into the notification object.
+//    	mBuilder.setStyle(inboxStyle);
+        
+        int notId = 2;
+		notificationManager.notify(notId, notiBuilder.build());
 	}
 
 	public void sendSMS(String phoneNumber, String message) {

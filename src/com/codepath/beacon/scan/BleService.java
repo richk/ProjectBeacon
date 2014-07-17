@@ -45,6 +45,8 @@ public class BleService extends Service implements
   static final int MSG_DEVICE_FOUND = 5;
   static final int MSG_MONITOR_ENTRY = 6;
   static final int MSG_MONITOR_EXIT = 7;
+  static final int MSG_STOP_MONITOR_ENTRY = 8;
+  static final int MSG_STOP_MONITOR_EXIT = 9;
 
   private long lastScanTime = 0;
   private static final long SCAN_PERIOD = 2000;
@@ -111,7 +113,7 @@ public class BleService extends Service implements
     
     b.setContentTitle(getString(R.string.notification_title))
      .setContentText(getString(R.string.notification_text))
-     .setSmallIcon(R.drawable.ble_notification)
+     .setSmallIcon(R.drawable.ic_launcher)
      .setContentIntent(pendingIntent);
 
     return(b.build());
@@ -164,6 +166,16 @@ public class BleService extends Service implements
           Log.d(TAG, "Adding device for monitoring exit = " + device.getKey());
           service.monitoringExit.add(device);
           break;
+        case MSG_STOP_MONITOR_ENTRY:
+          device = (BleDeviceInfo)msg.getData().getParcelable(KEY_DEVICE_DETAILS);
+          Log.d(TAG, "Removing device from monitoring entry = " + device.getKey());
+          service.monitoringEntry.remove(device);
+          break;
+        case MSG_STOP_MONITOR_EXIT:
+          device = (BleDeviceInfo)msg.getData().getParcelable(KEY_DEVICE_DETAILS);
+          Log.d(TAG, "Removing device from monitoring exit = " + device.getKey());
+          service.monitoringExit.remove(device);
+          break;
         default:
           super.handleMessage(msg);
         }
@@ -172,8 +184,15 @@ public class BleService extends Service implements
   }
 
   private void startScan() {
-    if(mState == State.SCANNING)
-      return;
+    if(mState == State.SCANNING){
+        mHandler.postDelayed(new Runnable() {
+          @Override
+          public void run() {
+            startScan();
+          }
+        }, SCAN_INTERVAL);
+        return;
+    }
     currentScannedDevices.clear();
     Log.d(TAG, "Invoking scan at " + new Date());
     lastScanTime = new Date().getTime();

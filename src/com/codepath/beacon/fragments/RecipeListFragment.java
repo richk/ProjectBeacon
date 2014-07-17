@@ -16,8 +16,10 @@ import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.R;
 import com.codepath.beacon.adapter.RecipeArrayAdapter;
 import com.codepath.beacon.contracts.RecipeContracts;
+import com.codepath.beacon.contracts.RecipeContracts.TRIGGERS;
 import com.codepath.beacon.models.Recipe;
 import com.codepath.beacon.models.TriggerNotification;
+import com.codepath.beacon.scan.BeaconManager;
 import com.codepath.beacon.scan.BleDeviceInfo;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -32,6 +34,7 @@ public class RecipeListFragment extends Fragment {
 	protected ArrayAdapter<Recipe> aRecipes;
 	protected ListView lvRecipes;
 	protected int repCount =20;
+	BeaconManager beaconManager;
 
 	public static RecipeListFragment newInstance() {
 		RecipeListFragment recipeListFragment = new RecipeListFragment();
@@ -40,33 +43,11 @@ public class RecipeListFragment extends Fragment {
 		return recipeListFragment;
 	}
 	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		recipes = new ArrayList<Recipe>();
-		aRecipes = new RecipeArrayAdapter(getActivity(), recipes);
+	public void setBeaconManager(BeaconManager bm){
+	  beaconManager = bm;
 	}
 	
-	public void addAllRecipes(List<Recipe> recipes) {
-		aRecipes.addAll(recipes);
-	}
-	
-	public void clearRecipes() {
-		aRecipes.clear();
-	}
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-
-		// Defines the xml file for the fragment
-		View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
-		lvRecipes = (ListView) view.findViewById(R.id.lvRecipes);
-		lvRecipes.setAdapter(aRecipes);
-		findMyRecipes(0, true);
-		return view;
-	}
-	
 	public void findMyRecipes(int max_id, final boolean refresh) {
 		ParseQuery<Recipe> query = ParseQuery.getQuery(Recipe.class);
 		String currentUserID = ParseUser.getCurrentUser().getObjectId();
@@ -109,6 +90,17 @@ public class RecipeListFragment extends Fragment {
 					}
 					aRecipes.addAll(recipes);
 					BeaconApplication.getApplication().addAllRecipes(recipes);
+					for(Recipe recipe : recipes){
+					  if(TRIGGERS.LEAVING.name().equalsIgnoreCase(recipe.getTrigger())){					    
+					    if(beaconManager != null){
+    					    beaconManager.monitorDeviceExit(recipe.getBeacon());
+					    }
+					  }else if(TRIGGERS.APPROACHING.name().equalsIgnoreCase(recipe.getTrigger())){
+					    if(beaconManager != null){
+                          beaconManager.monitorDeviceEntry(recipe.getBeacon());
+					    }
+  					  }
+					}
 				} else {
 					Log.d("item", "Error: " + e.getMessage());
 				}
@@ -116,6 +108,29 @@ public class RecipeListFragment extends Fragment {
 		});
 	}
 
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		recipes = new ArrayList<Recipe>();
+		aRecipes = new RecipeArrayAdapter(getActivity(), recipes);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+
+		// Defines the xml file for the fragment
+		View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
+		lvRecipes = (ListView) view.findViewById(R.id.lvRecipes);
+		lvRecipes.setAdapter(aRecipes);
+		findMyRecipes(0, false);  
+		return view;
+	}
+	
+	@Override
+	public void onStop() {
+    	super.onStop();
+	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -161,5 +176,4 @@ public class RecipeListFragment extends Fragment {
 		aRecipes.remove(oldRecipe);
 		aRecipes.insert(recipe, itemPos);
 	}
-
 }
