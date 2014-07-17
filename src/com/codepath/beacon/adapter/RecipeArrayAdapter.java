@@ -20,8 +20,10 @@ import com.codepath.beacon.activity.RecipeDetailActivity;
 import com.codepath.beacon.models.Recipe;
 
 public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
+	private List<Recipe> mRecipes;
 	public RecipeArrayAdapter(Context context, List<Recipe> recipes) {
 		super(context, R.layout.recipe_item, recipes);
+		mRecipes = recipes;
 	}
 
 	@Override
@@ -42,10 +44,10 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 		TextView tvNotification = (TextView) v.findViewById(R.id.tvnotification);
 		ToggleButton tbTrigger = (ToggleButton) v.findViewById(R.id.tbtrigger);
 		
-		tvBeaconName.setText(recipe.getFriendlyName());
+		tvBeaconName.setText(recipe.getDisplayName());
 		tvTrigger.setText(recipe.getTrigger());
-		tvNotification.setText(recipe.getNotification());
-	  tbTrigger.setChecked(recipe.isStatus());
+		tvNotification.setText(recipe.getTriggerActionDisplayName());
+	    tbTrigger.setChecked(recipe.isStatus());
 		
 		// pass recipe to activity view
 		v.setTag(recipe);
@@ -56,8 +58,7 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 				
 				Recipe recipe = (Recipe) v.getTag();
 				String objID = recipe.getObjectId();
-                String fn = recipe.getFriendlyName();
-				String UUID = recipe.getUUID();
+                String fn = recipe.getDisplayName();
 				activationDate = recipe.getActivationDate();
 				if (activationDate == null)
 					activationDate = new Date();
@@ -65,12 +66,6 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 				boolean status = recipe.isStatus();
 				
 				Intent i = new Intent(getContext(), RecipeDetailActivity.class);
-				i.putExtra("fn", fn);
-				i.putExtra("UUID", UUID);
-				i.putExtra("ObjectID", objID);
-				i.putExtra("activationDate", activationDate.getTime());
-				i.putExtra("triggerCount", triggerCount);
-				i.putExtra("status", status);
 				i.putExtra("recipe", recipe);
 				((Activity)getContext()).startActivityForResult(i,MyRecipeActivity.EDIT_REQUEST_CODE);
 			}

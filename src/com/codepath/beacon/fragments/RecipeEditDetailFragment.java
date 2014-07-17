@@ -50,19 +50,17 @@ public class RecipeEditDetailFragment extends Fragment {
 
 	public void showRecipe(Recipe recipe) {
 		if (recipe != null) {
-			String fn = recipe.getFriendlyName();		
-			String UUID = recipe.getUUID();
-			String majorID = recipe.getMajorID();
-			String minorID = recipe.getMinorID();
+			String fn = recipe.getBeacon().getName();		
+			String UUID = recipe.getBeacon().getUUID();
+			int majorID = recipe.getBeacon().getMajorId();
+			int minorID = recipe.getBeacon().getMinorId();
 			String trigger = recipe.getTrigger();
-			boolean sms = recipe.isSms();
-			boolean pushNotification = recipe.isPushNotification();
 			boolean status = recipe.isStatus();
 			Date activationDate = recipe.getActivationDate();
 			int triggerCount = recipe.getTriggeredCount();
 
 			TextView tvTriggerandNotification = (TextView) view.findViewById(R.id.tvTriggerandNotification);
-			tvTriggerandNotification.setText(trigger + "sms:"+ sms+" push"+pushNotification);
+			tvTriggerandNotification.setText(trigger);
 			//TODO: change image buttons
 		}
 		else
