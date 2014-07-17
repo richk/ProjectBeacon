@@ -105,7 +105,7 @@ public class DeviceListFragment extends Fragment implements
     for(BleDeviceInfo device : devices){
       mAdapter.add(device);
     }
-    mProgressListener.onProgressStart();
+    mProgressListener.onProgressEnd();
   }
 
   public void setEmptyText(CharSequence emptyText) {
