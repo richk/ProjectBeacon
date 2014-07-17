@@ -53,6 +53,9 @@ public class AddBeaconFragment extends DialogFragment {
 			@Override
 			public void onClick(View arg0) {
 				String name = etDeviceName.getText().toString();
+				if (!name.equals(deviceInfo.getName())) {
+					deviceInfo.setEditState(true);
+				}
 				if (name!=null && !name.isEmpty()) {
 			        deviceInfo.setName(name);	
 				}
@@ -65,7 +68,7 @@ public class AddBeaconFragment extends DialogFragment {
         if (deviceInfo.getName() != null) {
         	etDeviceName.setText(deviceInfo.getName());
         }
-    	tvMacAddress.setText("MAC ADDRESS:" + deviceInfo.getMacAddress());
+    	tvMacAddress.setText("UUID:" + deviceInfo.getUUID());
     	tvMajorId.setText("MAJOR ID:" + String.valueOf(deviceInfo.getMajorId()));
     	tvMinorId.setText("MINOR ID:" + String.valueOf(deviceInfo.getMinorId()));
     	getDialog().getWindow().setSoftInputMode(

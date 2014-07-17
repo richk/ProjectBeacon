@@ -21,8 +21,13 @@ import android.widget.Toast;
 
 import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.R;
+import com.codepath.beacon.contracts.RecipeContracts;
+import com.codepath.beacon.contracts.RecipeContracts.TRIGGERS;
+import com.codepath.beacon.contracts.TriggerActionContracts;
 import com.codepath.beacon.fragments.RecipeAlertDialog;
 import com.codepath.beacon.models.Recipe;
+import com.codepath.beacon.models.TriggerNotification;
+import com.codepath.beacon.models.TriggerNotification.NOTIFICATION_TYPE;
 import com.codepath.beacon.scan.BeaconListener;
 import com.codepath.beacon.scan.BeaconManager;
 import com.codepath.beacon.scan.BleActivity;
@@ -94,11 +99,11 @@ public class CreateRecipeActivity extends Activity implements BeaconListener {
 			tvTriggerandNotification.setText(recipe.toString());
 			
 			TextView tvSelectedBeacon = (TextView) findViewById(R.id.tvSelectedBeacon);
-			tvSelectedBeacon.setText(recipe.getFriendlyName());
+			tvSelectedBeacon.setText(recipe.getDisplayName());
 			
 			TextView tvSelectedAction = (TextView) findViewById(R.id.tvSelectedAction);
-			if (recipe.getNotification() != null && recipe.getTrigger() != null)
-			tvSelectedAction.setText(recipe.getNotification() + " on " + recipe.getTrigger());
+			if (recipe.getTriggerNotification() != null && recipe.getTrigger() != null)
+			tvSelectedAction.setText(recipe.getTriggerActionDisplayName() + " on " + recipe.getTrigger());
 			//TODO: change image buttons
 		}
 
@@ -125,16 +130,12 @@ public class CreateRecipeActivity extends Activity implements BeaconListener {
 			@Override
 			public void done(ParseException exception) {
 				if (exception == null) {
-					Log.d("Recipe", "Recipe saved successfully. Friendly Name=" + recipe.getFriendlyName());
+					Log.d("Recipe", "Recipe saved successfully. Friendly Name=" + recipe.getBeacon().getName());
 					BeaconApplication.getApplication().addNewRecipe(recipe);
-					BleDeviceInfo device = new BleDeviceInfo(
-							recipe.getFriendlyName(), null, recipe.getUUID(), 
-							Integer.parseInt(recipe.getMajorID()), 
-							Integer.parseInt(recipe.getMinorID()), 0);
-					if("approaching".equalsIgnoreCase(recipe.getTrigger())){
-						beaconManager.monitorDeviceEntry(device);
-					}else if("leaving".equalsIgnoreCase(recipe.getTrigger())){
-						beaconManager.monitorDeviceExit(device);
+					if(TRIGGERS.APPROACHING.name().equalsIgnoreCase(recipe.getTrigger())){
+						beaconManager.monitorDeviceEntry(recipe.getBeacon());
+					}else if(TRIGGERS.LEAVING.name().equalsIgnoreCase(recipe.getTrigger())){
+						beaconManager.monitorDeviceExit(recipe.getBeacon());
 					}
 					returnToMyRecipe();
 				} else {
@@ -146,6 +147,9 @@ public class CreateRecipeActivity extends Activity implements BeaconListener {
 
 	public void returnToMyRecipe() {
 		Intent data = new Intent();
+		Log.d("CreateRecipeActivity", "Recipe:" + recipe.toString());
+		Log.d("CreateRecipeActivity", "Beacon:" + recipe.getDisplayName());
+		Log.d("CreateRecipeActivity", "Notification:" + recipe.getTriggerNotification().toString());
 		data.putExtra("recipe", recipe);
 		// Activity finished ok, return the data
 		setResult(RESULT_OK, data); // set result code and bundle data for response
@@ -157,20 +161,34 @@ public class CreateRecipeActivity extends Activity implements BeaconListener {
 		if (requestCode == 0) {
 			if (resultCode == RESULT_OK) {
 				BleDeviceInfo deviceInfo = (BleDeviceInfo) data.getParcelableExtra("beacon");
-				recipe.setBeacon(deviceInfo.getUUID(), String.valueOf(deviceInfo.getMajorId()), String.valueOf(deviceInfo.getMinorId()), deviceInfo.getName());		
+				recipe.setBeacon(deviceInfo);
+				recipe.setDisplayName(deviceInfo.getName());
+				deviceInfo.setEditState(false);
 				showRecipe();
 			}
 		} else if (requestCode == 1) {
 			if (resultCode == RESULT_OK) {
-				String trigger = data.getStringExtra("trigger");
-				String message = data.getStringExtra("message");
-				Boolean isSms = data.getBooleanExtra("isSms", false);
-				Boolean isNotification = data.getBooleanExtra("isPush", true);
+				String trigger = data.getStringExtra(RecipeContracts.TRIGGER);
+				String message = data.getStringExtra(TriggerActionContracts.MESSAGE);
+				Boolean isSms = data.getBooleanExtra(RecipeContracts.ISSMS, false);
+				Boolean isNotification = data.getBooleanExtra(RecipeContracts.ISNOTIFICATION, true);
 				String phn = null;
 				if (isSms) {
-					phn = data.getStringExtra("phone");
+					phn = data.getStringExtra(TriggerActionContracts.EXTRA);
 				}
-				recipe.setBeaconAction(trigger, message, isSms, isNotification, phn);
+				TriggerNotification notification = new TriggerNotification();
+				if (isSms) {
+				    notification.setType(NOTIFICATION_TYPE.SMS.name());
+				} else {
+					notification.setType(NOTIFICATION_TYPE.NOTIFICATION.name());
+				}
+				notification.setMessage(message);
+				if (phn != null) {
+				    notification.setExtra(phn);
+				}
+				recipe.setTriggerNotification(notification);
+				recipe.setTriggerActionDisplayName(notification.getType());
+				recipe.setTrigger(trigger);
 				showRecipe();
 			}
 		} else {

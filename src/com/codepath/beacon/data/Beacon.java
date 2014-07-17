@@ -122,6 +122,8 @@ public class Beacon extends ParseObject {
 					ParseUser currentUser = ParseUser.getCurrentUser();
 					ParseRelation<Beacon> userBeacons = currentUser.getRelation("beacons");
 					userBeacons.add(beacon);
+//					ParseRelation<ParseObject> beaconUsers = beacon.getRelation("users");
+//					beaconUsers.add(currentUser);
 					currentUser.saveInBackground(new SaveCallback() {
 						@Override
 						public void done(ParseException exception) {

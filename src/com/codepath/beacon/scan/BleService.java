@@ -268,10 +268,10 @@ public class BleService extends Service implements
         msg.setData(bundle);
         //sendMessage(msg);
         if(what == MSG_MONITOR_EXIT){
-          uu.sendNotification("Lost device = " + devices.get(0).getKey());
+          uu.sendNotification("Lost device = " + deviceDataArr[0].getName());
         }
         else if(what == MSG_MONITOR_ENTRY){
-          uu.sendNotification("Found device = " + devices.get(0).getKey()); 
+          uu.sendNotification("Found device = " + deviceDataArr[0].getName()); 
         }          
       }
     }
@@ -315,7 +315,7 @@ public class BleService extends Service implements
       return;
 
     BleDeviceInfo deviceInfo = getDeviceInfo(device, rssi, scanRecord);
-
+    
     if (deviceInfo != null && !currentScannedDevices.containsKey(deviceInfo.getKey())) {
       handleNewFoundDevice(deviceInfo);
       Log.d(TAG, "Added " + device.getName() + ": " + deviceInfo.getKey());
