@@ -17,4 +17,7 @@ public class RecipeContracts {
 	
 	public static final String ISSMS = "isSms";
 	public static final String ISNOTIFICATION = "isNotification";
+	public static final String RECIPE_ACTION_DELETE = "delete";
+	public static final String RECIPE_ACTION_UPDATE = "update";
+	public static final String RECIPE_ACTION = "recipeAction";
 }

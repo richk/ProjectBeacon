@@ -69,9 +69,15 @@ public class MyRecipeActivity extends Activity {
 				Log.d(LOG_TAG, "onEditRecipe");
 				Recipe newRecipe = data.getParcelableExtra("recipe");
 				Recipe oldRecipe = data.getParcelableExtra("oldRecipe");
-				if (newRecipe != null) {
+				String action = data.getStringExtra(RecipeContracts.RECIPE_ACTION);
+				if (RecipeContracts.RECIPE_ACTION_UPDATE.equals(action)) {
 					newFragment.onUpdateRecipe(newRecipe, oldRecipe);
+				} else if (RecipeContracts.RECIPE_ACTION_DELETE.equals(action)) {
+					newFragment.onDeleteRecipe(newRecipe);
+				} else {
+					Log.e(LOG_TAG, "Invalid Recipe action received:" + action + " , request code:" + EDIT_REQUEST_CODE);
 				}
+				
 				newRecipe.setEditState(false);
 			} else {
 				Log.e(LOG_TAG, "Invalid request code:" + requestCode);
