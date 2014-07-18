@@ -114,7 +114,7 @@ public class CreateRecipeActivity extends Activity implements BeaconListener {
 		if (BeaconApplication.getApplication().recipeExists(recipe)) {
 			RecipeAlertDialog alert = new RecipeAlertDialog();
 			Bundle args = new Bundle();
-			args.putString("message", "Recipe already exists. Check your recipe and try again");
+			args.putString("message", "Recipe on that beacon already exists. Create recipe with another beacon or add more actions to existing");
 			alert.setArguments(args);
 			alert.show(getFragmentManager(), null);
 			return;

@@ -10,7 +10,7 @@ public class RecipeContracts {
 	public static final String TRIGGER = "trigger";
 	public static final String ACTIVATIONDATE = "activationDate";
 	public static final String TRIGGERCOUNT = "triggeredCount";
-	public static final String USERID = "userid";
+	public static final String USERID = "userID";
 	public static final String BEACON = "beacon";
 	public static final String DISPLAYNAME = "displayName";
 	public static final String TRIGGERACTIONDISPLAYNAME = "triggerActionDisplayName";

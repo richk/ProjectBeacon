@@ -51,11 +51,10 @@ public class RecipeListFragment extends Fragment {
 	public void findMyRecipes(int max_id, final boolean refresh) {
 		ParseQuery<Recipe> query = ParseQuery.getQuery(Recipe.class);
 		String currentUserID = ParseUser.getCurrentUser().getObjectId();
-		query.whereEqualTo("userID", currentUserID);
-		query.addAscendingOrder("FN");
-		if (max_id != 0)
-			query.whereGreaterThan("FN", max_id);
-
+		query.whereEqualTo(RecipeContracts.USERID, currentUserID);
+		query.addAscendingOrder(RecipeContracts.DISPLAYNAME);
+		query.include(RecipeContracts.BEACON);
+		query.include(RecipeContracts.TRIGGERNOTIFICATION);
 		// Execute the find asynchronously
 		query.findInBackground(new FindCallback<Recipe>() {
 			public void done(List<Recipe> itemList, ParseException e) {
@@ -63,50 +62,32 @@ public class RecipeListFragment extends Fragment {
 					// Access the array of results here		        	
 					List<Recipe> recipes = new ArrayList<Recipe>(itemList);
 					for (final Recipe recipe : recipes) {
-						recipe.getParseObject(RecipeContracts.BEACON).fetchIfNeededInBackground(new GetCallback<ParseObject>() {
-					        public void done(ParseObject object, ParseException e) {
-					        	if (e == null) {
-					                recipe.setBeacon((BleDeviceInfo) object);
-					        	} else {
-					        		Log.e(LOG_TAG, "ParseException", e);
-					        	}
-					        }
-						});
-						recipe.getParseObject(RecipeContracts.TRIGGERNOTIFICATION).fetchIfNeededInBackground(new GetCallback<ParseObject>() {
-
-							@Override
-							public void done(ParseObject noticationObject,
-									ParseException done) {
-								if (done == null) {
-								    recipe.setTriggerNotification((TriggerNotification) noticationObject);
-								} else {
-									Log.e(LOG_TAG, "ParseException", done);
-								}
-							}
-						});
+						setBeaconMonitoring(recipe, recipe.getBeacon());
 					}
 					if (refresh) {
 						aRecipes.clear();
 					}
 					aRecipes.addAll(recipes);
 					BeaconApplication.getApplication().addAllRecipes(recipes);
-					for(Recipe recipe : recipes){
-					  if(TRIGGERS.LEAVING.name().equalsIgnoreCase(recipe.getTrigger())){					    
-					    if(beaconManager != null){
-    					    beaconManager.monitorDeviceExit(recipe.getBeacon());
-					    }
-					  }else if(TRIGGERS.APPROACHING.name().equalsIgnoreCase(recipe.getTrigger())){
-					    if(beaconManager != null){
-                          beaconManager.monitorDeviceEntry(recipe.getBeacon());
-					    }
-  					  }
-					}
 				} else {
 					Log.d("item", "Error: " + e.getMessage());
 				}
 			}
 		});
 	}
+	
+    private void setBeaconMonitoring(Recipe recipe, BleDeviceInfo device) {
+    	if(TRIGGERS.LEAVING.name().equalsIgnoreCase(recipe.getTrigger())){					    
+    		if(beaconManager != null){
+    			beaconManager.monitorDeviceExit(device);
+    		}
+    	}else if(TRIGGERS.APPROACHING.name().equalsIgnoreCase(recipe.getTrigger())){
+    		if(beaconManager != null){
+    			beaconManager.monitorDeviceEntry(device);
+    		}
+    	}
+    }
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

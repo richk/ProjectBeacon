@@ -204,7 +204,7 @@ public class Recipe extends ParseObject implements Parcelable {
 	}
 	
 	public String getKey() {
-		return getDisplayName() + ":" + getTrigger();
+		return getDisplayName();
 	}
 
 	@Override
