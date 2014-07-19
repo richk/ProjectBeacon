@@ -125,8 +125,6 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 		ToggleButton tbStatus = (ToggleButton) findViewById(R.id.tbStatus);
 		tbStatus.setChecked(recipe.isStatus());
 
-		TextView tvBeaconnameandUUID = (TextView) findViewById(R.id.tvBeaconnameandUUID);
-		tvBeaconnameandUUID.setText(recipe.getDisplayName());
 
 		TextView tvSelectedBeacon = (TextView) findViewById(R.id.tvSelectedBeacon);
 		TextView tvSelectedAction = (TextView) findViewById(R.id.tvSelectedAction);
