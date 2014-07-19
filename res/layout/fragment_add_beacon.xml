@@ -4,49 +4,100 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/et_add_beacon_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:ems="10" >
+        <RelativeLayout 
+            android:background="@color/dialog_titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        
+        <TextView
+            android:id="@+id/dialog_title"
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"        	
+            android:text="Select Beacon"
+            android:textSize="22dp"
+          />
+        
+            <ImageView
+                        android:id="@+id/btn_confirm"                
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dp"      
+                android:layout_marginLeft="5dp"          
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+        android:src="@drawable/ic_action_confirm"/>
+            
+                                            
+            <View 
+      android:id="@+id/separator"
+      android:layout_toLeftOf="@id/btn_confirm"
+      android:layout_width="1dp"
+      android:layout_height="35dp"
+      android:layout_centerVertical="true"
+      android:background="#2B497B"
+		/>
+            
+       <ImageView
+                  android:id="@+id/btn_cancel"
+                  android:layout_toLeftOf="@id/separator"  
+                  android:layout_marginRight="5dp"                                  
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+        android:src="@drawable/ic_action_cancel"/>
 
-        <requestFocus />
-    </EditText>
-
+       
+            
+    </RelativeLayout>      
+    
     <TextView
         android:id="@+id/tv_add_beacon_mac"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:text="@string/mac_address_string"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="5dp"
+        android:singleLine="true"
+        android:ellipsize="middle"
+        android:text="@string/mac_address_string"/>
 
     <TextView
         android:id="@+id/tv_add_beacon_major_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:text="@string/major_id_string"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_marginLeft="20dp"        
+        android:text="@string/major_id_string"/>
 
     <TextView
         android:id="@+id/tv_add_beacon_minor_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:text="@string/minor_id_string"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <Button
-        android:id="@+id/btn_add_beacon"
+                android:layout_marginLeft="20dp"        
+        android:text="@string/minor_id_string"/>
+ 
+    <LinearLayout 
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent">
+        
+        <TextView
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"        	
+            android:text="Name"
+          />
+        
+        <EditText
+        android:id="@+id/et_add_beacon_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/btn_add_beacon_string"
-        android:layout_marginTop="20dp" />
-
+        android:layout_marginLeft="20dp"
+        android:ems="10">
+        <requestFocus />
+    	</EditText>
+        
+    </LinearLayout>    
 </LinearLayout>
