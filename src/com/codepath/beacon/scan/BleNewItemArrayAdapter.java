@@ -11,9 +11,9 @@ import android.widget.TextView;
 
 import com.codepath.beacon.R;
 
-public class BleItemArrayAdapter extends ArrayAdapter<BleDeviceInfo> {
+public class BleNewItemArrayAdapter extends ArrayAdapter<BleDeviceInfo> {
 
-  public BleItemArrayAdapter(Context context, List<BleDeviceInfo> items) {
+  public BleNewItemArrayAdapter(Context context, List<BleDeviceInfo> items) {
     super(context, 0, items);
   }
 
@@ -22,19 +22,15 @@ public class BleItemArrayAdapter extends ArrayAdapter<BleDeviceInfo> {
     BleDeviceInfo item = getItem(position);
 
     LayoutInflater inflator = LayoutInflater.from(getContext());
-    View bleView = inflator.inflate(R.layout.ble_list_item, parent, false);
-    TextView tvRssi = (TextView)bleView.findViewById(R.id.tvRssi);
-    TextView tvUUID = (TextView)bleView.findViewById(R.id.tvUUID);
-    TextView tvName = (TextView)bleView.findViewById(R.id.tvName);
-    TextView tvMajorId = (TextView)bleView.findViewById(R.id.tvMajorId);
-    TextView tvMinorId = (TextView)bleView.findViewById(R.id.tvMinorId);
+    View bleView = inflator.inflate(R.layout.ble_list_new_item, parent, false);
+    TextView tvRssi = (TextView)bleView.findViewById(R.id.tvRssiNew);
+    TextView tvUUID = (TextView)bleView.findViewById(R.id.tvUUIDNew);
+    TextView tvMajorId = (TextView)bleView.findViewById(R.id.tvMajorIdNew);
+    TextView tvMinorId = (TextView)bleView.findViewById(R.id.tvMinorIdNew);
     
     if (item.getRssi() != 0) {
     	tvRssi.setText(String.valueOf(item.getRssi()));
     }
-    if (item.getName() != null) {
-        tvName.setText(item.getName());
-    } 
     tvUUID.setText(item.getUUID());
     tvMajorId.setText(String.valueOf(item.getMajorId()));
     tvMinorId.setText(String.valueOf(item.getMinorId()));
