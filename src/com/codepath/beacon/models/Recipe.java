@@ -50,9 +50,9 @@ public class Recipe extends ParseObject implements Parcelable {
 		BleDeviceInfo device = in.readParcelable(BleDeviceInfo.class.getClassLoader());
 		Log.d(LOG_TAG, "Beacon:" + device.toString());
 		setBeacon(device);
-		TriggerNotification triggerAction = in.readParcelable(TriggerNotification.class.getClassLoader());
+		TriggerAction triggerAction = in.readParcelable(TriggerAction.class.getClassLoader());
 		Log.d(LOG_TAG, "Trigger Action:" + triggerAction.toString());
-		setTriggerNotification(triggerAction);
+		setTriggerAction(triggerAction);
 		String trigger = in.readString();
 		Log.d(LOG_TAG, "Trigger:" + trigger);
 		setTrigger(trigger);
@@ -103,12 +103,12 @@ public class Recipe extends ParseObject implements Parcelable {
 		put(RecipeContracts.BEACON, device);
 	}
 	
-	public TriggerNotification getTriggerNotification() {
-		return (TriggerNotification) getParseObject(RecipeContracts.TRIGGERNOTIFICATION);
+	public TriggerAction getTriggerAction() {
+		return (TriggerAction) getParseObject(RecipeContracts.TRIGGERACTION);
 	}
 	
-	public void setTriggerNotification(TriggerNotification ta) {
-		put(RecipeContracts.TRIGGERNOTIFICATION, ta);
+	public void setTriggerAction(TriggerAction ta) {
+		put(RecipeContracts.TRIGGERACTION, ta);
 	}
 
 	public Date getActivationDate() {
@@ -154,7 +154,7 @@ public class Recipe extends ParseObject implements Parcelable {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Beacon " + getDisplayName());
-		if (getTriggerNotification() != null) {
+		if (getTriggerAction() != null) {
 		  sb.append(" receive ");
 		  sb.append(getTriggerActionDisplayName());
 	    }
@@ -180,7 +180,7 @@ public class Recipe extends ParseObject implements Parcelable {
 			dest.writeString("");
 		}
 		dest.writeParcelable(getBeacon(), flags);
-		dest.writeParcelable(getTriggerNotification(), flags);
+		dest.writeParcelable(getTriggerAction(), flags);
 		dest.writeString(getTrigger());
 		dest.writeString(String.valueOf(isStatus()));
 		dest.writeString(getUserID());
@@ -239,13 +239,13 @@ public class Recipe extends ParseObject implements Parcelable {
 				        	}
 				        }
 					});
-					recipe.getParseObject(RecipeContracts.TRIGGERNOTIFICATION).fetchIfNeededInBackground(new GetCallback<ParseObject>() {
+					recipe.getParseObject(RecipeContracts.TRIGGERACTION).fetchIfNeededInBackground(new GetCallback<ParseObject>() {
 
 						@Override
 						public void done(ParseObject noticationObject,
 								ParseException done) {
 							if (done == null) {
-							    recipe.setTriggerNotification((TriggerNotification) noticationObject);
+							    recipe.setTriggerAction((TriggerAction) noticationObject);
 							} else {
 								Log.e(LOG_TAG, "ParseException", done);
 							}
@@ -279,13 +279,13 @@ public class Recipe extends ParseObject implements Parcelable {
 					        	}
 					        }
 						});
-						recipe.getParseObject(RecipeContracts.TRIGGERNOTIFICATION).fetchIfNeededInBackground(new GetCallback<ParseObject>() {
+						recipe.getParseObject(RecipeContracts.TRIGGERACTION).fetchIfNeededInBackground(new GetCallback<ParseObject>() {
 
 							@Override
 							public void done(ParseObject noticationObject,
 									ParseException done) {
 								if (done == null) {
-								    recipe.setTriggerNotification((TriggerNotification) noticationObject);
+								    recipe.setTriggerAction((TriggerAction) noticationObject);
 								} else {
 									Log.e(LOG_TAG, "ParseException", done);
 								}

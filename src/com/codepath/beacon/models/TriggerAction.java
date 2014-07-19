@@ -8,16 +8,16 @@ import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
 @ParseClassName("Notification")
-public class TriggerNotification extends ParseObject implements Parcelable {
+public class TriggerAction extends ParseObject implements Parcelable {
 	public static boolean isInitialized = false;
 	
 	public static enum NOTIFICATION_TYPE {
 		SMS, NOTIFICATION
 	}
 	
-	public TriggerNotification() {}
+	public TriggerAction() {}
 	
-	public TriggerNotification(Parcel in) {
+	public TriggerAction(Parcel in) {
 		setObjectId(in.readString());
 	    setType(in.readString());
 	    setMessage(in.readString());
@@ -56,16 +56,16 @@ public class TriggerNotification extends ParseObject implements Parcelable {
 		dest.writeString(getExtra());
 	}
 	
-	public static final Parcelable.Creator<TriggerNotification> CREATOR =
+	public static final Parcelable.Creator<TriggerAction> CREATOR =
 
-			new Parcelable.Creator<TriggerNotification>() {
+			new Parcelable.Creator<TriggerAction>() {
 
-		public TriggerNotification createFromParcel(Parcel in) {
-			return new TriggerNotification(in);
+		public TriggerAction createFromParcel(Parcel in) {
+			return new TriggerAction(in);
 		}
 
-		public TriggerNotification[] newArray(int size) {
-			return new TriggerNotification[size];
+		public TriggerAction[] newArray(int size) {
+			return new TriggerAction[size];
 		}
 	};
 	

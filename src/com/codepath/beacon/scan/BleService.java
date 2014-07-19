@@ -287,10 +287,10 @@ public class BleService extends Service implements
         msg.setData(bundle);
         //sendMessage(msg);
         if(what == MSG_MONITOR_EXIT){
-          uu.sendNotification("Lost device = " + deviceDataArr[0].getName());
+          uu.sendNotification("Lost device = " + devices.get(0).getName());
         }
         else if(what == MSG_MONITOR_ENTRY){
-          uu.sendNotification("Found device = " + deviceDataArr[0].getName()); 
+          uu.sendNotification("Found device = " + devices.get(0).getName()); 
         }          
       }
     }

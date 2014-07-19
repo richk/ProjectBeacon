@@ -6,7 +6,7 @@ public class RecipeContracts {
 	}
 	
 	public static final String NAME = "name";
-	public static final String TRIGGERNOTIFICATION = "triggerNotification";
+	public static final String TRIGGERACTION = "triggerNotification";
 	public static final String TRIGGER = "trigger";
 	public static final String ACTIVATIONDATE = "activationDate";
 	public static final String TRIGGERCOUNT = "triggeredCount";

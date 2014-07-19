@@ -4,14 +4,8 @@ import java.util.Date;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
-import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,8 +20,8 @@ import com.codepath.beacon.contracts.RecipeContracts.TRIGGERS;
 import com.codepath.beacon.contracts.TriggerActionContracts;
 import com.codepath.beacon.fragments.RecipeAlertDialog;
 import com.codepath.beacon.models.Recipe;
-import com.codepath.beacon.models.TriggerNotification;
-import com.codepath.beacon.models.TriggerNotification.NOTIFICATION_TYPE;
+import com.codepath.beacon.models.TriggerAction;
+import com.codepath.beacon.models.TriggerAction.NOTIFICATION_TYPE;
 import com.codepath.beacon.scan.BeaconListener;
 import com.codepath.beacon.scan.BeaconManager;
 import com.codepath.beacon.scan.BleActivity;
@@ -102,7 +96,7 @@ public class CreateRecipeActivity extends Activity implements BeaconListener {
 			tvSelectedBeacon.setText(recipe.getDisplayName());
 			
 			TextView tvSelectedAction = (TextView) findViewById(R.id.tvSelectedAction);
-			if (recipe.getTriggerNotification() != null && recipe.getTrigger() != null)
+			if (recipe.getTriggerAction() != null && recipe.getTrigger() != null)
 			tvSelectedAction.setText(recipe.getTriggerActionDisplayName() + " on " + recipe.getTrigger());
 			//TODO: change image buttons
 		}
@@ -111,6 +105,14 @@ public class CreateRecipeActivity extends Activity implements BeaconListener {
 	}
 
 	public void onSaveAction(MenuItem mi) {
+		if (recipe.getBeacon() == null || recipe.getTrigger() == null || recipe.getTriggerAction() == null) {
+			RecipeAlertDialog alert = new RecipeAlertDialog();
+			Bundle args = new Bundle();
+			args.putString("message", "Sorry, cannot save without beacon, trigger and action defined correctly. Please try again.");
+			alert.setArguments(args);
+			alert.show(getFragmentManager(), null);
+			return;	
+		}
 		if (BeaconApplication.getApplication().recipeExists(recipe)) {
 			RecipeAlertDialog alert = new RecipeAlertDialog();
 			Bundle args = new Bundle();
@@ -149,7 +151,7 @@ public class CreateRecipeActivity extends Activity implements BeaconListener {
 		Intent data = new Intent();
 		Log.d("CreateRecipeActivity", "Recipe:" + recipe.toString());
 		Log.d("CreateRecipeActivity", "Beacon:" + recipe.getDisplayName());
-		Log.d("CreateRecipeActivity", "Notification:" + recipe.getTriggerNotification().toString());
+		Log.d("CreateRecipeActivity", "Notification:" + recipe.getTriggerAction().toString());
 		data.putExtra("recipe", recipe);
 		// Activity finished ok, return the data
 		setResult(RESULT_OK, data); // set result code and bundle data for response
@@ -176,7 +178,7 @@ public class CreateRecipeActivity extends Activity implements BeaconListener {
 				if (isSms) {
 					phn = data.getStringExtra(TriggerActionContracts.EXTRA);
 				}
-				TriggerNotification notification = new TriggerNotification();
+				TriggerAction notification = new TriggerAction();
 				if (isSms) {
 				    notification.setType(NOTIFICATION_TYPE.SMS.name());
 				} else {
@@ -186,7 +188,7 @@ public class CreateRecipeActivity extends Activity implements BeaconListener {
 				if (phn != null) {
 				    notification.setExtra(phn);
 				}
-				recipe.setTriggerNotification(notification);
+				recipe.setTriggerAction(notification);
 				recipe.setTriggerActionDisplayName(notification.getType());
 				recipe.setTrigger(trigger);
 				showRecipe();

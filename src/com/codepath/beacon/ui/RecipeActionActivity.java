@@ -3,6 +3,7 @@ package com.codepath.beacon.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +13,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.codepath.beacon.R;
+import com.codepath.beacon.contracts.RecipeContracts;
+import com.codepath.beacon.contracts.RecipeContracts.TRIGGERS;
+import com.codepath.beacon.models.TriggerAction;
 
 public class RecipeActionActivity extends Activity {
 	private static final String LOG_TAG = RecipeActionActivity.class.getSimpleName();
@@ -35,6 +39,32 @@ public class RecipeActionActivity extends Activity {
 		rgTrigger = (RadioGroup) findViewById(R.id.rg_triggers);
 		rbLeaving = (RadioButton) findViewById(R.id.rb_leaving);
 		rbApproaching = (RadioButton) findViewById(R.id.rb_approaching);
+		populateTriggerAndAction();
+	}
+	
+	private void populateTriggerAndAction() {
+		String trigger = getIntent().getStringExtra(RecipeContracts.TRIGGER);
+		if (trigger != null) {
+			if (rbLeaving.getText().toString().equalsIgnoreCase(trigger)) {
+				rbLeaving.setChecked(true);
+			} else {
+				rbApproaching.setChecked(true);
+			}
+		}
+		TriggerAction notification = getIntent().getParcelableExtra(RecipeContracts.RECIPE_ACTION);
+		if (notification != null) {
+			if (TriggerAction.NOTIFICATION_TYPE.SMS.name().equalsIgnoreCase(notification.getType())) {
+				cbSms.setChecked(true);
+			} else {
+				cbNotification.setChecked(true);
+			}
+			if (notification.getMessage() != null) {
+				etMessage.setText(notification.getMessage());
+			}
+			if (notification.getExtra() != null) {
+				etPhn.setText(notification.getExtra());
+			}
+		}
 	}
 
 	@Override
@@ -60,9 +90,9 @@ public class RecipeActionActivity extends Activity {
 	public void onNotify(View view) {
 		String trigger;
 		if (rbLeaving.isChecked()) {
-			trigger = "leaving";
+			trigger = TRIGGERS.LEAVING.name();
 		} else {
-			trigger = "approaching";
+			trigger = TRIGGERS.APPROACHING.name();
 		}
 		String message = etMessage.getText().toString();
 		boolean isSms = cbSms.isChecked();

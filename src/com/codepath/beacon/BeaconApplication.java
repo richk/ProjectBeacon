@@ -10,7 +10,7 @@ import android.util.Log;
 import com.codepath.beacon.contracts.ParseUserContracts;
 import com.codepath.beacon.data.Beacon;
 import com.codepath.beacon.models.Recipe;
-import com.codepath.beacon.models.TriggerNotification;
+import com.codepath.beacon.models.TriggerAction;
 import com.codepath.beacon.scan.BeaconManager;
 import com.codepath.beacon.scan.BeaconNotifier;
 import com.codepath.beacon.scan.BleDeviceInfo;
@@ -43,11 +43,11 @@ public class BeaconApplication extends Application {
     ParseObject.registerSubclass(Recipe.class);
     // TODO: Parse.enableLocalDatastore(this);
     ParseObject.registerSubclass(BleDeviceInfo.class);
-    ParseObject.registerSubclass(TriggerNotification.class);
+    ParseObject.registerSubclass(TriggerAction.class);
     Parse.initialize(this, APP_ID, CLIENT_KEY);
     Recipe.isInitialized = true;
     BleDeviceInfo.isInitialized = true;
-    TriggerNotification.isInitialized = true;
+    TriggerAction.isInitialized = true;
     beaconApplication = this;
 
 //    UniversalBeaconListener listener = new UniversalBeaconListener();

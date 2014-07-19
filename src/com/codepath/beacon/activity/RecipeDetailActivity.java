@@ -19,10 +19,11 @@ import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.R;
 import com.codepath.beacon.contracts.RecipeContracts;
 import com.codepath.beacon.contracts.RecipeContracts.TRIGGERS;
+import com.codepath.beacon.contracts.TriggerActionContracts;
 import com.codepath.beacon.fragments.RecipeAlertDialog;
 import com.codepath.beacon.models.Recipe;
-import com.codepath.beacon.models.TriggerNotification;
-import com.codepath.beacon.models.TriggerNotification.NOTIFICATION_TYPE;
+import com.codepath.beacon.models.TriggerAction;
+import com.codepath.beacon.models.TriggerAction.NOTIFICATION_TYPE;
 import com.codepath.beacon.scan.BeaconListener;
 import com.codepath.beacon.scan.BeaconManager;
 import com.codepath.beacon.scan.BleActivity;
@@ -87,7 +88,7 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 		recipe = new Recipe();
 		recipe.setBeacon(oldRecipe.getBeacon());
 		recipe.setDisplayName(oldRecipe.getDisplayName());
-		recipe.setTriggerNotification(oldRecipe.getTriggerNotification());
+		recipe.setTriggerAction(oldRecipe.getTriggerAction());
 		recipe.setTriggerActionDisplayName(oldRecipe.getTriggerActionDisplayName());
 		recipe.setActivationDate(oldRecipe.getActivationDate());
 	    recipe.setTrigger(oldRecipe.getTrigger());
@@ -124,7 +125,7 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 		tvSelectedBeacon.setText(recipe.getBeacon().getName());
 
 		TextView tvSelectedAction = (TextView) findViewById(R.id.tvSelectedAction);
-		if (recipe.getTriggerNotification() != null && recipe.getTrigger() != null)
+		if (recipe.getTriggerAction() != null && recipe.getTrigger() != null)
 			tvSelectedAction.setText(recipe.getTriggerActionDisplayName() + " on " + recipe.getTrigger());
 
 		//TODO: Change image depends on beacon UUID/MajorID/MonorID and on SMS/Push notification
@@ -153,13 +154,13 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 				        	}
 				        }
 					});
-					recipe.getParseObject(RecipeContracts.TRIGGERNOTIFICATION).fetchIfNeededInBackground(new GetCallback<ParseObject>() {
+					recipe.getParseObject(RecipeContracts.TRIGGERACTION).fetchIfNeededInBackground(new GetCallback<ParseObject>() {
 
 						@Override
 						public void done(ParseObject noticationObject,
 								ParseException done) {
 							if (done == null) {
-							    recipe.setTriggerNotification((TriggerNotification) noticationObject);
+							    recipe.setTriggerAction((TriggerAction) noticationObject);
 							} else {
 								Log.e(LOG_TAG, "ParseException", done);
 							}
@@ -207,6 +208,8 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 
 	public void onSetAction(View view) {
 		Intent scanIntent = new Intent(this, RecipeActionActivity.class);
+		scanIntent.putExtra(RecipeContracts.RECIPE_ACTION, recipe.getTriggerAction());
+		scanIntent.putExtra(RecipeContracts.TRIGGER, recipe.getTrigger());
 		startActivityForResult(scanIntent, 1);
 	}
 
@@ -258,7 +261,7 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 				if (isSms) {
 					phn = data.getStringExtra("phone");
 				}
-				TriggerNotification notification = new TriggerNotification();
+				TriggerAction notification = new TriggerAction();
 				if (isSms) {
 				    notification.setType(NOTIFICATION_TYPE.SMS.name());
 				} else {
@@ -268,7 +271,7 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 				if (phn != null) {
 				    notification.setExtra(phn);
 				}
-				recipe.setTriggerNotification(notification);
+				recipe.setTriggerAction(notification);
 				recipe.setTriggerActionDisplayName(notification.getType());
 				recipe.setTrigger(trigger);
 				if (!oldRecipe.getTrigger().equals(recipe.getTrigger())) {

@@ -18,13 +18,10 @@ import com.codepath.beacon.adapter.RecipeArrayAdapter;
 import com.codepath.beacon.contracts.RecipeContracts;
 import com.codepath.beacon.contracts.RecipeContracts.TRIGGERS;
 import com.codepath.beacon.models.Recipe;
-import com.codepath.beacon.models.TriggerNotification;
 import com.codepath.beacon.scan.BeaconManager;
 import com.codepath.beacon.scan.BleDeviceInfo;
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -54,7 +51,7 @@ public class RecipeListFragment extends Fragment {
 		query.whereEqualTo(RecipeContracts.USERID, currentUserID);
 		query.addAscendingOrder(RecipeContracts.DISPLAYNAME);
 		query.include(RecipeContracts.BEACON);
-		query.include(RecipeContracts.TRIGGERNOTIFICATION);
+		query.include(RecipeContracts.TRIGGERACTION);
 		// Execute the find asynchronously
 		query.findInBackground(new FindCallback<Recipe>() {
 			public void done(List<Recipe> itemList, ParseException e) {
@@ -70,7 +67,7 @@ public class RecipeListFragment extends Fragment {
 					aRecipes.addAll(recipes);
 					BeaconApplication.getApplication().addAllRecipes(recipes);
 				} else {
-					Log.d("item", "Error: " + e.getMessage());
+					Log.d(LOG_TAG, "Error: " + e.getMessage());
 				}
 			}
 		});
