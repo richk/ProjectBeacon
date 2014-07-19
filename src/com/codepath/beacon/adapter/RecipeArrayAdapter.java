@@ -47,7 +47,7 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 		tvBeaconName.setText(recipe.getDisplayName());
 		tvTrigger.setText(recipe.getTrigger());
 		tvNotification.setText(recipe.getTriggerActionDisplayName());
-	    tbTrigger.setChecked(recipe.isStatus());
+	  tbTrigger.setChecked(recipe.isStatus());
 		
 		// pass recipe to activity view
 		v.setTag(recipe);
@@ -58,7 +58,7 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 				
 				Recipe recipe = (Recipe) v.getTag();
 				String objID = recipe.getObjectId();
-                String fn = recipe.getDisplayName();
+        String fn = recipe.getDisplayName();
 				activationDate = recipe.getActivationDate();
 				if (activationDate == null)
 					activationDate = new Date();

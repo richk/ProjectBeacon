@@ -23,10 +23,10 @@
         android:layout_alignTop="@+id/tvIFLabel"
         android:layout_marginLeft="16dp"
         android:layout_toRightOf="@+id/tvIFLabel"
-        android:maxHeight="50dp"
-        android:maxWidth="50dp"
+        android:adjustViewBounds="true"
+        android:padding="2dp"
         android:onClick="onScanBeacon"
-        android:src="@drawable/ic_beacon_btn" />
+        android:src="@drawable/ic_beacon" />
 
     <ImageButton
         android:id="@+id/btn_notification"
@@ -51,10 +51,13 @@
         android:id="@+id/tvActivationDatelab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvIFLabel"
-        android:layout_below="@+id/btn_beacon"
-        android:layout_marginTop="55dp"
-        android:text="@string/tvActivateOn" />
+        android:layout_alignTop="@+id/tvThenLabel"
+        android:layout_marginLeft="24dp"
+        android:layout_toRightOf="@+id/tvThenLabel"
+        android:onClick="onSetAction"
+        android:adjustViewBounds="true"
+        android:padding="2dp"
+        android:src="@drawable/ic_notification" />
 
     <TextView
         android:id="@+id/tvActivationDate"
@@ -143,9 +146,9 @@
         android:id="@+id/tvSelectedAction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tvSelectedBeacon"
-        android:layout_alignLeft="@+id/btn_notification"
-        android:text="@string/tvAction_lab" 
-        android:textSize="12sp" />
+        android:layout_alignLeft="@+id/tvIFLabel"
+        android:layout_below="@+id/btn_beacon"
+        android:layout_marginTop="37dp"
+        android:text="" />
 
 </RelativeLayout>
