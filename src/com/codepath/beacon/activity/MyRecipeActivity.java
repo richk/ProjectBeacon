@@ -38,7 +38,7 @@ public class MyRecipeActivity extends FragmentActivity {
 	}
 	
 	public void onAddAction(MenuItem mi) {
-		Intent createRecipeIntent = new Intent(this, CreateRecipeActivity.class);
+		Intent createRecipeIntent = new Intent(this, RecipeDetailActivity.class);
 		createRecipeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivityForResult(createRecipeIntent, CREATE_REQUEST_CODE);
 	}

@@ -1,6 +1,7 @@
 package com.codepath.beacon.activity;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -10,14 +11,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.R;
+import com.codepath.beacon.contracts.RecipeContracts;
+import com.codepath.beacon.contracts.RecipeContracts.TRIGGERS;
 import com.codepath.beacon.fragments.RecipeAlertDialog;
 import com.codepath.beacon.models.Recipe;
+import com.codepath.beacon.models.TriggerNotification;
+import com.codepath.beacon.models.TriggerNotification.NOTIFICATION_TYPE;
 import com.codepath.beacon.scan.BeaconListener;
 import com.codepath.beacon.scan.BeaconManager;
 import com.codepath.beacon.scan.BleActivity;
@@ -27,13 +33,17 @@ import com.codepath.beacon.ui.RecipeActionActivity;
 import com.parse.DeleteCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 public class RecipeDetailActivity extends Activity implements BeaconListener{
+	private static final String LOG_TAG = RecipeDetailActivity.class.getSimpleName();
 	private Recipe recipe;
 	private Recipe oldRecipe;
 	BeaconManager beaconManager;
+	private boolean createFlag = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,27 +88,27 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 	private void populateRecipeDetail() {
 		//		String objID = getIntent().getStringExtra("ObjectID");
 		oldRecipe = getIntent().getParcelableExtra("recipe");
+		recipe = new Recipe();
 		if (oldRecipe != null) {
-			recipe = new Recipe(oldRecipe.getFriendlyName(), oldRecipe.getUUID());
+			recipe.setBeacon(oldRecipe.getBeacon());
+			recipe.setDisplayName(oldRecipe.getDisplayName());
+			recipe.setTriggerNotification(oldRecipe.getTriggerNotification());
+			recipe.setTriggerActionDisplayName(oldRecipe.getTriggerActionDisplayName());
 			recipe.setActivationDate(oldRecipe.getActivationDate());
-			recipe.setMajorID(oldRecipe.getMajorID());
-			recipe.setMinorID(oldRecipe.getMinorID());
-			recipe.setSms(oldRecipe.isSms());
-			recipe.setPushNotification(oldRecipe.isPushNotification());
-			recipe.setContactNum(oldRecipe.getContactNum());
 			recipe.setTrigger(oldRecipe.getTrigger());
 			recipe.setStatus(oldRecipe.isStatus());
-			recipe.setMessage(oldRecipe.getMessage());
 			Log.e("RecipeDetailActivity", "User ID for old recipe:" + oldRecipe.getUserID());
 			recipe.setUserID(oldRecipe.getUserID());
-			recipe.setTriggeredCount(oldRecipe.getTriggeredCount());
+			//			recipe.setTriggeredCount(oldRecipe.getTriggeredCount());
 			recipe.setObjectId(oldRecipe.getObjectId());
+			Log.d(LOG_TAG, "Recipe object id:" + recipe.getObjectId());
 
-			Log.d("RecipeDetailActivity", "populateRecipeDetail():Old recipe:" + oldRecipe.getFriendlyName());
-			Log.d("RecipeDetailActivity", "populateRecipeDetail():New recipe:" + recipe.getFriendlyName());
+			Log.d("RecipeDetailActivity", "populateRecipeDetail():Old recipe:" + oldRecipe.getBeacon().getName());
+			Log.d("RecipeDetailActivity", "populateRecipeDetail():New recipe:" + recipe.getBeacon().getName());
 		}
-		else 
-			recipe = new Recipe();
+		else {
+			createFlag = true;
+		}
 		showRecipe();
 		//		findRecipeInBackground(objID);
 	}
@@ -112,8 +122,12 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 		TextView tvTriggerandNotification = (TextView) findViewById(R.id.tvTriggerandNotification);
 		TextView tvSelectedBeacon = (TextView) findViewById(R.id.tvSelectedBeacon);
 		TextView tvSelectedAction = (TextView) findViewById(R.id.tvSelectedAction);
+		ImageButton ibPlus1 = (ImageButton) findViewById(R.id.btn_beacon);
+		ImageButton ibPlus2 = (ImageButton) findViewById(R.id.btn_notification);
 
-		if (oldRecipe != null) {		
+		//		TextView tvBeaconnameandUUID = (TextView) findViewById(R.id.tvBeaconnameandUUID);
+
+		if (!createFlag) {
 			if (recipe.getActivationDate() != null) {	
 				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");   
 				String reportDate = sdf.format(recipe.getActivationDate());
@@ -122,44 +136,85 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 			tvTriggeredCount.setText(Integer.toString(recipe.getTriggeredCount()));		
 			tbStatus.setChecked(recipe.isStatus());			
 		}
-		else {
+		else
+		{
 			tvActivationDate.setVisibility(View.GONE);
 			tvActivationDate_lab.setVisibility(View.GONE);
 			tvTriggeredCount.setVisibility(View.GONE);
 			tvTriggeredCount_lab.setVisibility(View.GONE);
-			tbStatus.setVisibility(View.GONE);
+			tbStatus.setVisibility(View.GONE);			
 		}
 
-		if (recipe.getFriendlyName()!= null)
-			tvSelectedBeacon.setText(recipe.getFriendlyName());
-		if (recipe.getNotification() != null && recipe.getTrigger() != null)
-			tvSelectedAction.setText(recipe.getNotification() + " on " + recipe.getTrigger());
-		if (recipe.toString() != null)
-			tvTriggerandNotification.setText(recipe.toString());		
+		// Image button control
+		if (createFlag) {
+			if (recipe.getBeacon() == null) {
+				ibPlus1.setImageResource(R.drawable.blueplus);
+				ibPlus2.setImageResource(R.drawable.ic_grayplus);
+			}
+			else {
+				ibPlus1.setImageResource(R.drawable.ic_beacon);
+				if (recipe.getTriggerNotification() == null) 
+					ibPlus2.setImageResource(R.drawable.redplus);
+				else
+					ibPlus2.setImageResource(R.drawable.ic_notification);			
+			}
+
+		}
+		else {
+			ibPlus1.setImageResource(R.drawable.ic_beacon);
+			ibPlus2.setImageResource(R.drawable.ic_notification);
+		}
+
+		if (recipe.getBeacon() != null && recipe.getBeacon().getName() != null)
+			tvSelectedBeacon.setText(recipe.getBeacon().getName());
+
+		if (recipe.getTriggerNotification() != null && recipe.getTrigger() != null)
+			tvSelectedAction.setText(recipe.getTriggerActionDisplayName() + " on " + recipe.getTrigger());
+
+		if (recipe.getDisplayName() != null && recipe.getTriggerActionDisplayName() != null )
+			tvTriggerandNotification.setText(recipe.getDisplayName() + " receive " + 
+					recipe.getTriggerActionDisplayName() + " on " + recipe.getTrigger());
+
 		//TODO: Change image depends on beacon UUID/MajorID/MonorID and on SMS/Push notification
 
 	}
+
+
 
 	public void onScanBeacon(View view) {
 		Intent scanIntent = new Intent(this, BleActivity.class);
 		startActivityForResult(scanIntent, 0);
 	}
 
-	public void onChooseAction(View view) {
-		//TODO: integration: call startAction activity, return trigger, message, sms, pushnotification and phone number
-		// set: String trigger, String message, boolean sms, boolean push, String contact
-		recipe.setBeaconAction("leaving", "Your beacon is leaving", false, true, "555-444-3333");		
-		showRecipe();
-	}
 
 	public void findRecipeInBackground(final String recipeID) {
 		ParseQuery<Recipe> query = ParseQuery.getQuery(Recipe.class);
 		query.getInBackground(recipeID, new GetCallback<Recipe>() {
 			public void done(Recipe item, ParseException e) {
 				if (e == null) {
-					// Access data using the `get` methods for the object
-					recipe = item;
+					recipe.getParseObject(RecipeContracts.BEACON).fetchIfNeededInBackground(new GetCallback<ParseObject>() {
+						public void done(ParseObject object, ParseException e) {
+							if (e == null) {
+								recipe.setBeacon((BleDeviceInfo) object);
+							} else {
+								Log.e(LOG_TAG, "ParseException", e);
+							}
+						}
+					});
+					recipe.getParseObject(RecipeContracts.TRIGGERNOTIFICATION).fetchIfNeededInBackground(new GetCallback<ParseObject>() {
+
+						@Override
+						public void done(ParseObject noticationObject,
+								ParseException done) {
+							if (done == null) {
+								recipe.setTriggerNotification((TriggerNotification) noticationObject);
+							} else {
+								Log.e(LOG_TAG, "ParseException", done);
+							}
+						}
+					});
 					showRecipe();
+
 				} else {
 					// something went wrong
 				}
@@ -176,25 +231,30 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 			alert.show(getFragmentManager(), null);
 			return;
 		}
+		if (createFlag) {
+			String userID = ParseUser.getCurrentUser().getObjectId();
+			recipe.setUserID(userID);
+			// set default values for recipe
+			recipe.setStatus(true);
+			recipe.setActivationDate(new Date());
+			recipe.setTriggeredCount(0);
+		}
+
+		Log.d(LOG_TAG, "Saving an existing recipe:" + recipe.getObjectId());
 		recipe.saveInBackground(new SaveCallback() {
 			@Override
 			public void done(ParseException exception) {
 				if (exception == null) {
 					Log.d("Recipe", "Recipe saved successfully");
-					if (oldRecipe != null)
+					if (!createFlag)
 						BeaconApplication.getApplication().deleteRecipe(oldRecipe);
 					BeaconApplication.getApplication().addNewRecipe(recipe);
-					BleDeviceInfo device = new BleDeviceInfo(
-							recipe.getFriendlyName(), null, recipe.getUUID(), 
-							Integer.parseInt(recipe.getMajorID()), 
-							Integer.parseInt(recipe.getMinorID()), 0);
 					if("approaching".equalsIgnoreCase(recipe.getTrigger())){
-						beaconManager.monitorDeviceEntry(device);
+						beaconManager.monitorDeviceEntry(recipe.getBeacon());
 					}else if("leaving".equalsIgnoreCase(recipe.getTrigger())){
-						beaconManager.monitorDeviceExit(device);
+						beaconManager.monitorDeviceExit(recipe.getBeacon());
 					}
-
-					returnToMyRecipe();
+					returnToMyRecipe(RecipeContracts.RECIPE_ACTION_UPDATE);
 
 				} else {
 					Log.e("Recipe", "ParseException on save", exception);
@@ -220,6 +280,8 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 				}
 			}				
 		});
+		BeaconApplication.getApplication().deleteRecipe(recipe);
+		//		beaconManager.stopMonitoring(recipe.getBeacon());
 	}
 
 	public void returnToMyRecipe() {
@@ -237,7 +299,12 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 		if (requestCode == 0) {
 			if (resultCode == RESULT_OK) {
 				BleDeviceInfo deviceInfo = (BleDeviceInfo) data.getParcelableExtra("beacon");
-				recipe.setBeacon(deviceInfo.getUUID(), String.valueOf(deviceInfo.getMajorId()), String.valueOf(deviceInfo.getMinorId()), deviceInfo.getName());		
+				if (oldRecipe != null && !oldRecipe.getBeacon().equals(recipe.getBeacon())) {
+					recipe.setEditState(true);;
+				}
+				recipe.setBeacon(deviceInfo);		
+				recipe.setDisplayName(deviceInfo.getName());
+				deviceInfo.setEditState(false);
 				showRecipe();
 			}
 		} else if (requestCode == 1) {
@@ -250,19 +317,27 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 				if (isSms) {
 					phn = data.getStringExtra("phone");
 				}
-				recipe.setBeaconAction(trigger, message, isSms, isNotification, phn);
+				TriggerNotification notification = new TriggerNotification();
+				if (isSms) {
+					notification.setType(NOTIFICATION_TYPE.SMS.name());
+				} else {
+					notification.setType(NOTIFICATION_TYPE.NOTIFICATION.name());
+				}
+				notification.setMessage(message);
+				if (phn != null) {
+					notification.setExtra(phn);
+				}
+				recipe.setTriggerNotification(notification);
+				recipe.setTriggerActionDisplayName(notification.getType());
+				recipe.setTrigger(trigger);
+				if (oldRecipe != null && !oldRecipe.getTrigger().equals(recipe.getTrigger())) {
+					recipe.setEditState(true);
+				}
 				showRecipe();
-
-				// Why need the following monitor? Already in save??
-				BleDeviceInfo device = new BleDeviceInfo(
-						recipe.getFriendlyName(), null, recipe.getUUID(), 
-						Integer.parseInt(recipe.getMajorID()), 
-						Integer.parseInt(recipe.getMinorID()), 0);
-
-				if("approaching".equalsIgnoreCase(recipe.getTrigger())){
-					beaconManager.monitorDeviceEntry(device);
-				}else if("leaving".equalsIgnoreCase(recipe.getTrigger())){
-					beaconManager.monitorDeviceExit(device);
+				if(TRIGGERS.APPROACHING.name().equalsIgnoreCase(recipe.getTrigger())){
+					beaconManager.monitorDeviceEntry(recipe.getBeacon());
+				}else if(TRIGGERS.LEAVING.name().equalsIgnoreCase(recipe.getTrigger())){
+					beaconManager.monitorDeviceExit(recipe.getBeacon());
 				}
 
 			}
