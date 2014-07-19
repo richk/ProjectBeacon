@@ -97,9 +97,9 @@ public class AddBeaconFragment extends DialogFragment {
         if (deviceInfo.getName() != null) {
         	etDeviceName.setText(deviceInfo.getName());
         }
-    	tvMacAddress.setText("UUID:" + deviceInfo.getUUID());
-    	tvMajorId.setText("MAJOR ID:" + String.valueOf(deviceInfo.getMajorId()));
-    	tvMinorId.setText("MINOR ID:" + String.valueOf(deviceInfo.getMinorId()));
+    	tvMacAddress.setText("UUID: " + deviceInfo.getUUID());
+    	tvMajorId.setText("Major Id: " + String.valueOf(deviceInfo.getMajorId()));
+    	tvMinorId.setText("Minor Id: " + String.valueOf(deviceInfo.getMinorId()));
     	getDialog().getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     	return view;

@@ -54,40 +54,61 @@
         android:id="@+id/tv_add_beacon_mac"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="5dp"
         android:singleLine="true"
         android:ellipsize="middle"
         android:text="@string/mac_address_string"/>
+    
+                <View 
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_marginTop="10dp"
+      android:background="@android:color/darker_gray"
+		/>
 
     <TextView
         android:id="@+id/tv_add_beacon_major_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"        
         android:text="@string/major_id_string"/>
+    
+                    <View 
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_marginTop="10dp"
+      android:background="@android:color/darker_gray"
+		/>
 
     <TextView
         android:id="@+id/tv_add_beacon_minor_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
                 android:layout_marginLeft="20dp"        
         android:text="@string/minor_id_string"/>
+    
+                    <View 
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_marginTop="10dp"
+      android:background="@android:color/darker_gray"
+		/>
  
     <LinearLayout 
         android:orientation="horizontal"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent">
         
         <TextView
             android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"        	
-            android:text="Name"
+            android:text="Name:"
           />
         
         <EditText
@@ -95,6 +116,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
+        android:layout_marginBottom="5dp"
         android:ems="10">
         <requestFocus />
     	</EditText>
