@@ -27,7 +27,7 @@ import com.codepath.beacon.scan.BeaconManager;
 import com.codepath.beacon.scan.BleActivity;
 import com.codepath.beacon.scan.BleDeviceInfo;
 import com.codepath.beacon.scan.BleService.State;
-import com.codepath.beacon.ui.RecipeActionActivity;
+import com.codepath.beacon.ui.RecipeActionActivity1;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -82,7 +82,7 @@ public class CreateRecipeActivity extends Activity implements BeaconListener {
 	}
 
 	public void onSetAction(View view) {
-		Intent scanIntent = new Intent(this, RecipeActionActivity.class);
+		Intent scanIntent = new Intent(this, RecipeActionActivity1.class);
 		startActivityForResult(scanIntent, 1);
 	}
 	

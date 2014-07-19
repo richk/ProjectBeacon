@@ -3,9 +3,10 @@
     tools:context="com.codepath.beacon.RecipeActionActivity" >
 
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:id="@+id/recipeSave"
+        android:icon="@drawable/ic_action_confirm"
+        android:showAsAction="ifRoom"
+        android:title="Confirm">
+    </item>
 
 </menu>

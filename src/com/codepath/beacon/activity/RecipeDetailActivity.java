@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -19,7 +18,6 @@ import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.R;
 import com.codepath.beacon.contracts.RecipeContracts;
 import com.codepath.beacon.contracts.RecipeContracts.TRIGGERS;
-import com.codepath.beacon.contracts.TriggerActionContracts;
 import com.codepath.beacon.fragments.RecipeAlertDialog;
 import com.codepath.beacon.models.Recipe;
 import com.codepath.beacon.models.TriggerAction;
@@ -29,7 +27,7 @@ import com.codepath.beacon.scan.BeaconManager;
 import com.codepath.beacon.scan.BleActivity;
 import com.codepath.beacon.scan.BleDeviceInfo;
 import com.codepath.beacon.scan.BleService.State;
-import com.codepath.beacon.ui.RecipeActionActivity;
+import com.codepath.beacon.ui.RecipeActionActivity1;
 import com.parse.DeleteCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -207,7 +205,7 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 	}
 
 	public void onSetAction(View view) {
-		Intent scanIntent = new Intent(this, RecipeActionActivity.class);
+		Intent scanIntent = new Intent(this, RecipeActionActivity1.class);
 		scanIntent.putExtra(RecipeContracts.RECIPE_ACTION, recipe.getTriggerAction());
 		scanIntent.putExtra(RecipeContracts.TRIGGER, recipe.getTrigger());
 		startActivityForResult(scanIntent, 1);

@@ -14,7 +14,7 @@ import android.telephony.SmsManager;
 import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.R;
 import com.codepath.beacon.activity.RecipeDetailActivity;
-import com.codepath.beacon.ui.RecipeActionActivity;
+import com.codepath.beacon.ui.RecipeActionActivity1;
 
 public class BeaconNotifier{
 
@@ -33,7 +33,7 @@ public class BeaconNotifier{
 		Intent resultIntent = new Intent(BeaconApplication.getApplication(), RecipeDetailActivity.class);
 
 		TaskStackBuilder stackBuilder = TaskStackBuilder.create(BeaconApplication.getApplication());
-		stackBuilder.addParentStack(RecipeActionActivity.class);
+		stackBuilder.addParentStack(RecipeActionActivity1.class);
 		stackBuilder.addNextIntent(resultIntent);
 		PendingIntent resultPendingIntent =
 		        stackBuilder.getPendingIntent(

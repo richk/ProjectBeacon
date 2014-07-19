@@ -45,9 +45,9 @@
     <string name="tvAction_lab">No Action!</string>
     <string name="rb_approaching_label">Approaching</string>
     <string name="rb_leaving_label">Leaving</string>
-    <string name="tv_trigger_label">Trigger</string>
+    <string name="tv_trigger_label">Set Trigger</string>
     <string name="activity_recipe_action_header_label">Track My Key</string>
-    <string name="tv_action_label">Action</string>
+    <string name="tv_action_label">Set Action</string>
     <string name="tv_message_label">Message</string>
     <string name="et_message_hint">Your message here</string>
     <string name="cb_notification_label">Notification</string>

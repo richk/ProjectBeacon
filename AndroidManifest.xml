@@ -63,9 +63,9 @@
         <activity android:name="com.codepath.beacon.scan.BleActivity" >
         </activity>
         <activity
-            android:name="com.codepath.beacon.ui.RecipeActionActivity"
+            android:name="com.codepath.beacon.ui.RecipeActionActivity1"
             android:label="@string/title_activity_recipe_action" >
-        </activity>
+        </activity>                
         <activity
             android:name="com.codepath.beacon.activity.CreateRecipeActivity"
             android:label="@string/title_activity_create_recipe"
