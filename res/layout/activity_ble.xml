@@ -6,8 +6,11 @@
     <TextView
         android:id="@+id/tv_saved_devices_list_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         style="?android:attr/listSeparatorTextViewStyle"
+        android:textColor="@android:color/white"
+        android:background = "@android:color/holo_orange_light"
+        android:textSize="20dp"
         android:text="Saved Devices" >
     </TextView>
 
@@ -21,9 +24,12 @@
     <TextView
         android:id="@+id/tv_new_devices_list_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_below="@id/fl_saved_devices"
         style="?android:attr/listSeparatorTextViewStyle"
+        android:textColor="@android:color/white"
+        android:background = "@android:color/holo_orange_light"
+        android:textSize="20dp"
         android:text="New Devices" >
     </TextView>
 

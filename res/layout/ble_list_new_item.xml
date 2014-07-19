@@ -6,104 +6,87 @@
     <!-- Change names of all view elements with _ to be consistent with naming scheme elsewhere -->
 
     <RelativeLayout
-        android:id="@+id/rlRssi"
+        android:id="@+id/rlRssiNew"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_centerVertical="true"
         android:background="@drawable/orange_ring_layers" >
 
         <TextView
-            android:id="@+id/tvRssi"
+            android:id="@+id/tvRssiNew"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="-70"
-            android:textColor="@android:color/black"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </RelativeLayout>
 
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="PURSE"
-            android:textColor="@android:color/black"
-            android:layout_toRightOf="@id/rlRssi"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
         <LinearLayout
-            android:id="@+id/llUUID"
+            android:id="@+id/llUUIDNew"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvName"
-            android:layout_toRightOf="@id/rlRssi" >
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@id/rlRssiNew" >
 
             <TextView
-                android:id="@+id/tvUUIDString"
+                android:id="@+id/tvUUIDStringNew"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="UUID :"
-                android:textColor="@android:color/black"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
-                android:id="@+id/tvUUID"
+                android:id="@+id/tvUUIDNew"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text=""
-                android:textColor="@android:color/black"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/llMajorId"
+            android:id="@+id/llMajorIdNew"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/rlRssi"
-            android:layout_below="@id/llUUID" >
+            android:layout_toRightOf="@id/rlRssiNew"
+            android:layout_below="@id/llUUIDNew" >
 
             <TextView
-                android:id="@+id/tvMajorIdString"
+                android:id="@+id/tvMajorIdStringNew"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="MAJOR ID :"
-                android:textColor="@android:color/black"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
-                android:id="@+id/tvMajorId"
+                android:id="@+id/tvMajorIdNew"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1"
-                android:textColor="@android:color/black"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/llMinorId"
+            android:id="@+id/llMinorIdNew"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/rlRssi"
-            android:layout_below="@id/llMajorId" >
+            android:layout_toRightOf="@id/rlRssiNew"
+            android:layout_below="@id/llMajorIdNew" >
 
             <TextView
-                android:id="@+id/tvMinorIdString"
+                android:id="@+id/tvMinorIdStringNew"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="MINOR ID :"
-                android:textColor="@android:color/black"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
-                android:id="@+id/tvMinorId"
+                android:id="@+id/tvMinorIdNew"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:textColor="@android:color/black"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </LinearLayout>
 </RelativeLayout>
