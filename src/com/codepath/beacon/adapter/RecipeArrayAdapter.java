@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.codepath.beacon.R;
 import com.codepath.beacon.activity.MyRecipeActivity;
@@ -42,7 +42,7 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 		TextView tvBeaconName = (TextView) v.findViewById(R.id.tvbeaconname);
 		TextView tvTrigger = (TextView) v.findViewById(R.id.tvtrigger);
 		TextView tvNotification = (TextView) v.findViewById(R.id.tvnotification);
-		ToggleButton tbTrigger = (ToggleButton) v.findViewById(R.id.tbtrigger);
+		Switch tbTrigger = (Switch) v.findViewById(R.id.tbtrigger);
 		
 		tvBeaconName.setText(recipe.getDisplayName());
 		tvTrigger.setText(recipe.getTrigger());

@@ -31,16 +31,15 @@
         android:textColorLink="#483D8B"
         android:textSize="13sp" />
 
-    <ToggleButton
+    <Switch
         android:id="@+id/tbtrigger"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/tvnotification"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/tvbeaconname"
-        android:text="@string/tb_label"
-        android:textOff="No"
-        android:textOn="Yes" />
+        android:textOff="Off"
+        android:textOn="On" />
 
     <TextView
         android:id="@+id/tvnotification"
