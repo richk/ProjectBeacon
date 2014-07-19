@@ -100,7 +100,7 @@
         android:layout_marginTop="25dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="25dp"        
-        android:visibility="gone"
+        android:visibility="invisible"
         android:ems="10"
         android:hint="@string/et_message_hint" >
         <requestFocus />
@@ -114,7 +114,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="15dp"
         android:ems="10"
-        android:visibility="gone"        
+        android:visibility="invisible"        
         android:hint="@string/et_phn_hint"
         android:inputType="phone" />
     

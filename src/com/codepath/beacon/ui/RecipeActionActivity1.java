@@ -41,6 +41,17 @@ public class RecipeActionActivity1 extends Activity {
 
     ivNotification = (ImageView) findViewById(R.id.ivNotification);
     ivSms = (ImageView) findViewById(R.id.ivSms);
+    
+    if(savedInstanceState != null){
+      int noti = savedInstanceState.getInt("notification_type");
+      if(noti != 0){
+        notificationType = NOTIFICATION_TYPE.values()[noti];
+      }
+      
+      rbLeaving.setChecked(savedInstanceState.getBoolean("leaving"));
+      rbApproaching.setChecked(savedInstanceState.getBoolean("approaching"));
+    }
+
 
     ivNotification.setOnClickListener(new OnClickListener() {
 
@@ -49,7 +60,7 @@ public class RecipeActionActivity1 extends Activity {
         ivNotification.setBackgroundResource(R.drawable.image_border);
         etMessage.setVisibility(View.VISIBLE);
         if (notificationType == NOTIFICATION_TYPE.SMS) {
-          etPhn.setVisibility(View.GONE);
+          etPhn.setVisibility(View.INVISIBLE);
           ivSms.setBackground(null);
         }
         notificationType = NOTIFICATION_TYPE.NOTIFICATION;
@@ -74,6 +85,14 @@ public class RecipeActionActivity1 extends Activity {
     });
 
     populateTriggerAndAction();
+  }
+    
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
+    outState.putInt("notification_type", notificationType.ordinal());
+    outState.putBoolean("leaving", rbLeaving.isChecked());
+    outState.putBoolean("approaching", rbApproaching.isChecked());
+    super.onSaveInstanceState(outState);
   }
 
   private void populateTriggerAndAction() {
