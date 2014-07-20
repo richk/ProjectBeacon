@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -17,6 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -52,6 +55,9 @@ public class BleActivity extends Activity implements
 	private Set<String> savedDeviceNames = new HashSet<String>();
 	
     private Handler uiThreadHandler;
+    
+    ImageView pbDevicesLoading;
+	Animator pbAnimator;
 
 	public BleActivity() {
 		super();
@@ -63,7 +69,11 @@ public class BleActivity extends Activity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ble);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		pbLoading = (ProgressBar) findViewById(R.id.pbDevicesLoading);
+		
+		pbDevicesLoading = (ImageView) findViewById(R.id.pbDevicesLoading);
+	    pbAnimator = AnimatorInflater.loadAnimator(this, R.anim.ble_progress_bar);
+	    pbAnimator.setTarget(pbDevicesLoading);
+		
 		loadMyDevices();
 		FragmentTransaction txNew = getFragmentManager().beginTransaction();
 		txNew.add(R.id.fl_new_devices, mNewDeviceList);
@@ -261,14 +271,15 @@ public class BleActivity extends Activity implements
     //Toast.makeText(this, "Found Device!", Toast.LENGTH_SHORT).show();
   }
   
-	@Override
-	public void onProgressStart() {
-		pbLoading.setVisibility(ProgressBar.VISIBLE);
-		
-	}
+  @Override
+  public void onProgressStart() {
+	  pbDevicesLoading.setVisibility(ImageView.VISIBLE);
+	  pbAnimator.start();
+  }
 
-	@Override
-	public synchronized void onProgressEnd() {
-		pbLoading.setVisibility(ProgressBar.INVISIBLE);
-	}
+  @Override
+  public void onProgressEnd() {
+	  pbAnimator.end();
+	  pbDevicesLoading.setVisibility(ImageView.INVISIBLE);
+  }
 }

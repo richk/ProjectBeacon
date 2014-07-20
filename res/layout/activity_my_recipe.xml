@@ -14,5 +14,13 @@
         android:layout_alignParentTop="true" >
 
     </FrameLayout>
+    
+    <ImageView
+        android:id="@+id/pbRecipesLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"
+        android:src="@drawable/ic_launcher" />
 
 </RelativeLayout>

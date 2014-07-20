@@ -1,14 +1,21 @@
 package com.codepath.beacon.activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.os.Bundle;
+import android.provider.ContactsContract.CommonDataKinds.Im;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 
+import com.codepath.beacon.OnProgressListener;
 import com.codepath.beacon.R;
 import com.codepath.beacon.contracts.RecipeContracts;
 import com.codepath.beacon.fragments.RecipeListFragment;
@@ -18,21 +25,26 @@ import com.codepath.beacon.scan.BeaconManager;
 import com.codepath.beacon.scan.BleDeviceInfo;
 import com.codepath.beacon.scan.BleService.State;
 
-public class MyRecipeActivity extends Activity implements BeaconListener{
+public class MyRecipeActivity extends Activity implements BeaconListener,OnProgressListener {
 	private static final String LOG_TAG = MyRecipeActivity.class.getSimpleName();
 	private static final int CREATE_REQUEST_CODE = 20;
 	public static final int EDIT_REQUEST_CODE = 21;
 	RecipeListFragment newFragment;
 	BeaconManager beaconManager;
+	ImageView pbRecipesLoading;
+	Animator pbAnimator;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_my_recipe);
 
 	    beaconManager = new BeaconManager(this, this);
+	    pbRecipesLoading = (ImageView) findViewById(R.id.pbRecipesLoading);
+	    pbAnimator = AnimatorInflater.loadAnimator(this, R.anim.ble_progress_bar);
+	    pbAnimator.setTarget(pbRecipesLoading);
 
+	    onProgressStart();
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		newFragment = RecipeListFragment.newInstance();
 		Log.d(LOG_TAG, "Setting beacon manager");
@@ -125,5 +137,17 @@ public class MyRecipeActivity extends Activity implements BeaconListener{
   public void onDeviceFound(BleDeviceInfo[] device) {
     // TODO Auto-generated method stub
     
+  }
+
+  @Override
+  public void onProgressStart() {
+	  pbRecipesLoading.setVisibility(ImageView.VISIBLE);
+	  pbAnimator.start();
+  }
+
+  @Override
+  public void onProgressEnd() {
+	  pbAnimator.end();
+	  pbRecipesLoading.setVisibility(ImageView.INVISIBLE);
   }
 }
