@@ -28,28 +28,27 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.codepath.beacon.ui.LoginActivity"
-            android:label="@string/app_name"
+            android:name="com.codepath.beacon.activity.HomeActivity"
+            android:label="@string/app_name" 
             android:noHistory="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.codepath.beacon.ui.SignUpActivity"
+            android:name="com.codepath.beacon.activity.LoginActivity"
+            android:label="@string/app_name"
+            android:parentActivityName="com.codepath.beacon.Activity.HomeActivity" >     
+        </activity>
+        <activity
+            android:name="com.codepath.beacon.activity.SignUpActivity"
             android:label="@string/title_activity_sign_up"
-            android:parentActivityName="com.codepath.beacon.ui.LoginActivity" >
+            android:parentActivityName="com.codepath.beacon.Activity.HomeActivity" >
         </activity>
         <activity
             android:name="com.codepath.beacon.activity.MyRecipeActivity"
             android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.codepath.beacon.activity.RecipeDetailActivity"
@@ -65,7 +64,7 @@
         <activity
             android:name="com.codepath.beacon.ui.RecipeActionActivity1"
             android:label="@string/title_activity_recipe_action" >
-        </activity>                
+        </activity>
         <activity
             android:name="com.codepath.beacon.activity.CreateRecipeActivity"
             android:label="@string/title_activity_create_recipe"

@@ -1,4 +1,4 @@
-package com.codepath.beacon.ui;
+package com.codepath.beacon.activity;
 
 import com.codepath.beacon.R;
 import com.codepath.beacon.R.id;
@@ -105,7 +105,7 @@ public class SignUpActivity extends Activity {
 	}
 
 	protected void handleSuccessfulSignup() {
-		Intent scanIntent = new Intent(this, BleActivity.class);
+		Intent scanIntent = new Intent(this, MyRecipeActivity.class);
 		startActivity(scanIntent);
 	}
 }

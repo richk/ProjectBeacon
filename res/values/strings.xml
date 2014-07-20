@@ -56,5 +56,8 @@
     <string name="btn_done_label">Save</string>
     <string name="ok">OK</string>
     <string name="defualt_recipe_alert_message">Sorry, something went wrong. Please try again</string>
-
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="signin_link_hint">Sign in</string>
+    <string name="signup_link_hint">Sign Up</string>
+    
 </resources>
