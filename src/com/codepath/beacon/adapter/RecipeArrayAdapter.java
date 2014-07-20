@@ -11,13 +11,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Switch;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.beacon.R;
 import com.codepath.beacon.activity.MyRecipeActivity;
 import com.codepath.beacon.activity.RecipeDetailActivity;
+import com.codepath.beacon.contracts.RecipeContracts.TRIGGERS;
 import com.codepath.beacon.models.Recipe;
+import com.codepath.beacon.models.TriggerAction;
 
 public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 	private List<Recipe> mRecipes;
@@ -40,15 +42,24 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 
 		// find the views within template
 		TextView tvBeaconName = (TextView) v.findViewById(R.id.tvbeaconname);
-		TextView tvTrigger = (TextView) v.findViewById(R.id.tvtrigger);
-		TextView tvNotification = (TextView) v.findViewById(R.id.tvnotification);
-		Switch tbTrigger = (Switch) v.findViewById(R.id.tbtrigger);
 		
-		tvBeaconName.setText(recipe.getDisplayName());
-		tvTrigger.setText(recipe.getTrigger());
-		tvNotification.setText(recipe.getTriggerActionDisplayName());
-	    tbTrigger.setChecked(recipe.isStatus());
+		tvBeaconName.setText(recipe.getDisplayName().toUpperCase());
 		
+		ImageView ivAction = (ImageView) v.findViewById(R.id.ivAction);
+		if (TriggerAction.NOTIFICATION_TYPE.NOTIFICATION.name().equalsIgnoreCase(recipe.getTriggerAction().getType())) {
+			ivAction.setImageResource(R.drawable.notification);
+		} else {
+			ivAction.setImageResource(R.drawable.sms);
+		}
+		
+		TextView tvRecipeDesc = (TextView) v.findViewById(R.id.tvRecipeDesc);
+		StringBuilder desc = new StringBuilder("Send ");
+		desc.append(recipe.getTriggerActionDisplayName().toLowerCase());
+		desc.append(" when ");
+		desc.append(recipe.getTrigger().toLowerCase());
+		desc.append(" ");
+		desc.append(recipe.getDisplayName());
+		tvRecipeDesc.setText(desc.toString());
 		// pass recipe to activity view
 		v.setTag(recipe);
 
@@ -70,10 +81,6 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 				((Activity)getContext()).startActivityForResult(i,MyRecipeActivity.EDIT_REQUEST_CODE);
 			}
 		});
-		
 		return v;
-
 	}
-
-
 }
