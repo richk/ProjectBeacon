@@ -7,17 +7,11 @@ import java.util.Set;
 import android.app.Application;
 import android.util.Log;
 
-import com.codepath.beacon.contracts.ParseUserContracts;
-import com.codepath.beacon.data.Beacon;
 import com.codepath.beacon.models.Recipe;
 import com.codepath.beacon.models.TriggerAction;
-import com.codepath.beacon.scan.BeaconManager;
-import com.codepath.beacon.scan.BeaconNotifier;
 import com.codepath.beacon.scan.BleDeviceInfo;
 import com.parse.Parse;
 import com.parse.ParseObject;
-import com.parse.ParseRelation;
-import com.parse.ParseUser;
 
 public class BeaconApplication extends Application {
   private static final String LOG_TAG = BeaconApplication.class.getSimpleName();
@@ -27,8 +21,6 @@ public class BeaconApplication extends Application {
   private static final String CLIENT_KEY = "MI66awL0XWsXnNrTn6KKjo27vOsCE9jwYsyk2b95";
   
   private final Set<Recipe> myRecipes = new HashSet<Recipe>();
-
-  BeaconManager beaconManager;
 
   private static BeaconApplication beaconApplication;
 
@@ -50,9 +42,6 @@ public class BeaconApplication extends Application {
     TriggerAction.isInitialized = true;
     beaconApplication = this;
 
-//    UniversalBeaconListener listener = new UniversalBeaconListener();
-//    beaconManager = new BeaconManager(this, listener);
-//    beaconManager.startListening();
   }
   
   public boolean addNewRecipe(Recipe recipe) {
