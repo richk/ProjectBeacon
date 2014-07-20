@@ -85,17 +85,6 @@
         android:layout_marginTop="98dp"
         android:text="@string/tvActivateOn" />
 
-    <ToggleButton
-        android:id="@+id/tbStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/btn_notification"
-        android:layout_below="@+id/tvTriggeredCount"
-        android:layout_marginTop="26dp"
-        android:text="ToggleButton"
-        android:textOff="No"
-        android:textOn="Yes" />
-
     <TextView
         android:id="@+id/tvTriggeredCountlab"
         android:layout_width="wrap_content"

@@ -16,11 +16,4 @@
         android:title="Delete">
     </item>
 
-    <item
-        android:id="@+id/miToggle"
-        android:icon="@drawable/ic_action_switch"
-        android:showAsAction="always|withText"
-        android:title="Active">
-    </item>
-    
 </menu>

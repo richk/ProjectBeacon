@@ -6,6 +6,7 @@ import java.util.Date;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -14,10 +15,10 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.R;
+import com.codepath.beacon.R.menu;
 import com.codepath.beacon.contracts.RecipeContracts;
 import com.codepath.beacon.contracts.RecipeContracts.TRIGGERS;
 import com.codepath.beacon.fragments.RecipeAlertDialog;
@@ -52,7 +53,7 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 		ActionBar ab = getActionBar(); 
 		ab.setDisplayHomeAsUpEnabled(true);
 		recipe = new Recipe();
-		populateRecipeDetail();
+	    populateRecipeDetail();
 		beaconManager = new BeaconManager(this, this);
 	}
 
@@ -71,9 +72,6 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) { 
 		switch (item.getItemId()) {
-		case android.R.id.home:
-			this.finish();
-			return true;
 		default:
 			return super.onOptionsItemSelected(item); 
 		}
@@ -84,6 +82,7 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 		getMenuInflater().inflate(R.menu.recipe_detail, menu);
 		return true;
 	}
+
 
 	private void populateRecipeDetail() {
 		oldRecipe = getIntent().getParcelableExtra("recipe");
@@ -122,8 +121,11 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 		TextView tvTriggeredCount = (TextView) findViewById(R.id.tvTriggeredCount);
 		tvTriggeredCount.setText(Integer.toString(recipe.getTriggeredCount()));
 
-		ToggleButton tbStatus = (ToggleButton) findViewById(R.id.tbStatus);
-		tbStatus.setChecked(recipe.isStatus());
+//		if(recipe.isStatus()){
+//		  miToggleSwitch.setIcon(R.drawable.ic_action_switch_on);
+//		}else{
+//		  miToggleSwitch.setIcon(R.drawable.ic_action_switch_off);
+//		}
 
 
 		TextView tvSelectedBeacon = (TextView) findViewById(R.id.tvSelectedBeacon);
@@ -142,8 +144,12 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 				String reportDate = sdf.format(recipe.getActivationDate());
 				tvActivationDate.setText(reportDate);
 			}		
-			tvTriggeredCount.setText(Integer.toString(recipe.getTriggeredCount()));		
-			tbStatus.setChecked(recipe.isStatus());			
+			tvTriggeredCount.setText(Integer.toString(recipe.getTriggeredCount()));
+//		     if(recipe.isStatus()){
+//		          miToggleSwitch.setIcon(R.drawable.ic_action_switch_on);
+//		        }else{
+//		          miToggleSwitch.setIcon(R.drawable.ic_action_switch_off);
+//		     }
 		}
 		else
 		{
@@ -151,7 +157,6 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 			tvActivationDate_lab.setVisibility(View.GONE);
 			tvTriggeredCount.setVisibility(View.GONE);
 			tvTriggeredCount_lab.setVisibility(View.GONE);
-			tbStatus.setVisibility(View.GONE);			
 		}
 
 		// Image button control
