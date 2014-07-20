@@ -13,12 +13,12 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.codepath.beacon.R;
 import com.codepath.beacon.activity.MyRecipeActivity;
 import com.codepath.beacon.activity.RecipeDetailActivity;
-import com.codepath.beacon.contracts.RecipeContracts.TRIGGERS;
 import com.codepath.beacon.models.Recipe;
 import com.codepath.beacon.models.TriggerAction;
 
@@ -31,7 +31,7 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Recipe recipe = (Recipe) getItem(position);
+		final Recipe recipe = (Recipe) getItem(position);
 		View v;
 
 		if (convertView == null) {
@@ -42,11 +42,20 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 		}
 
 		// find the views within template
-		TextView tvBeaconName = (TextView) v.findViewById(R.id.tvbeaconname);
-		
+		TextView tvBeaconName = (TextView) v.findViewById(R.id.tvbeaconname);		
 		tvBeaconName.setText(recipe.getDisplayName().toUpperCase());
 		
-		ImageView ivAction = (ImageView) v.findViewById(R.id.ivAction);
+		ImageView ivAction = (ImageView) v.findViewById(R.id.ivAction);		
+		final Switch swEnable = (Switch)v.findViewById(R.id.swRecipeEnable);
+		
+		swEnable.setOnClickListener(new OnClickListener() {          
+          @Override
+          public void onClick(View v) {
+            recipe.setStatus(swEnable.isChecked());
+            recipe.saveInBackground();
+          }
+        });
+		
 		if (recipe.getTriggerAction() != null) {
 		  if (TriggerAction.NOTIFICATION_TYPE.NOTIFICATION.name().equalsIgnoreCase(recipe.getTriggerAction().getType())) {
 		    ivAction.setImageResource(R.drawable.notification);
@@ -56,6 +65,11 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 		} else {
 		  Log.e("RecipeArrayAdapter", "TriggerAction is null");
 		}
+		
+		if(recipe.isStatus()){
+		  swEnable.setChecked(true);
+		}else
+		  swEnable.setChecked(false);
 		
 		TextView tvRecipeDesc = (TextView) v.findViewById(R.id.tvRecipeDesc);
 		StringBuilder desc = new StringBuilder("Send ");

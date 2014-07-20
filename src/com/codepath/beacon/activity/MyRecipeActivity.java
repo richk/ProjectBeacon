@@ -5,15 +5,11 @@ import android.animation.AnimatorInflater;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.opengl.Visibility;
 import android.os.Bundle;
-import android.provider.ContactsContract.CommonDataKinds.Im;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 
 import com.codepath.beacon.OnProgressListener;
 import com.codepath.beacon.R;
@@ -114,29 +110,21 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 
   @Override
   public void onStateChanged(State newState) {
-    // TODO Auto-generated method stub
-    
   }
 
 
   @Override
   public void onNewDeviceDiscovered(BleDeviceInfo[] devices) {
-    // TODO Auto-generated method stub
-    
   }
 
 
   @Override
   public void onDeviceLost(BleDeviceInfo[] device) {
-    // TODO Auto-generated method stub
-    
   }
 
 
   @Override
   public void onDeviceFound(BleDeviceInfo[] device) {
-    // TODO Auto-generated method stub
-    
   }
 
   @Override
