@@ -256,6 +256,16 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
       alert.show(getFragmentManager(), null);
       return;
     }
+    if (recipe.getBeacon() == null || recipe.getTrigger() == null || recipe.getTriggerAction() == null) {
+    	RecipeAlertDialog alert = new RecipeAlertDialog();
+        Bundle args = new Bundle();
+        args.putString(
+            "message",
+            "Recipe does not have beacon, trigger or trigger action defined. Please check and try again");
+        alert.setArguments(args);
+        alert.show(getFragmentManager(), null);
+        return;
+    }
     if (createFlag) {
       String userID = ParseUser.getCurrentUser().getObjectId();
       recipe.setUserID(userID);

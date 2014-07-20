@@ -3,6 +3,7 @@ package com.codepath.beacon.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +14,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.codepath.beacon.BeaconApplication;
+import com.codepath.beacon.OnProgressListener;
 import com.codepath.beacon.R;
+import com.codepath.beacon.activity.MyRecipeActivity;
 import com.codepath.beacon.adapter.RecipeArrayAdapter;
 import com.codepath.beacon.contracts.RecipeContracts;
 import com.codepath.beacon.contracts.RecipeContracts.TRIGGERS;
@@ -33,6 +36,7 @@ public class RecipeListFragment extends Fragment {
 	protected ListView lvRecipes;
 	protected int repCount =20;
 	BeaconManager beaconManager;
+	private OnProgressListener mProgressListener;
 
 	public static RecipeListFragment newInstance() {
 		RecipeListFragment recipeListFragment = new RecipeListFragment();
@@ -45,6 +49,13 @@ public class RecipeListFragment extends Fragment {
 	  beaconManager = bm;
 	}
 	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		if (activity instanceof MyRecipeActivity) {
+		    mProgressListener = (OnProgressListener) activity;	
+		}
+	}
 
 	public void findMyRecipes(int max_id, final boolean refresh) {
 		ParseQuery<Recipe> query = ParseQuery.getQuery(Recipe.class);
@@ -77,6 +88,7 @@ public class RecipeListFragment extends Fragment {
 					}
 					aRecipes.addAll(recipes);
 					BeaconApplication.getApplication().addAllRecipes(recipes);
+					mProgressListener.onProgressEnd();
 				} else {
 					Log.d(LOG_TAG, "Error: " + e.getMessage());
 				}
@@ -126,26 +138,8 @@ public class RecipeListFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
-		// Attach the listener to the AdapterView onCreate
-//		lvRecipes.setOnScrollListener(new EndlessScrollListener() {
-//			public void onLoadMore(int page, int totalItemsCount) {
-//				customLoadMoreDataFromApi(totalItemsCount); 
-//			}
-//		});
 	}
 		
-//	// Append more data into the adapter
-//	public void customLoadMoreDataFromApi(int offset) {
-//		String max_id;
-//
-//		int recipeLen = recipes.size();
-//		if ((recipeLen > 0) && (recipeLen < offset-1)){
-//			max_id = ((Recipe) recipes.get(recipeLen-1)).getBeacon().getName();
-//			findMyRecipes(max_id, false);
-//		}
-//	}
-
 	// should be called when an async task started
 	public void showProgressBar() {
 		getActivity().setProgressBarIndeterminateVisibility(true); 
