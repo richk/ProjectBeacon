@@ -85,28 +85,29 @@ public class BeaconManager {
     }
   }
 
-  public void monitorDeviceEntry(BleDeviceInfo device) {
-    sendMonitoringMessage(device, BleService.MSG_MONITOR_ENTRY);
+  public void monitorDeviceEntry(BleDeviceInfo device, String message) {
+    sendMonitoringMessage(device, message, BleService.MSG_MONITOR_ENTRY);
   }
 
-  public void monitorDeviceExit(BleDeviceInfo device) {
-    sendMonitoringMessage(device, BleService.MSG_MONITOR_EXIT);
+  public void monitorDeviceExit(BleDeviceInfo device, String message) {
+    sendMonitoringMessage(device, message, BleService.MSG_MONITOR_EXIT);
   }
   
   public void stopMonitorDeviceEntry(BleDeviceInfo device) {
-    sendMonitoringMessage(device, BleService.MSG_STOP_MONITOR_ENTRY);
+    sendMonitoringMessage(device, null, BleService.MSG_STOP_MONITOR_ENTRY);
   }
   
   public void stopMonitorDeviceEexit(BleDeviceInfo device) {
-    sendMonitoringMessage(device, BleService.MSG_STOP_MONITOR_EXIT);
+    sendMonitoringMessage(device, null, BleService.MSG_STOP_MONITOR_EXIT);
   }
   
-  private void sendMonitoringMessage(BleDeviceInfo device, int what){
+  private void sendMonitoringMessage(BleDeviceInfo device, String message, int what){
     Message msg = Message.obtain(null, what);
     if (msg != null) {
       try {
         Bundle bundle = new Bundle();
         bundle.putParcelable(BleService.KEY_DEVICE_DETAILS, device);
+        bundle.putString(BleService.KEY_MESSAGE, message);
         msg.setData(bundle);
         mService.send(msg);
       } catch (RemoteException e) {

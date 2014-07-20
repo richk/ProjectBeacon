@@ -157,8 +157,6 @@ public class BleActivity extends Activity implements
 		FragmentManager manager = getFragmentManager();
 		AddBeaconFragment fragment = AddBeaconFragment.newInstance("Add Beacon", deviceInfo);
 		fragment.show(manager, "add_beacon");
-		beaconManager.monitorDeviceEntry(deviceInfo);
-		beaconManager.monitorDeviceExit(deviceInfo);
 	}
 
 	private void stateChanged(BleService.State newState) {
@@ -222,8 +220,6 @@ public class BleActivity extends Activity implements
 		FragmentManager manager = getFragmentManager();
 		AddBeaconFragment fragment = AddBeaconFragment.newInstance("Update Beacon", deviceInfo);
 		fragment.show(manager, "update_beacon");
-		beaconManager.monitorDeviceEntry(deviceInfo);
-		beaconManager.monitorDeviceExit(deviceInfo);
 	}
 
   @Override
