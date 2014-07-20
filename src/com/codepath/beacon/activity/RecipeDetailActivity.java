@@ -127,7 +127,6 @@ public class RecipeDetailActivity extends Activity implements BeaconListener{
 //		  miToggleSwitch.setIcon(R.drawable.ic_action_switch_off);
 //		}
 
-
 		TextView tvSelectedBeacon = (TextView) findViewById(R.id.tvSelectedBeacon);
 		TextView tvSelectedAction = (TextView) findViewById(R.id.tvSelectedAction);
 		ImageButton ibPlus1 = (ImageButton) findViewById(R.id.btn_beacon);
