@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${packageName}.${activityClass}"
+    android:background="@drawable/home_background" >
+
+   <TextView
+       android:id="@+id/tvNewUser"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_alignParentBottom="true"
+       android:layout_alignParentLeft="true"
+       android:layout_marginBottom="60dp"
+       android:layout_marginLeft="33dp"
+       android:clickable="true"
+       android:onClick="onSignin"
+       android:text="@string/signin_link_hint"
+       android:textAppearance="?android:attr/textAppearanceLarge"
+       android:textColor="@android:color/black"
+       android:textStyle="italic" />
+
+   <TextView
+       android:id="@+id/tvSignUp"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_alignBaseline="@+id/tvNewUser"
+       android:layout_alignBottom="@+id/tvNewUser"
+       android:layout_alignParentRight="true"
+       android:layout_marginRight="22dp"
+       android:clickable="true"
+       android:onClick="onSignup"
+       android:text="@string/signup_link_hint"
+       android:textAppearance="?android:attr/textAppearanceLarge"
+       android:textColor="@android:color/black"
+       android:textStyle="italic" />
+
+</RelativeLayout>

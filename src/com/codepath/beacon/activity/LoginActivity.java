@@ -1,10 +1,9 @@
-package com.codepath.beacon.ui;
+package com.codepath.beacon.activity;
 
 import com.codepath.beacon.R;
 import com.codepath.beacon.R.id;
 import com.codepath.beacon.R.layout;
 import com.codepath.beacon.R.menu;
-import com.codepath.beacon.activity.MyRecipeActivity;
 import com.codepath.beacon.scan.BleActivity;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -59,11 +58,6 @@ public class LoginActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-	
-	public void onSigningUp(View view) {
-		Intent i = new Intent(this, SignUpActivity.class);
-		startActivity(i);
 	}
 	
 	public void onLogin(View view) {

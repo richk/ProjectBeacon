@@ -14,7 +14,8 @@
         android:layout_marginLeft="27dp"
         android:layout_marginTop="90dp"
         android:text="@string/if_label"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <ImageButton
         android:id="@+id/btn_beacon"
@@ -24,7 +25,7 @@
         android:layout_marginLeft="16dp"
         android:layout_toRightOf="@+id/tvIFLabel"
         android:adjustViewBounds="true"
-        android:padding="2dp"
+        android:padding="0dp"
         android:onClick="onScanBeacon"
         android:src="@drawable/ic_beacon" />
 
@@ -35,7 +36,8 @@
         android:layout_alignTop="@+id/btn_beacon"
         android:layout_centerHorizontal="true"
         android:text="@string/then_label"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <ImageButton
         android:id="@+id/btn_notification"
@@ -46,7 +48,7 @@
         android:layout_toRightOf="@+id/tvThenLabel"
         android:onClick="onSetAction"
         android:adjustViewBounds="true"
-        android:padding="2dp"
+        android:padding="0dp"
         android:src="@drawable/ic_notification" />
 
     <TextView
