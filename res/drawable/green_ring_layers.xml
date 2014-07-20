@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:drawable="@drawable/shape_dark_green_ring"/>
+    <item android:drawable="@drawable/shape_medium_green_ring"/>
+    <item android:drawable="@drawable/shape_light_green_ring"/>
+</layer-list>

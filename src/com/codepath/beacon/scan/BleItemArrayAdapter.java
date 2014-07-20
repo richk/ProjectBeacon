@@ -3,6 +3,8 @@ package com.codepath.beacon.scan;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,8 @@ import android.widget.TextView;
 import com.codepath.beacon.R;
 
 public class BleItemArrayAdapter extends ArrayAdapter<BleDeviceInfo> {
+	private static final String LOG_TAG = BleItemArrayAdapter.class.getSimpleName();
+	private static final int DEFAULT_RSSI_VALUE = -70;
 
   public BleItemArrayAdapter(Context context, List<BleDeviceInfo> items) {
     super(context, 0, items);
@@ -29,8 +33,22 @@ public class BleItemArrayAdapter extends ArrayAdapter<BleDeviceInfo> {
     TextView tvMajorId = (TextView)bleView.findViewById(R.id.tvMajorId);
     TextView tvMinorId = (TextView)bleView.findViewById(R.id.tvMinorId);
     
-    if (item.getRssi() != 0) {
+    int rssi;
+    if (item.getRssi() == 0) {
+    	rssi = DEFAULT_RSSI_VALUE;
+    	tvRssi.setText(String.valueOf(DEFAULT_RSSI_VALUE));
+    } else {
+    	rssi = item.getRssi();
     	tvRssi.setText(String.valueOf(item.getRssi()));
+    }
+    if (rssi > -72) {
+    	Log.d(LOG_TAG, "Rssi value greater than -72");
+    	Drawable beaconDrawable = bleView.getResources().getDrawable(R.drawable.green_ring_layers);
+    	tvRssi.setBackground(beaconDrawable);
+    } else {
+    	Log.d(LOG_TAG, "Rssi value less than -72");
+    	Drawable beaconDrawable = bleView.getResources().getDrawable(R.drawable.orange_ring_layers);
+    	tvRssi.setBackground(beaconDrawable);
     }
     if (item.getName() != null) {
         tvName.setText(item.getName());

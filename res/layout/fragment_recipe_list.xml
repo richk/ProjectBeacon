@@ -3,10 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
+
     <ListView
-    android:id="@+id/lvRecipes"
-    android:layout_height="fill_parent"
-    android:layout_width="fill_parent" 
-    /> 
+        android:id="@+id/lvRecipes"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/list_border"
+        android:divider="#b5b5b5"
+        android:dividerHeight="1dp"
+        android:listSelector="@drawable/states_selector_list"
+        android:padding="1dp" />
+
 </LinearLayout>
