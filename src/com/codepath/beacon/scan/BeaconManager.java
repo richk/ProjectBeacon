@@ -19,7 +19,7 @@ import android.util.Log;
 public class BeaconManager {
 
   public static final String TAG = "BeaconManager";
-  private final Messenger mMessenger;
+  private Messenger mMessenger = null;
   private Intent mServiceIntent;
   private Messenger mService = null;
 
@@ -52,12 +52,14 @@ public class BeaconManager {
 
   public BeaconManager(Context ctxt, BeaconListener listener) {
     this.ctxt = ctxt;
-    
-    HandlerThread thread = new HandlerThread("BeaconManagerHandler", android.os.Process.THREAD_PRIORITY_BACKGROUND);
-    thread.start();
-
-    mMessenger = new Messenger(new IncomingHandler(thread.getLooper(), listener));
     mServiceIntent = new Intent(ctxt, BleService.class);
+
+    if(listener != null){
+      HandlerThread thread = new HandlerThread("BeaconManagerHandler", android.os.Process.THREAD_PRIORITY_BACKGROUND);
+      thread.start();
+      mMessenger = new Messenger(new IncomingHandler(thread.getLooper(), listener));
+    }
+    
     ctxt.startService(mServiceIntent);
   }
 

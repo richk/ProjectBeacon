@@ -35,7 +35,7 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_recipe);
 
-	    beaconManager = new BeaconManager(this, this);
+	    beaconManager = new BeaconManager(this, null);
 	    pbRecipesLoading = (ImageView) findViewById(R.id.pbRecipesLoading);
 	    pbAnimator = AnimatorInflater.loadAnimator(this, R.anim.ble_progress_bar);
 	    pbAnimator.setTarget(pbRecipesLoading);

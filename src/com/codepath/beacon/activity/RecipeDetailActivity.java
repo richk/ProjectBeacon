@@ -57,7 +57,7 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
     ab.setDisplayHomeAsUpEnabled(true);
     recipe = new Recipe();
     populateRecipeDetail();
-    beaconManager = new BeaconManager(this, this);
+    beaconManager = new BeaconManager(this, null);
   }
 
   @Override
@@ -397,13 +397,13 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
 
   @Override
   public void onDeviceLost(BleDeviceInfo[] device) {
-    Toast.makeText(BeaconApplication.getApplication(),
-        "Lost a device..." + device[0], Toast.LENGTH_SHORT).show();
+//    Toast.makeText(BeaconApplication.getApplication(),
+//        "Lost a device..." + device[0], Toast.LENGTH_SHORT).show();
   }
 
   @Override
   public void onDeviceFound(BleDeviceInfo[] device) {
-    Toast.makeText(BeaconApplication.getApplication(),
-        "Found a device..." + device[0], Toast.LENGTH_SHORT).show();
+//    Toast.makeText(BeaconApplication.getApplication(),
+//        "Found a device..." + device[0], Toast.LENGTH_SHORT).show();
   }
 }

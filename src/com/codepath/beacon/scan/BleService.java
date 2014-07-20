@@ -150,7 +150,9 @@ public class BleService extends Service implements
       if (service != null) {
         switch (msg.what) {
         case MSG_REGISTER:
-          service.mClients.add(msg.replyTo);
+          if(msg.replyTo != null){
+            service.mClients.add(msg.replyTo);
+          }
           Log.d(TAG, "Registered");
           //service.startScan();
           break;
