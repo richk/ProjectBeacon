@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -46,10 +47,14 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 		tvBeaconName.setText(recipe.getDisplayName().toUpperCase());
 		
 		ImageView ivAction = (ImageView) v.findViewById(R.id.ivAction);
-		if (TriggerAction.NOTIFICATION_TYPE.NOTIFICATION.name().equalsIgnoreCase(recipe.getTriggerAction().getType())) {
-			ivAction.setImageResource(R.drawable.notification);
+		if (recipe.getTriggerAction() != null) {
+		  if (TriggerAction.NOTIFICATION_TYPE.NOTIFICATION.name().equalsIgnoreCase(recipe.getTriggerAction().getType())) {
+		    ivAction.setImageResource(R.drawable.notification);
+		  } else {
+		    ivAction.setImageResource(R.drawable.sms);
+		  }
 		} else {
-			ivAction.setImageResource(R.drawable.sms);
+		  Log.e("RecipeArrayAdapter", "TriggerAction is null");
 		}
 		
 		TextView tvRecipeDesc = (TextView) v.findViewById(R.id.tvRecipeDesc);

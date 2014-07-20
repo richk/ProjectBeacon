@@ -18,6 +18,7 @@ import com.codepath.beacon.adapter.RecipeArrayAdapter;
 import com.codepath.beacon.contracts.RecipeContracts;
 import com.codepath.beacon.contracts.RecipeContracts.TRIGGERS;
 import com.codepath.beacon.models.Recipe;
+import com.codepath.beacon.models.TriggerAction;
 import com.codepath.beacon.scan.BeaconManager;
 import com.codepath.beacon.scan.BleDeviceInfo;
 import com.parse.FindCallback;
@@ -59,7 +60,17 @@ public class RecipeListFragment extends Fragment {
 					// Access the array of results here		        	
 					List<Recipe> recipes = new ArrayList<Recipe>(itemList);
 					for (final Recipe recipe : recipes) {
-						setBeaconMonitoring(recipe, recipe.getBeacon());
+					    if (recipe.getBeacon() == null) {
+					      Log.e(LOG_TAG, "Beacon in recipe is null");  
+					    }
+						if (recipe.getTriggerAction() == null) {
+						  Log.e(LOG_TAG, "TriggerAction is null. Adding default notification type");
+						  TriggerAction action = new TriggerAction();
+						  action.setMessage("");
+						  action.setType(TriggerAction.NOTIFICATION_TYPE.NOTIFICATION.name());
+						  recipe.setTriggerAction(action);
+						}
+	                    setBeaconMonitoring(recipe, recipe.getBeacon());
 					}
 					if (refresh) {
 						aRecipes.clear();
@@ -76,11 +87,13 @@ public class RecipeListFragment extends Fragment {
     private void setBeaconMonitoring(Recipe recipe, BleDeviceInfo device) {
     	if(TRIGGERS.LEAVING.name().equalsIgnoreCase(recipe.getTrigger())){					    
     		if(beaconManager != null){
-    			beaconManager.monitorDeviceExit(device, recipe.getTriggerAction().getMessage());
+    		  String message = recipe.getTriggerAction()==null?null:recipe.getTriggerAction().getMessage();
+    			beaconManager.monitorDeviceExit(device, message);
     		}
     	}else if(TRIGGERS.APPROACHING.name().equalsIgnoreCase(recipe.getTrigger())){
     		if(beaconManager != null){
-    			beaconManager.monitorDeviceEntry(device, recipe.getTriggerAction().getMessage());
+              String message = recipe.getTriggerAction()==null?null:recipe.getTriggerAction().getMessage();
+              beaconManager.monitorDeviceEntry(device, message);
     		}
     	}
     }
