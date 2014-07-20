@@ -5,13 +5,13 @@
 
     <TextView
         android:id="@+id/tv_saved_devices_list_header"
+        style="?android:attr/listSeparatorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        style="?android:attr/listSeparatorTextViewStyle"
+        android:background="@android:color/holo_orange_light"
+        android:text="Saved Devices"
         android:textColor="@android:color/white"
-        android:background = "@android:color/holo_orange_light"
-        android:textSize="20dp"
-        android:text="Saved Devices" >
+        android:textSize="20dp" >
     </TextView>
 
     <FrameLayout
@@ -23,31 +23,29 @@
 
     <TextView
         android:id="@+id/tv_new_devices_list_header"
+        style="?android:attr/listSeparatorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_below="@id/fl_saved_devices"
-        style="?android:attr/listSeparatorTextViewStyle"
+        android:background="@android:color/holo_orange_light"
+        android:text="New Devices"
         android:textColor="@android:color/white"
-        android:background = "@android:color/holo_orange_light"
-        android:textSize="20dp"
-        android:text="New Devices" >
+        android:textSize="20dp" >
     </TextView>
-
 
     <FrameLayout
         android:id="@+id/fl_new_devices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-	    android:layout_below="@id/tv_new_devices_list_header" >
+        android:layout_below="@id/tv_new_devices_list_header" >
     </FrameLayout>
 
-    <ProgressBar
+    <ImageView
         android:id="@+id/pbDevicesLoading"
-        style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_launcher"
         android:visibility="invisible" />
 
 </RelativeLayout>
