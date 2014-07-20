@@ -53,6 +53,7 @@ public class BleService extends Service implements
   private static final long SCAN_INTERVAL = 10000;
 
   public static final String KEY_DEVICE_DETAILS = "device_details";
+  public static final String KEY_MESSAGE = "message";
 
   private final IncomingHandler mHandler;
   private final Messenger mMessenger;
@@ -62,9 +63,14 @@ public class BleService extends Service implements
   private final Map<String, BleDeviceInfo> currentScannedDevices = new HashMap<String, BleDeviceInfo>();
   private final Map<String, BleDeviceInfo> lastScannedDevices = new HashMap<String, BleDeviceInfo>();
   
-  private final Set<BleDeviceInfo> monitoringEntry = new HashSet<BleDeviceInfo>();
-  private final Set<BleDeviceInfo> monitoringExit = new HashSet<BleDeviceInfo>();
+  private final Map<String, MonitorObj> monitoringEntry = new HashMap<String, MonitorObj>();
+  private final Map<String, MonitorObj> monitoringExit = new HashMap<String, MonitorObj>();
 
+  private class MonitorObj{
+    BleDeviceInfo device;
+    String message;
+  }
+  
   public enum State {
     UNKNOWN, IDLE, SCANNING, BLUETOOTH_OFF, CONNECTING, CONNECTED, DISCONNECTING
   }
@@ -158,13 +164,21 @@ public class BleService extends Service implements
           break;
         case MSG_MONITOR_ENTRY:
           BleDeviceInfo device = (BleDeviceInfo)msg.getData().getParcelable(KEY_DEVICE_DETAILS);
+          String message = msg.getData().getString(KEY_MESSAGE);
           Log.d(TAG, "Adding device for monitoring entry = " + device.getKey());
-          service.monitoringEntry.add(device);
+          MonitorObj obj = service.new MonitorObj();
+          obj.device = device;
+          obj.message = message;
+          service.monitoringEntry.put(device.getKey(), obj);
           break;
         case MSG_MONITOR_EXIT:
           device = (BleDeviceInfo)msg.getData().getParcelable(KEY_DEVICE_DETAILS);
+          message = msg.getData().getString(KEY_MESSAGE);
           Log.d(TAG, "Adding device for monitoring exit = " + device.getKey());
-          service.monitoringExit.add(device);
+          obj = service.new MonitorObj();
+          obj.device = device;
+          obj.message = message;
+          service.monitoringExit.put(device.getKey(), obj);
           break;
         case MSG_STOP_MONITOR_ENTRY:
           device = (BleDeviceInfo)msg.getData().getParcelable(KEY_DEVICE_DETAILS);
@@ -249,22 +263,26 @@ public class BleService extends Service implements
     protected Void doInBackground(ScanData... params) {
       ScanData scanData = params[0];
       
-      List<BleDeviceInfo> foundDevices = new ArrayList<BleDeviceInfo>();
+      List<MonitorObj> foundDevices = new ArrayList<MonitorObj>();
       for(BleDeviceInfo device : scanData.currentDevices.values()){
-        if(!scanData.previousDevices.containsKey(device.getKey())){
-          Log.d(TAG, "Found new device! " + device.getKey());
-          if(monitoringEntry.contains(device))
-            foundDevices.add(device);
+        String deviceKey = device.getKey();
+        if(!scanData.previousDevices.containsKey(deviceKey)){
+          Log.d(TAG, "Found new device! " + deviceKey);
+          if(monitoringEntry.containsKey(deviceKey)){
+            foundDevices.add(monitoringEntry.get(deviceKey));
+          }
         }
       }
       sendDeviceMessage(foundDevices, BleService.MSG_MONITOR_ENTRY);
       
-      List<BleDeviceInfo> lostDevices = new ArrayList<BleDeviceInfo>();
+      List<MonitorObj> lostDevices = new ArrayList<MonitorObj>();
       for(BleDeviceInfo device : scanData.previousDevices.values()){
-        if(!scanData.currentDevices.containsKey(device.getKey())){
-          Log.d(TAG, "Lost a device! " + device.getKey());
-          if(monitoringExit.contains(device))
-            lostDevices.add(device);          
+        String deviceKey = device.getKey();
+        if(!scanData.currentDevices.containsKey(deviceKey)){
+          Log.d(TAG, "Lost a device! " + deviceKey);
+          if(monitoringExit.containsKey(deviceKey)){
+            lostDevices.add(monitoringExit.get(deviceKey));          
+          }
         }
       }
       sendDeviceMessage(lostDevices, BleService.MSG_MONITOR_EXIT);
@@ -272,25 +290,21 @@ public class BleService extends Service implements
       return null;
     }
     
-    private void sendDeviceMessage(List<BleDeviceInfo> devices, int what){
+    private void sendDeviceMessage(List<MonitorObj> devices, int what){
 
       BeaconNotifier uu = new BeaconNotifier();
       if(devices != null && devices.size() > 0){
-        Message msg = Message.obtain(null, what);      
-        Bundle bundle = new Bundle();
-        int i = 0;
-        BleDeviceInfo[] deviceDataArr = new BleDeviceInfo[devices.size()];
-        for (BleDeviceInfo info : devices) {
-          deviceDataArr[i++] = info;
-        }
-        bundle.putParcelableArray(KEY_DEVICE_DETAILS, deviceDataArr);
-        msg.setData(bundle);
-        //sendMessage(msg);
         if(what == MSG_MONITOR_EXIT){
-          uu.sendNotification("Lost device = " + devices.get(0).getName());
+          String message = devices.get(0).message;
+          if(message == null || message.trim().length() == 0)
+            message = "Lost device = " + devices.get(0).device.getName();
+          uu.sendNotification(message);
         }
-        else if(what == MSG_MONITOR_ENTRY){
-          uu.sendNotification("Found device = " + devices.get(0).getName()); 
+        else if(what == MSG_MONITOR_ENTRY){          
+          String message = devices.get(0).message;
+          if(message == null || message.trim().length() == 0)
+            message = "Found device = " + devices.get(0).device.getName();
+          uu.sendNotification(message);
         }          
       }
     }
