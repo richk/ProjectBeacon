@@ -22,7 +22,7 @@
     <string name="trigger_label">Approaching</string>
     <string name="action_label">send notification</string>
     <string name="tb_label">On</string>
-    <string name="title_activity_recipe_detail">RecipeDetailActivity</string>
+    <string name="title_activity_recipe_detail">Recipe</string>
     <string name="if_label">IF</string>
     <string name="then_label">Then</string>
     <string name="tvActivateOn">"Activated on:"</string>

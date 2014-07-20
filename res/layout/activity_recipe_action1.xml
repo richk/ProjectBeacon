@@ -10,7 +10,6 @@
         android:id="@+id/tv_trigger"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_track_text"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="15dp"
         android:layout_alignParentTop="true"

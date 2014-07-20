@@ -7,6 +7,7 @@
         android:showAsAction="ifRoom"
         android:title="Save">
     </item>
+    
     <item
         android:id="@+id/miDelete"
         android:icon="@drawable/ic_delete"
@@ -15,4 +16,11 @@
         android:title="Delete">
     </item>
 
+    <item
+        android:id="@+id/miToggle"
+        android:icon="@drawable/ic_action_switch"
+        android:showAsAction="always|withText"
+        android:title="Active">
+    </item>
+    
 </menu>
