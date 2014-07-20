@@ -62,6 +62,7 @@ public class BleActivity extends Activity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ble);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		pbLoading = (ProgressBar) findViewById(R.id.pbDevicesLoading);
 		loadMyDevices();
 		FragmentTransaction txNew = getFragmentManager().beginTransaction();

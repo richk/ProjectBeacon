@@ -51,26 +51,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity
             android:name="com.codepath.beacon.activity.RecipeDetailActivity"
             android:label="@string/title_activity_recipe_detail"
+            android:launchMode="singleTop"
             android:parentActivityName="com.codepath.beacon.activity.MyRecipeActivity" >
         </activity>
 
         <service android:name="com.codepath.beacon.scan.BleService" >
         </service>
 
-        <activity android:name="com.codepath.beacon.scan.BleActivity" >
+        <activity 
+            android:name="com.codepath.beacon.scan.BleActivity" 
+            android:parentActivityName="com.codepath.beacon.activity.RecipeDetailActivity" >
         </activity>
         <activity
             android:name="com.codepath.beacon.ui.RecipeActionActivity1"
-            android:label="@string/title_activity_recipe_action" >
-        </activity>                
-        <activity
-            android:name="com.codepath.beacon.activity.CreateRecipeActivity"
-            android:label="@string/title_activity_create_recipe"
-            android:parentActivityName="com.codepath.beacon.activity.MyRecipeActivity" >
-        </activity>
+            android:label="@string/title_activity_recipe_action"
+            android:parentActivityName="com.codepath.beacon.activity.RecipeDetailActivity" >            
+        </activity>                        
     </application>
 
 </manifest>

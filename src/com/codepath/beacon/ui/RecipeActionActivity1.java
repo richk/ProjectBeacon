@@ -34,6 +34,7 @@ public class RecipeActionActivity1 extends Activity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_recipe_action1);
+    getActionBar().setDisplayHomeAsUpEnabled(true);
     etMessage = (EditText) findViewById(R.id.et_message);
     etPhn = (EditText) findViewById(R.id.et_phone);
     rbLeaving = (RadioButton) findViewById(R.id.rb_leaving);
