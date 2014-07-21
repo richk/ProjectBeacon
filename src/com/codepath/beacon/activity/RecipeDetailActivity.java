@@ -285,10 +285,10 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
             BeaconApplication.getApplication().deleteRecipe(oldRecipe);
           BeaconApplication.getApplication().addNewRecipe(recipe);
           if (TRIGGERS.APPROACHING.name().equalsIgnoreCase(recipe.getTrigger())) {
-            beaconManager.monitorDeviceEntry(recipe.getBeacon(), recipe.getTriggerAction().getMessage());
+            beaconManager.monitorDeviceEntry(recipe.getBeacon(), recipe.getTriggerAction());
           } else if (TRIGGERS.LEAVING.name().equalsIgnoreCase(
               recipe.getTrigger())) {
-            beaconManager.monitorDeviceExit(recipe.getBeacon(), recipe.getTriggerAction().getMessage());
+            beaconManager.monitorDeviceExit(recipe.getBeacon(), recipe.getTriggerAction());
           }
           returnToMyRecipe(RecipeContracts.RECIPE_ACTION_UPDATE);
 

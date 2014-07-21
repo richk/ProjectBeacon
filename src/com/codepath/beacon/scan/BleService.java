@@ -5,12 +5,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.UUID;
 
 import android.app.Notification;
@@ -33,6 +31,8 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.codepath.beacon.R;
+import com.codepath.beacon.models.TriggerAction;
+import com.codepath.beacon.models.TriggerAction.NOTIFICATION_TYPE;
 
 public class BleService extends Service implements
     BluetoothAdapter.LeScanCallback {
@@ -53,8 +53,9 @@ public class BleService extends Service implements
   private static final long SCAN_INTERVAL = 10000;
 
   public static final String KEY_DEVICE_DETAILS = "device_details";
-  public static final String KEY_MESSAGE = "message";
+  public static final String KEY_NOTIF_DETAILS = "notif_details";
 
+  
   private final IncomingHandler mHandler;
   private final Messenger mMessenger;
   private final List<Messenger> mClients = new LinkedList<Messenger>();
@@ -68,7 +69,7 @@ public class BleService extends Service implements
 
   private class MonitorObj{
     BleDeviceInfo device;
-    String message;
+    TriggerAction notif;
   }
   
   public enum State {
@@ -166,20 +167,24 @@ public class BleService extends Service implements
           break;
         case MSG_MONITOR_ENTRY:
           BleDeviceInfo device = (BleDeviceInfo)msg.getData().getParcelable(KEY_DEVICE_DETAILS);
-          String message = msg.getData().getString(KEY_MESSAGE);
+          TriggerAction notif = (TriggerAction)msg.getData().getParcelable(KEY_NOTIF_DETAILS);
+          if(notif == null)
+            notif = new TriggerAction();            
           Log.d(TAG, "Adding device for monitoring entry = " + device.getKey());
           MonitorObj obj = service.new MonitorObj();
           obj.device = device;
-          obj.message = message;
+          obj.notif = notif;
           service.monitoringEntry.put(device.getKey(), obj);
           break;
         case MSG_MONITOR_EXIT:
           device = (BleDeviceInfo)msg.getData().getParcelable(KEY_DEVICE_DETAILS);
-          message = msg.getData().getString(KEY_MESSAGE);
+          notif = (TriggerAction)msg.getData().getParcelable(KEY_NOTIF_DETAILS);
+          if(notif == null)
+            notif = new TriggerAction();            
           Log.d(TAG, "Adding device for monitoring exit = " + device.getKey());
           obj = service.new MonitorObj();
           obj.device = device;
-          obj.message = message;
+          obj.notif = notif;
           service.monitoringExit.put(device.getKey(), obj);
           break;
         case MSG_STOP_MONITOR_ENTRY:
@@ -296,22 +301,23 @@ public class BleService extends Service implements
 
       BeaconNotifier uu = new BeaconNotifier();
       if(devices != null && devices.size() > 0){
-        if(what == MSG_MONITOR_EXIT){
-          String message = devices.get(0).message;
-          if(message == null || message.trim().length() == 0)
-            message = "Lost device = " + devices.get(0).device.getName();
-          uu.sendNotification(message);
-        }
-        else if(what == MSG_MONITOR_ENTRY){          
-          String message = devices.get(0).message;
-          if(message == null || message.trim().length() == 0)
+        MonitorObj obj = devices.get(0);
+        String message = null;
+        message = obj.notif.getMessage();
+        if(message == null || message.trim().length() == 0){
+          if(what == MSG_MONITOR_EXIT)
+            message = "Lost device = " + obj.device.getName();
+          else if(what == MSG_MONITOR_ENTRY)
             message = "Found device = " + devices.get(0).device.getName();
+        }
+        if(obj.notif.getType().equals(NOTIFICATION_TYPE.NOTIFICATION.toString()))
           uu.sendNotification(message);
-        }          
+        else if(obj.notif.getType().equals(NOTIFICATION_TYPE.SMS.toString()))
+          uu.sendSMS(obj.notif.getExtra(), message);
       }
     }
   }
-  
+
   private class ScanData{
     private final Map<String, BleDeviceInfo> currentDevices;
     private final Map<String, BleDeviceInfo> previousDevices;

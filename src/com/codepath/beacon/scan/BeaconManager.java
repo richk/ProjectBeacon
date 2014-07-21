@@ -8,13 +8,14 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
+
+import com.codepath.beacon.models.TriggerAction;
 
 public class BeaconManager {
 
@@ -87,12 +88,12 @@ public class BeaconManager {
     }
   }
 
-  public void monitorDeviceEntry(BleDeviceInfo device, String message) {
-    sendMonitoringMessage(device, message, BleService.MSG_MONITOR_ENTRY);
+  public void monitorDeviceEntry(BleDeviceInfo device, TriggerAction notif) {
+    sendMonitoringMessage(device, notif, BleService.MSG_MONITOR_ENTRY);
   }
 
-  public void monitorDeviceExit(BleDeviceInfo device, String message) {
-    sendMonitoringMessage(device, message, BleService.MSG_MONITOR_EXIT);
+  public void monitorDeviceExit(BleDeviceInfo device, TriggerAction notif) {
+    sendMonitoringMessage(device, notif, BleService.MSG_MONITOR_EXIT);
   }
   
   public void stopMonitorDeviceEntry(BleDeviceInfo device) {
@@ -103,13 +104,15 @@ public class BeaconManager {
     sendMonitoringMessage(device, null, BleService.MSG_STOP_MONITOR_EXIT);
   }
   
-  private void sendMonitoringMessage(BleDeviceInfo device, String message, int what){
+  private void sendMonitoringMessage(BleDeviceInfo device, 
+      TriggerAction notif, int what){
     Message msg = Message.obtain(null, what);
     if (msg != null) {
       try {
         Bundle bundle = new Bundle();
         bundle.putParcelable(BleService.KEY_DEVICE_DETAILS, device);
-        bundle.putString(BleService.KEY_MESSAGE, message);
+        if(notif != null)
+          bundle.putParcelable(BleService.KEY_NOTIF_DETAILS, notif);
         msg.setData(bundle);
         mService.send(msg);
       } catch (RemoteException e) {

@@ -99,13 +99,11 @@ public class RecipeListFragment extends Fragment {
     private void setBeaconMonitoring(Recipe recipe, BleDeviceInfo device) {
     	if(TRIGGERS.LEAVING.name().equalsIgnoreCase(recipe.getTrigger())){					    
     		if(beaconManager != null){
-    		  String message = recipe.getTriggerAction()==null?null:recipe.getTriggerAction().getMessage();
-    			beaconManager.monitorDeviceExit(device, message);
+    		  beaconManager.monitorDeviceExit(device, recipe.getTriggerAction());
     		}
     	}else if(TRIGGERS.APPROACHING.name().equalsIgnoreCase(recipe.getTrigger())){
     		if(beaconManager != null){
-              String message = recipe.getTriggerAction()==null?null:recipe.getTriggerAction().getMessage();
-              beaconManager.monitorDeviceEntry(device, message);
+              beaconManager.monitorDeviceEntry(device, recipe.getTriggerAction());
     		}
     	}
     }
