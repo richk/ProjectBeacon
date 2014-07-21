@@ -29,7 +29,7 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-public class RecipeListFragment extends Fragment {
+public class RecipeListFragment extends Fragment implements RecipeUpdateListener {
 	private static final String LOG_TAG = RecipeListFragment.class.getSimpleName();
 	protected ArrayList<Recipe> recipes;
 	protected ArrayAdapter<Recipe> aRecipes;
@@ -81,7 +81,10 @@ public class RecipeListFragment extends Fragment {
 						  action.setType(TriggerAction.NOTIFICATION_TYPE.NOTIFICATION.name());
 						  recipe.setTriggerAction(action);
 						}
-	                    setBeaconMonitoring(recipe, recipe.getBeacon());
+						if (recipe.isStatus()) {
+							Log.d(LOG_TAG, "Recipe is enabled. Start monitoring on beacon:" + recipe.getBeacon());
+	                        setBeaconMonitoring(recipe, recipe.getBeacon());
+						}
 					}
 					if (refresh) {
 						aRecipes.clear();
@@ -115,7 +118,7 @@ public class RecipeListFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		recipes = new ArrayList<Recipe>();
-		aRecipes = new RecipeArrayAdapter(getActivity(), recipes);
+		aRecipes = new RecipeArrayAdapter(getActivity(), recipes, this);
 	}
 
 	@Override
@@ -164,6 +167,22 @@ public class RecipeListFragment extends Fragment {
 
 	public void onDeleteRecipe(Recipe recipe) {
 		aRecipes.remove(recipe);
+	}
+
+	@Override
+	public void onStatusChange(Recipe recipe, boolean status) {
+		Log.d(LOG_TAG, "onStatusChange() for recipe:" + recipe.getDisplayName() + " , status:" + status);
+		recipe.setStatus(status);
+        recipe.saveInBackground();
+        if (!status) {
+        	if (TRIGGERS.APPROACHING.name().equals(recipe.getTrigger())) {
+        		Log.d(LOG_TAG, "Setting monitoring on device entry for beacon:" + recipe.getDisplayName());
+        		beaconManager.stopMonitorDeviceEntry(recipe.getBeacon());
+        	} else {
+        		Log.d(LOG_TAG, "Setting monitoring on device exit for beacon:" + recipe.getDisplayName());
+        		beaconManager.stopMonitorDeviceEexit(recipe.getBeacon());
+        	}
+        }
 	}
 
 }
