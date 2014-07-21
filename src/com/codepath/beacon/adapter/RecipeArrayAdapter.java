@@ -19,14 +19,21 @@ import android.widget.TextView;
 import com.codepath.beacon.R;
 import com.codepath.beacon.activity.MyRecipeActivity;
 import com.codepath.beacon.activity.RecipeDetailActivity;
+import com.codepath.beacon.contracts.RecipeContracts.TRIGGERS;
+import com.codepath.beacon.fragments.RecipeUpdateListener;
 import com.codepath.beacon.models.Recipe;
 import com.codepath.beacon.models.TriggerAction;
 
 public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
+	private static final String LOG_TAG = RecipeArrayAdapter.class.getSimpleName();
+	
 	private List<Recipe> mRecipes;
-	public RecipeArrayAdapter(Context context, List<Recipe> recipes) {
+	private RecipeUpdateListener mRecipeUpdateListener;
+	
+	public RecipeArrayAdapter(Context context, List<Recipe> recipes, RecipeUpdateListener listener) {
 		super(context, R.layout.recipe_item, recipes);
 		mRecipes = recipes;
+		mRecipeUpdateListener = listener;
 	}
 
 	@Override
@@ -44,17 +51,16 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 		// find the views within template
 		TextView tvBeaconName = (TextView) v.findViewById(R.id.tvbeaconname);		
 		tvBeaconName.setText(recipe.getDisplayName().toUpperCase());
-		
+
 		ImageView ivAction = (ImageView) v.findViewById(R.id.ivAction);		
 		final Switch swEnable = (Switch)v.findViewById(R.id.swRecipeEnable);
 		
 		swEnable.setOnClickListener(new OnClickListener() {          
-          @Override
-          public void onClick(View v) {
-            recipe.setStatus(swEnable.isChecked());
-            recipe.saveInBackground();
-          }
-        });
+			@Override
+			public void onClick(View v) {
+				mRecipeUpdateListener.onStatusChange(recipe, swEnable.isChecked());
+			}
+		});
 		
 		if (recipe.getTriggerAction() != null) {
 		  if (TriggerAction.NOTIFICATION_TYPE.NOTIFICATION.name().equalsIgnoreCase(recipe.getTriggerAction().getType())) {
@@ -63,7 +69,7 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 		    ivAction.setImageResource(R.drawable.sms);
 		  }
 		} else {
-		  Log.e("RecipeArrayAdapter", "TriggerAction is null");
+		  Log.e(LOG_TAG, "TriggerAction is null");
 		}
 		
 		if(recipe.isStatus()){
