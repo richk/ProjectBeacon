@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_background"
+    android:background="@drawable/beacon_background"
     tools:context=".LoginActivity" >
 
     <RelativeLayout
@@ -24,13 +24,14 @@
             android:layout_marginTop="14dp"
             android:text="@string/login_hint"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#1e1a1a" />
+            android:textColor="@android:color/white"/>
 
         <EditText
             android:id="@+id/etEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvLoginText"
+            android:textColorHint="#CCCCCC"            
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:ems="10"
@@ -41,6 +42,7 @@
             android:id="@+id/etPwd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColorHint="#CCCCCC"            
             android:layout_alignLeft="@+id/etEmail"
             android:layout_below="@+id/etEmail"
             android:layout_marginTop="20dp"
@@ -72,6 +74,9 @@
         android:layout_below="@+id/relativeLayout1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="31dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textColor="@android:color/white"        
         android:background="#287AA9"
         android:onClick="onLogin"
         android:text="@string/login_button_string" />

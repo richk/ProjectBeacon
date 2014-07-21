@@ -2,9 +2,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/homepagesimplified"
+    android:background="@drawable/beacon_background"
     tools:context="${packageName}.${activityClass}" >
 
+    <TextView
+        android:id="@+id/tvNewUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="175dp"
+        android:layout_marginLeft="33dp"
+        android:layout_marginRight="10dp"
+        android:text="@string/home_greeting"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"/>
+        
     <TextView
         android:id="@+id/tvNewUser"
         android:layout_width="wrap_content"
@@ -16,9 +29,8 @@
         android:clickable="true"
         android:onClick="onSignin"
         android:text="@string/signin_link_hint"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/white"
-        android:textSize="30sp"
+        android:textColor="#BBBBBB"
+        android:textSize="20sp"
         android:textStyle="italic" />
 
     <TextView
@@ -32,9 +44,8 @@
         android:clickable="true"
         android:onClick="onSignup"
         android:text="@string/signup_link_hint"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/white"
-        android:textSize="30sp"
+        android:textColor="#BBBBBB"
+        android:textSize="20sp"
         android:textStyle="italic" />
 
 </RelativeLayout>

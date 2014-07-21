@@ -76,5 +76,10 @@
         <item name="android:popupMenuStyle">@style/PopupMenu.Beacon</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Beacon</item>
     </style>
+    
+    <style name="Theme.Beacon.NoActionBar" parent="Theme.Beacon">
+    <item name="android:windowActionBar">false</item>
+    <item name="android:windowNoTitle">true</item>
+</style>
 
 </resources>

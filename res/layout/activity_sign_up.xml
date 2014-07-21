@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_background"
+    android:background="@drawable/beacon_background"
     tools:context="com.codepath.beacon.activity.SignUpActivity" >
 
     <RelativeLayout
@@ -19,12 +19,12 @@
             android:id="@+id/tvSignUpText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@android:color/white"            
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="14dp"
             android:text="@string/sign_up_link_hint"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#1e1a1a" />
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
 
         <EditText
             android:id="@+id/etSignUpEmail"
@@ -34,6 +34,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:ems="10"
+            android:textColorHint="#CCCCCC"            
             android:hint="@string/login_user_hint"
             android:inputType="textEmailAddress" />
 
@@ -44,6 +45,7 @@
             android:layout_alignLeft="@+id/etSignUpEmail"
             android:layout_below="@+id/etSignUpEmail"
             android:layout_marginTop="20dp"
+            android:textColorHint="#CCCCCC"            
             android:ems="10"
             android:hint="@string/password_hint"
             android:inputType="textPassword" />
@@ -56,6 +58,9 @@
         android:layout_below="@+id/relativeLayout1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"
+        android:textColor="@android:color/white"        
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:background="#287AA9"
         android:onClick="onSignup"
         android:text="@string/signup_button_string" />

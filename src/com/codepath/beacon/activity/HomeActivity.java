@@ -1,16 +1,13 @@
 package com.codepath.beacon.activity;
 
-import com.codepath.beacon.R;
-import com.codepath.beacon.R.layout;
-import com.parse.ParseUser;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.view.Window;
+
+import com.codepath.beacon.R;
+import com.parse.ParseUser;
 
 public class HomeActivity extends Activity {
 
@@ -23,10 +20,11 @@ public class HomeActivity extends Activity {
 		if (currentUser != null) {
 		  handleSuccessfulLogin();
 		}
+		
 	}
 
 	protected void handleSuccessfulLogin() {
-		Toast.makeText(getApplicationContext(), "Hooray..the user can login", Toast.LENGTH_SHORT).show();
+		//Toast.makeText(getApplicationContext(), "Hooray..the user can login", Toast.LENGTH_SHORT).show();
 		Intent scanIntent = new Intent(this, MyRecipeActivity.class);
 		startActivity(scanIntent);
 		
