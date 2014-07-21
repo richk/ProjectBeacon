@@ -55,9 +55,9 @@ public class BeaconManager {
     mServiceIntent = new Intent(ctxt, BleService.class);
 
     if(listener != null){
-      HandlerThread thread = new HandlerThread("BeaconManagerHandler", android.os.Process.THREAD_PRIORITY_BACKGROUND);
-      thread.start();
-      mMessenger = new Messenger(new IncomingHandler(thread.getLooper(), listener));
+//      HandlerThread thread = new HandlerThread("BeaconManagerHandler", android.os.Process.THREAD_PRIORITY_BACKGROUND);
+//      thread.start();
+      mMessenger = new Messenger(new IncomingHandler(Looper.myLooper(), listener));
     }
     
     ctxt.startService(mServiceIntent);
