@@ -12,8 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.R;
@@ -126,12 +126,12 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
     TextView tvTriggeredCount = (TextView) findViewById(R.id.tvTriggeredCount);
     tvTriggeredCount.setText(Integer.toString(recipe.getTriggeredCount()));
 
-    // if(recipe.isStatus()){
+    //if(recipe.isStatus()){
     // miToggleSwitch.setIcon(R.drawable.ic_action_switch_on);
     // }else{
     // miToggleSwitch.setIcon(R.drawable.ic_action_switch_off);
-    // }
-
+    //}
+    
     TextView tvSelectedBeacon = (TextView) findViewById(R.id.tvSelectedBeacon);
     TextView tvSelectedAction = (TextView) findViewById(R.id.tvSelectedAction);
     ImageButton ibPlus1 = (ImageButton) findViewById(R.id.btn_beacon);
