@@ -42,8 +42,10 @@ public class BleNewItemArrayAdapter extends ArrayAdapter<BleDeviceInfo> {
         	drawableResId = R.drawable.red_ring_layers;
         } else if (rssi < BleDeviceInfoContracts.STRONG_RSSI_VALUE) {
         	drawableResId = R.drawable.orange_ring_layers;
-        } else {
+        } else if (rssi >= BleDeviceInfoContracts.STRONG_RSSI_VALUE) {
         	drawableResId = R.drawable.green_ring_layers;
+        } else {
+        	drawableResId = R.drawable.grey_ring_layers;
         }
         Drawable beaconDrawable = bleView.getResources().getDrawable(drawableResId);
         tvRssi.setBackground(beaconDrawable);
