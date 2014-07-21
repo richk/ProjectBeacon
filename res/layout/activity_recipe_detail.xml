@@ -56,6 +56,7 @@
         android:layout_alignLeft="@+id/btn_notification"
         android:layout_above="@id/btn_notification"
         android:background="@drawable/chatbubble"
+        android:layout_marginRight="10dp"
         android:gravity="center"
         android:text="@string/tvAction_lab"
         android:textSize="14sp" />
