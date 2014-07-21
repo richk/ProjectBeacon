@@ -12,17 +12,17 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="27dp"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="115dp"
         android:text="@string/if_label"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="22dp"
         android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/btn_beacon"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_alignTop="@+id/tvIFLabel"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="90dp"
         android:layout_toRightOf="@+id/tvIFLabel"
         android:adjustViewBounds="true"
         android:onClick="onScanBeacon"
@@ -32,10 +32,10 @@
         android:id="@+id/tvThenLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/btn_beacon"
+        android:layout_alignTop="@+id/tvIFLabel"
         android:layout_centerHorizontal="true"
         android:text="@string/then_label"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="22dp"
         android:textStyle="bold" />
 
     <ImageView

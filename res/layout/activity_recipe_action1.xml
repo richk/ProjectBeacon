@@ -46,6 +46,7 @@
 
         <RadioButton
             android:id="@+id/rb_leaving"
+            android:layout_marginLeft="25dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/rb_leaving_label" />
@@ -88,7 +89,8 @@
         android:layout_height="100dp"
         android:layout_below="@+id/tv_action"
         android:layout_toRightOf="@id/ivNotification"
-        android:layout_marginTop="21dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="20dp"
         android:src="@drawable/smsgreen1" />
     
     <TextView

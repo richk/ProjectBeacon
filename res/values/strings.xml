@@ -25,7 +25,7 @@
     <string name="title_activity_recipe_detail">Recipe</string>
     <string name="title_recipe_list">My Recipes</string>
     <string name="title_scan_screen">Beacon List</string>
-    <string name="if_label">IF</string>
+    <string name="if_label">If</string>
     <string name="then_label">Then</string>
     <string name="tvActivateOn">"Activated on:"</string>
     <string name="tvDate">Date</string>
