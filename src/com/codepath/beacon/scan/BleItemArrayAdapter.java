@@ -36,8 +36,9 @@ public class BleItemArrayAdapter extends ArrayAdapter<BleDeviceInfo> {
     
     int rssi;
     if (item.getRssi() == 0) {
-    	rssi = BleDeviceInfoContracts.OUT_OF_RANGE_RSSI_VALUE;
-    	tvRssi.setText("NOT FOUND");
+    	rssi = BleDeviceInfoContracts.OUT_OF_RANGE_RSSI_VALUE - 1;
+    	tvRssi.setText(BleDeviceInfoContracts.DEVICE_NOT_FOUND);
+    	tvRssi.setTextSize(12);
     } else {
     	rssi = item.getRssi();
     	tvRssi.setText(String.valueOf(item.getRssi()));
@@ -50,18 +51,13 @@ public class BleItemArrayAdapter extends ArrayAdapter<BleDeviceInfo> {
     	drawableResId = R.drawable.red_ring_layers;
     } else if (rssi < BleDeviceInfoContracts.STRONG_RSSI_VALUE) {
     	drawableResId = R.drawable.orange_ring_layers;
-    } else {
+    } else if (rssi >= BleDeviceInfoContracts.STRONG_RSSI_VALUE) {
     	drawableResId = R.drawable.green_ring_layers;
+    } else {
+    	drawableResId = R.drawable.grey_ring_layers;
     }
     Drawable beaconDrawable = bleView.getResources().getDrawable(drawableResId);
     tvRssi.setBackground(beaconDrawable);
-//    if (rssi > BleDeviceInfoContracts.WEAK_RSSI_VALUE) {
-//    	Drawable beaconDrawable = bleView.getResources().getDrawable(R.drawable.green_ring_layers);
-//    	tvRssi.setBackground(beaconDrawable);
-//    } else {
-//    	Drawable beaconDrawable = bleView.getResources().getDrawable(R.drawable.orange_ring_layers);
-//    	tvRssi.setBackground(beaconDrawable);
-//    }
     if (item.getName() != null) {
         tvName.setText(item.getName());
     } 
