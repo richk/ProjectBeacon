@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import com.codepath.beacon.R;
 import com.codepath.beacon.contracts.RecipeContracts;
@@ -27,6 +28,8 @@ public class RecipeActionActivity1 extends Activity {
   private RadioButton rbApproaching;
   private ImageView ivNotification;
   private ImageView ivSms;
+  private TextView tvPhone;
+  private TextView tvMessage;
 
   NOTIFICATION_TYPE notificationType = NOTIFICATION_TYPE.NONE;
 
@@ -39,6 +42,8 @@ public class RecipeActionActivity1 extends Activity {
     etPhn = (EditText) findViewById(R.id.et_phone);
     rbLeaving = (RadioButton) findViewById(R.id.rb_leaving);
     rbApproaching = (RadioButton) findViewById(R.id.rb_approaching);
+    tvMessage = (TextView)findViewById(R.id.tvMessage);
+    tvPhone = (TextView)findViewById(R.id.tvPhone);
 
     ivNotification = (ImageView) findViewById(R.id.ivNotification);
     ivSms = (ImageView) findViewById(R.id.ivSms);
@@ -60,8 +65,10 @@ public class RecipeActionActivity1 extends Activity {
       public void onClick(View v) {
         ivNotification.setBackgroundResource(R.drawable.image_border);
         etMessage.setVisibility(View.VISIBLE);
+        tvMessage.setVisibility(View.VISIBLE);
         if (notificationType == NOTIFICATION_TYPE.SMS) {
           etPhn.setVisibility(View.INVISIBLE);
+          tvPhone.setVisibility(View.INVISIBLE);
           ivSms.setBackground(null);
         }
         notificationType = NOTIFICATION_TYPE.NOTIFICATION;
@@ -76,6 +83,8 @@ public class RecipeActionActivity1 extends Activity {
         ivSms.setBackgroundResource(R.drawable.image_border);
         etMessage.setVisibility(View.VISIBLE);
         etPhn.setVisibility(View.VISIBLE);
+        tvMessage.setVisibility(View.VISIBLE);
+        tvPhone.setVisibility(View.VISIBLE);
         
         if (notificationType == NOTIFICATION_TYPE.NOTIFICATION) {
           ivNotification.setBackground(null);
@@ -113,10 +122,13 @@ public class RecipeActionActivity1 extends Activity {
         ivSms.setBackgroundResource(R.drawable.image_border);
         etMessage.setVisibility(View.VISIBLE);
         etPhn.setVisibility(View.VISIBLE);
+        tvMessage.setVisibility(View.VISIBLE);
+        tvPhone.setVisibility(View.VISIBLE);
         notificationType = TriggerAction.NOTIFICATION_TYPE.SMS;
       } else {
         ivNotification.setBackgroundResource(R.drawable.image_border);
         etMessage.setVisibility(View.VISIBLE);
+        tvMessage.setVisibility(View.VISIBLE);
         notificationType = TriggerAction.NOTIFICATION_TYPE.NOTIFICATION;
       }
       if (notification.getMessage() != null) {

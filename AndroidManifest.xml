@@ -49,7 +49,7 @@
         <activity
             android:name="com.codepath.beacon.activity.MyRecipeActivity"
             android:launchMode="singleTop"                        
-            android:label="@string/app_name" >
+            android:label="@string/title_recipe_list" >
         </activity>
         
         <activity
@@ -59,12 +59,13 @@
             android:parentActivityName="com.codepath.beacon.activity.MyRecipeActivity" >
         </activity>
 
-        <service android:name="com.codepath.beacon.scan.BleService" >
+        <service android:name="com.codepath.beacon.scan.BleService" >            
         </service>
 
         <activity 
             android:name="com.codepath.beacon.scan.BleActivity" 
-            android:parentActivityName="com.codepath.beacon.activity.RecipeDetailActivity" >
+            android:parentActivityName="com.codepath.beacon.activity.RecipeDetailActivity" 
+            android:label="@string/title_scan_screen">
         </activity>
         <activity
             android:name="com.codepath.beacon.ui.RecipeActionActivity1"
