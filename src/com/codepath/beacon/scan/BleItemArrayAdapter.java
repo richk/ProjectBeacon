@@ -12,10 +12,11 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.codepath.beacon.R;
+import com.codepath.beacon.contracts.BleDeviceInfoContracts;
 
 public class BleItemArrayAdapter extends ArrayAdapter<BleDeviceInfo> {
 	private static final String LOG_TAG = BleItemArrayAdapter.class.getSimpleName();
-	private static final int DEFAULT_RSSI_VALUE = -70;
+	private static final int DEFAULT_RSSI_VALUE = -150;
 
   public BleItemArrayAdapter(Context context, List<BleDeviceInfo> items) {
     super(context, 0, items);
@@ -35,21 +36,32 @@ public class BleItemArrayAdapter extends ArrayAdapter<BleDeviceInfo> {
     
     int rssi;
     if (item.getRssi() == 0) {
-    	rssi = DEFAULT_RSSI_VALUE;
-    	tvRssi.setText(String.valueOf(DEFAULT_RSSI_VALUE));
+    	rssi = BleDeviceInfoContracts.OUT_OF_RANGE_RSSI_VALUE;
+    	tvRssi.setText("NOT FOUND");
     } else {
     	rssi = item.getRssi();
     	tvRssi.setText(String.valueOf(item.getRssi()));
     }
-    if (rssi > -72) {
-    	Log.d(LOG_TAG, "Rssi value greater than -72");
-    	Drawable beaconDrawable = bleView.getResources().getDrawable(R.drawable.green_ring_layers);
-    	tvRssi.setBackground(beaconDrawable);
+    
+    int drawableResId;
+    if (rssi < BleDeviceInfoContracts.OUT_OF_RANGE_RSSI_VALUE) {
+    	drawableResId = R.drawable.grey_ring_layers;
+    } else if (rssi < BleDeviceInfoContracts.WEAK_RSSI_VALUE) {
+    	drawableResId = R.drawable.red_ring_layers;
+    } else if (rssi < BleDeviceInfoContracts.STRONG_RSSI_VALUE) {
+    	drawableResId = R.drawable.orange_ring_layers;
     } else {
-    	Log.d(LOG_TAG, "Rssi value less than -72");
-    	Drawable beaconDrawable = bleView.getResources().getDrawable(R.drawable.orange_ring_layers);
-    	tvRssi.setBackground(beaconDrawable);
+    	drawableResId = R.drawable.green_ring_layers;
     }
+    Drawable beaconDrawable = bleView.getResources().getDrawable(drawableResId);
+    tvRssi.setBackground(beaconDrawable);
+//    if (rssi > BleDeviceInfoContracts.WEAK_RSSI_VALUE) {
+//    	Drawable beaconDrawable = bleView.getResources().getDrawable(R.drawable.green_ring_layers);
+//    	tvRssi.setBackground(beaconDrawable);
+//    } else {
+//    	Drawable beaconDrawable = bleView.getResources().getDrawable(R.drawable.orange_ring_layers);
+//    	tvRssi.setBackground(beaconDrawable);
+//    }
     if (item.getName() != null) {
         tvName.setText(item.getName());
     } 

@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.codepath.beacon.R;
+import com.codepath.beacon.contracts.BleDeviceInfoContracts;
 
 public class BleNewItemArrayAdapter extends ArrayAdapter<BleDeviceInfo> {
 	private static final String LOG_TAG = BleNewItemArrayAdapter.class.getSimpleName();
@@ -34,15 +35,18 @@ public class BleNewItemArrayAdapter extends ArrayAdapter<BleDeviceInfo> {
     if (item.getRssi() != 0) {
     	tvRssi.setText(String.valueOf(item.getRssi()));
     	int rssi = item.getRssi();
-    	if (rssi > -72) {
-    		Log.d(LOG_TAG, "Rssi value greater than -72");
-    		Drawable beaconDrawable = bleView.getResources().getDrawable(R.drawable.green_ring_layers);
-    		tvRssi.setBackground(beaconDrawable);
-    	} else {
-    		Log.d(LOG_TAG, "Rssi value less than -72");
-    		Drawable beaconDrawable = bleView.getResources().getDrawable(R.drawable.orange_ring_layers);
-    		tvRssi.setBackground(beaconDrawable);
-    	}
+        int drawableResId;
+        if (rssi < BleDeviceInfoContracts.OUT_OF_RANGE_RSSI_VALUE) {
+        	drawableResId = R.drawable.grey_ring_layers;
+        } else if (rssi < BleDeviceInfoContracts.WEAK_RSSI_VALUE) {
+        	drawableResId = R.drawable.red_ring_layers;
+        } else if (rssi < BleDeviceInfoContracts.STRONG_RSSI_VALUE) {
+        	drawableResId = R.drawable.orange_ring_layers;
+        } else {
+        	drawableResId = R.drawable.green_ring_layers;
+        }
+        Drawable beaconDrawable = bleView.getResources().getDrawable(drawableResId);
+        tvRssi.setBackground(beaconDrawable);
     }
     tvUUID.setText(item.getUUID());
     tvMajorId.setText(String.valueOf(item.getMajorId()));
