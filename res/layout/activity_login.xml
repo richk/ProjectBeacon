@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity" 
-    android:background="@drawable/img_background">
+    android:background="@drawable/homepagesimplified">
     
     <RelativeLayout
         android:layout_width="match_parent"
@@ -63,11 +63,11 @@
 
     <Button
         android:id="@+id/btnLogin"
-        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/etPwd"
-        android:layout_centerHorizontal="true"
+        android:layout_alignRight="@+id/etEmail"
+        android:layout_below="@+id/etPwd"
+        android:layout_marginTop="34dp"
         android:background="#287AA9"
         android:onClick="onLogin"
         android:text="@string/login_button_string" />
