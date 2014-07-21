@@ -64,9 +64,9 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 		
 		if (recipe.getTriggerAction() != null) {
 		  if (TriggerAction.NOTIFICATION_TYPE.NOTIFICATION.name().equalsIgnoreCase(recipe.getTriggerAction().getType())) {
-		    ivAction.setImageResource(R.drawable.notification);
+		    ivAction.setImageResource(R.drawable.notification1);
 		  } else {
-		    ivAction.setImageResource(R.drawable.sms);
+		    ivAction.setImageResource(R.drawable.smsgreen1);
 		  }
 		} else {
 		  Log.e(LOG_TAG, "TriggerAction is null");

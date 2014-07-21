@@ -11,8 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.Switch;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.beacon.BeaconApplication;
@@ -121,7 +120,7 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
     if (recipe.getActivationDate() != null) {
       SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
       String reportDate = sdf.format(recipe.getActivationDate());
-      tvActivationDate.setText(reportDate);
+      tvActivationDate.setText("Activated on " + reportDate);
     }
 
     //if(recipe.isStatus()){
@@ -132,19 +131,15 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
     
     TextView tvSelectedBeacon = (TextView) findViewById(R.id.tvSelectedBeacon);
     TextView tvSelectedAction = (TextView) findViewById(R.id.tvSelectedAction);
-    ImageButton ibPlus1 = (ImageButton) findViewById(R.id.btn_beacon);
-    ImageButton ibPlus2 = (ImageButton) findViewById(R.id.btn_notification);
-    TextView tvActivationDate_lab = (TextView) findViewById(R.id.tvActivationDatelab);
+    ImageView ibPlus1 = (ImageView) findViewById(R.id.btn_beacon);
+    ImageView ibPlus2 = (ImageView) findViewById(R.id.btn_notification);
     TextView tvTriggerandNotification = (TextView) findViewById(R.id.tvTriggerandNotification);
-
-    // TextView tvBeaconnameandUUID = (TextView)
-    // findViewById(R.id.tvBeaconnameandUUID);
 
     if (!createFlag) {
       if (recipe.getActivationDate() != null) {
         SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm");
         String reportDate = sdf.format(recipe.getActivationDate());
-        tvActivationDate.setText(reportDate);
+        tvActivationDate.setText("Activated on " + reportDate);
       }
       // if(recipe.isStatus()){
       // miToggleSwitch.setIcon(R.drawable.ic_action_switch_on);
@@ -153,25 +148,39 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
       // }
     } else {
       tvActivationDate.setVisibility(View.GONE);
-      tvActivationDate_lab.setVisibility(View.GONE);
+      tvTriggerandNotification.setVisibility(View.GONE);
     }
 
     // Image button control
     if (createFlag) {
       if (recipe.getBeacon() == null) {
-        ibPlus1.setImageResource(R.drawable.blueplus);
-        ibPlus2.setImageResource(R.drawable.ic_grayplus);
+        ibPlus1.setImageResource(R.drawable.plus1);
+        ibPlus2.setImageResource(R.drawable.plus1);
       } else {
-        ibPlus1.setImageResource(R.drawable.ic_beacon);
+        ibPlus1.setImageResource(R.drawable.antenna);
+        ibPlus1.setBackgroundResource(R.drawable.image_border);
         if (recipe.getTriggerAction() == null)
-          ibPlus2.setImageResource(R.drawable.redplus);
-        else
-          ibPlus2.setImageResource(R.drawable.ic_notification);
+          ibPlus2.setImageResource(R.drawable.plus1);
+        else{
+          if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.NOTIFICATION.toString())){
+            ibPlus2.setImageResource(R.drawable.notification1);
+            ibPlus2.setBackgroundResource(R.drawable.image_border);
+          }else if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.SMS.toString())){
+            ibPlus2.setImageResource(R.drawable.smsgreen1);
+            ibPlus2.setBackgroundResource(R.drawable.image_border);
+          }
+        }
       }
-
     } else {
-      ibPlus1.setImageResource(R.drawable.ic_beacon);
-      ibPlus2.setImageResource(R.drawable.ic_notification);
+      ibPlus1.setImageResource(R.drawable.antenna);
+      ibPlus1.setBackgroundResource(R.drawable.image_border);
+      if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.NOTIFICATION.toString())){
+        ibPlus2.setImageResource(R.drawable.notification1);
+        ibPlus2.setBackgroundResource(R.drawable.image_border);
+      }else if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.SMS.toString())){
+        ibPlus2.setImageResource(R.drawable.smsgreen1);
+        ibPlus2.setBackgroundResource(R.drawable.image_border);
+      }
     }
 
     if (recipe.getBeacon() != null && recipe.getBeacon().getName() != null)
@@ -184,16 +193,8 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
     if (recipe.getDisplayName() != null
         && recipe.getTriggerActionDisplayName() != null)
       tvTriggerandNotification
-          .setText(recipe.getDisplayName() + " receive "
-              + recipe.getTriggerActionDisplayName() + " on "
-              + recipe.getTrigger());
-
-    // TODO: Change image depends on beacon UUID/MajorID/MonorID and on SMS/Push
-    // notification
-    // TODO: Need to call 3rd party lib to get distance or other beacon related
-    // information
-    // TextView tvBeaconDistance = (TextView)
-    // findViewById(R.id.tvBeaconDistance);
+          .setText("Send " + recipe.getTriggerActionDisplayName()
+              + " when " + recipe.getTrigger() + " " + recipe.getDisplayName());
   }
 
   public void onScanBeacon(View view) {

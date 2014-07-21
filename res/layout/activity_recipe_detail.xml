@@ -17,17 +17,16 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/btn_beacon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_alignTop="@+id/tvIFLabel"
         android:layout_marginLeft="16dp"
         android:layout_toRightOf="@+id/tvIFLabel"
         android:adjustViewBounds="true"
         android:onClick="onScanBeacon"
-        android:padding="0dp"
-        android:src="@drawable/ic_beacon" />
+        android:src="@drawable/antenna" />
 
     <TextView
         android:id="@+id/tvThenLabel"
@@ -39,25 +38,16 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/btn_notification"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/tvThenLabel"
-        android:layout_marginLeft="24dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignBottom="@id/btn_beacon"
+        android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/tvThenLabel"
         android:adjustViewBounds="true"
         android:onClick="onSetAction"
-        android:padding="0dp"
-        android:src="@drawable/ic_notification" />
-
-    <TextView
-        android:id="@+id/tvActivationDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tvActivationDatelab"
-        android:layout_alignLeft="@+id/tvThenLabel"
-        android:text="@string/tvDate" />
+        android:src="@drawable/notification1" />
 
     <TextView
         android:id="@+id/tvSelectedAction"
@@ -65,28 +55,32 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/tvSelectedBeacon"
         android:layout_alignLeft="@+id/btn_notification"
-        android:background="@drawable/squarespeechbubbleshrunk"
+        android:background="@drawable/chatbubble"
         android:gravity="center"
         android:text="@string/tvAction_lab"
-        android:textSize="12sp" />
-
-    <TextView
-        android:id="@+id/tvActivationDatelab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvIFLabel"
-        android:layout_below="@+id/btn_beacon"
-        android:layout_marginTop="98dp"
-        android:text="@string/tvActivateOn" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/tvTriggerandNotification"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvIFLabel"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#FFFFFF"
+        android:paddingLeft="30dp"
+        android:gravity="center_vertical"
         android:layout_below="@+id/btn_beacon"
         android:layout_marginTop="37dp"
         android:text="" />
+    
+     <TextView
+        android:id="@+id/tvActivationDate"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#FFFFFF"
+        android:paddingLeft="30dp"
+        android:layout_below="@id/tvTriggerandNotification"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:text="" />        
 
     <TextView
         android:id="@+id/tvSelectedBeacon"
@@ -94,10 +88,9 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_beacon"
         android:layout_alignLeft="@+id/btn_beacon"
-        android:layout_toLeftOf="@+id/btn_notification"
-        android:background="@drawable/squarespeechbubbleshrunk"
+        android:background="@drawable/chatbubble"
         android:gravity="center"
         android:text="@string/tvBeacon_lab"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
 
 </RelativeLayout>

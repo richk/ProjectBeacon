@@ -80,7 +80,7 @@
         android:layout_alignLeft="@+id/tv_action"
         android:layout_below="@+id/tv_action"
         android:layout_marginTop="20dp"
-        android:src="@drawable/notification" />
+        android:src="@drawable/notification1" />
     
     <ImageView
         android:id="@+id/ivSms"
@@ -89,7 +89,7 @@
         android:layout_below="@+id/tv_action"
         android:layout_toRightOf="@id/ivNotification"
         android:layout_marginTop="21dp"
-        android:src="@drawable/sms" />
+        android:src="@drawable/smsgreen1" />
     
     <TextView
         android:id="@+id/tvMessage"

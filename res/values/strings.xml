@@ -43,8 +43,8 @@
     <string name="notification_title">Beacon magic running</string>
     <string name="notification_text">You will know when you see it</string>
     <string name="title_activity_create_recipe">CreateRecipeActivity</string>
-    <string name="tvBeacon_lab">No Beacon!</string>
-    <string name="tvAction_lab">No Action!</string>
+    <string name="tvBeacon_lab">Select Beacon!</string>
+    <string name="tvAction_lab">Select Action!</string>
     <string name="rb_approaching_label">Approaching</string>
     <string name="rb_leaving_label">Leaving</string>
     <string name="tv_trigger_label">Set Trigger</string>

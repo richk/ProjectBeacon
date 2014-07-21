@@ -15,15 +15,13 @@
         android:text="@string/if_label"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/btn_add1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_alignTop="@+id/tvIFLabel"
         android:layout_marginLeft="16dp"
         android:layout_toRightOf="@+id/tvIFLabel"
-        android:maxHeight="50dp"
-        android:maxWidth="50dp"
         android:onClick="onPickBeacon"
         android:src="@drawable/ic_add" />
 
@@ -36,10 +34,10 @@
         android:text="@string/then_label"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/btn_add2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_alignTop="@+id/tvThenLabel"
         android:layout_marginLeft="24dp"
         android:layout_toRightOf="@+id/tvThenLabel"
