@@ -2,52 +2,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity" 
-    android:background="@drawable/img_background">
-    
+    android:background="@drawable/login_background"
+    tools:context=".LoginActivity" >
+
     <RelativeLayout
+        android:id="@+id/relativeLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:background="#2633b5e5"
         android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp" >
-    
-    <TextView
-        android:id="@+id/tvLoginText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="14dp"
-        android:textColor="#ffffff"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/login_hint" />
+        android:layout_marginRight="0dp"
+        android:background="#2633b5e5" >
 
-    <EditText
-        android:id="@+id/etEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvLoginText"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        android:hint="@string/login_user_hint" />
+        <TextView
+            android:id="@+id/tvLoginText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="14dp"
+            android:text="@string/login_hint"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#1e1a1a" />
 
-    <EditText
-        android:id="@+id/etPwd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/etEmail"
-        android:layout_below="@+id/etEmail"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:hint="@string/password_hint"
-        android:inputType="textPassword" />
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvLoginText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:hint="@string/login_user_hint"
+            android:inputType="textEmailAddress" />
 
-<!--     <TextView
+        <EditText
+            android:id="@+id/etPwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/etEmail"
+            android:layout_below="@+id/etEmail"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:hint="@string/password_hint"
+            android:inputType="textPassword" />
+
+        <!--
+         <TextView
         android:id="@+id/tvForgotPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -59,19 +61,19 @@
         android:layout_marginBottom="20dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/forgot_passwd_hint" />
- -->
+        -->
+
+    </RelativeLayout>
 
     <Button
         android:id="@+id/btnLogin"
-        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/etPwd"
+        android:layout_below="@+id/relativeLayout1"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="31dp"
         android:background="#287AA9"
         android:onClick="onLogin"
         android:text="@string/login_button_string" />
-
-    </RelativeLayout>
 
 </RelativeLayout>
