@@ -80,24 +80,6 @@
         android:text="@string/tvActivateOn" />
 
     <TextView
-        android:id="@+id/tvTriggeredCountlab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvIFLabel"
-        android:layout_below="@+id/tvActivationDatelab"
-        android:layout_marginTop="38dp"
-        android:text="@string/tvTriggered" />
-
-    <TextView
-        android:id="@+id/tvTriggeredCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/tvTriggeredCountlab"
-        android:layout_alignBottom="@+id/tvTriggeredCountlab"
-        android:layout_alignLeft="@+id/tvThenLabel"
-        android:text="@string/tvTiggerCount" />
-
-    <TextView
         android:id="@+id/tvTriggerandNotification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -117,16 +99,5 @@
         android:gravity="center"
         android:text="@string/tvBeacon_lab"
         android:textSize="12sp" />
-
-    <ToggleButton
-        android:id="@+id/tbStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/tvSelectedAction"
-        android:layout_marginBottom="70dp"
-        android:text="ToggleButton"
-        android:textOff="No"
-        android:textOn="Yes" />
 
 </RelativeLayout>

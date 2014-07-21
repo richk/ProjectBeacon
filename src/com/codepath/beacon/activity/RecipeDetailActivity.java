@@ -123,8 +123,6 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
       String reportDate = sdf.format(recipe.getActivationDate());
       tvActivationDate.setText(reportDate);
     }
-    TextView tvTriggeredCount = (TextView) findViewById(R.id.tvTriggeredCount);
-    tvTriggeredCount.setText(Integer.toString(recipe.getTriggeredCount()));
 
     //if(recipe.isStatus()){
     // miToggleSwitch.setIcon(R.drawable.ic_action_switch_on);
@@ -137,7 +135,6 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
     ImageButton ibPlus1 = (ImageButton) findViewById(R.id.btn_beacon);
     ImageButton ibPlus2 = (ImageButton) findViewById(R.id.btn_notification);
     TextView tvActivationDate_lab = (TextView) findViewById(R.id.tvActivationDatelab);
-    TextView tvTriggeredCount_lab = (TextView) findViewById(R.id.tvTriggeredCountlab);
     TextView tvTriggerandNotification = (TextView) findViewById(R.id.tvTriggerandNotification);
 
     // TextView tvBeaconnameandUUID = (TextView)
@@ -145,11 +142,10 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
 
     if (!createFlag) {
       if (recipe.getActivationDate() != null) {
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm");
         String reportDate = sdf.format(recipe.getActivationDate());
         tvActivationDate.setText(reportDate);
       }
-      tvTriggeredCount.setText(Integer.toString(recipe.getTriggeredCount()));
       // if(recipe.isStatus()){
       // miToggleSwitch.setIcon(R.drawable.ic_action_switch_on);
       // }else{
@@ -158,8 +154,6 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
     } else {
       tvActivationDate.setVisibility(View.GONE);
       tvActivationDate_lab.setVisibility(View.GONE);
-      tvTriggeredCount.setVisibility(View.GONE);
-      tvTriggeredCount_lab.setVisibility(View.GONE);
     }
 
     // Image button control

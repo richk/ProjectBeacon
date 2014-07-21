@@ -40,12 +40,13 @@
             android:name="com.codepath.beacon.activity.LoginActivity"
                         android:theme="@style/Theme.Beacon.NoActionBar"            
             android:label="@string/app_name"
+            android:noHistory="true" 
             android:parentActivityName="com.codepath.beacon.Activity.HomeActivity" >     
         </activity>
         <activity
             android:name="com.codepath.beacon.activity.SignUpActivity"
                         android:theme="@style/Theme.Beacon.NoActionBar"
-            
+            android:noHistory="true" 
             android:label="@string/title_activity_sign_up"
             android:parentActivityName="com.codepath.beacon.Activity.HomeActivity" >
         </activity>
