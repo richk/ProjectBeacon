@@ -112,6 +112,10 @@ public class BleDeviceInfo extends ParseObject implements Parcelable {
 		uuid = id;
 		put("uuid", id);
 	}
+	public void setRssi(int signal) {
+		rssi = signal;
+	}
+	
 
 
 	public String getUnInitializedKey() {

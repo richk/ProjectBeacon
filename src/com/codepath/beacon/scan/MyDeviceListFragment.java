@@ -2,6 +2,7 @@ package com.codepath.beacon.scan;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.codepath.beacon.OnProgressListener;
 import com.codepath.beacon.R;
@@ -23,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +39,7 @@ public class MyDeviceListFragment extends Fragment implements OnItemClickListene
 	private AbsListView mListView;
 	private TextView mEmptyView;
 
-	private ListAdapter mAdapter;
+	private ArrayAdapter<BleDeviceInfo> mAdapter;
 
 	private List<BleDeviceInfo> mDevices = null;
 
@@ -127,5 +129,16 @@ public class MyDeviceListFragment extends Fragment implements OnItemClickListene
 	public void setScanning(boolean scanning) {
 		mListView.setEnabled(!scanning);
 		setEmptyText(getString(scanning ? R.string.scanning : R.string.no_devices));
+	}
+	
+	public void onUpdatedRssi(Map<String, Integer> updatedRssiMap) {
+		if (mDevices != null) {
+			for (BleDeviceInfo device : mDevices) {
+				if (updatedRssiMap.get(device.getName()) != null) {
+					device.setRssi(updatedRssiMap.get(device.getName()));
+				}
+			}
+			mAdapter.notifyDataSetChanged();
+		}
 	}
 }

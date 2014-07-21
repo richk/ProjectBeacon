@@ -1,8 +1,10 @@
 package com.codepath.beacon.scan;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import android.animation.Animator;
@@ -25,6 +27,7 @@ import android.widget.Toast;
 
 import com.codepath.beacon.OnProgressListener;
 import com.codepath.beacon.R;
+import com.codepath.beacon.contracts.BleDeviceInfoContracts;
 import com.codepath.beacon.contracts.ParseUserContracts;
 import com.codepath.beacon.fragments.RecipeAlertDialog;
 import com.codepath.beacon.scan.AddBeaconFragment.OnAddBeaconListener;
@@ -251,12 +254,25 @@ public class BleActivity extends Activity implements
       @Override
       public void run() {
     	List<BleDeviceInfo> newDevices = new ArrayList<BleDeviceInfo>();
+    	Map<String, Integer> updatedRssiMap = new HashMap<String, Integer>();
     	for(BleDeviceInfo device : devices){
     		if(!savedDevices.contains(device)){
     			newDevices.add(device);
+    		} else {
+    			for (BleDeviceInfo savedDevice : savedDevices) {
+    				if (savedDevice.equals(device)) {
+    				    updatedRssiMap.put(savedDevice.getName(), device.getRssi());
+    				}
+    			}
+    		}
+    	}
+    	for (BleDeviceInfo device : savedDevices) {
+    		if (updatedRssiMap.get(device.getName()) == null) {
+    			updatedRssiMap.put(device.getName(), BleDeviceInfoContracts.OUT_OF_RANGE_RSSI_VALUE);
     		}
     	}
         mNewDeviceList.setDevices(newDevices);
+        mMyDeviceList.onUpdatedRssi(updatedRssiMap);
       }      
     });    
   }
