@@ -31,6 +31,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.codepath.beacon.R;
+import com.codepath.beacon.activity.MyRecipeActivity;
 import com.codepath.beacon.models.TriggerAction;
 import com.codepath.beacon.models.TriggerAction.NOTIFICATION_TYPE;
 
@@ -103,7 +104,7 @@ public class BleService extends Service implements
 
     super.onCreate();
     
-    Intent notificationIntent = new Intent(this, BleActivity.class);
+    Intent notificationIntent = new Intent(this, MyRecipeActivity.class);
     PendingIntent pendingIntent = PendingIntent.getActivity
         (this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     
