@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import com.codepath.beacon.OnProgressListener;
 import com.codepath.beacon.R;
 import com.codepath.beacon.contracts.RecipeContracts;
+import com.codepath.beacon.fragments.EmptyListFragment;
 import com.codepath.beacon.fragments.RecipeListFragment;
 import com.codepath.beacon.models.Recipe;
 import com.codepath.beacon.scan.BeaconListener;
@@ -26,6 +27,7 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 	private static final int CREATE_REQUEST_CODE = 20;
 	public static final int EDIT_REQUEST_CODE = 21;
 	RecipeListFragment newFragment;
+    EmptyListFragment emptyListFragment;
 	BeaconManager beaconManager;
 	ImageView pbRecipesLoading;
 	Animator pbAnimator;
@@ -39,11 +41,12 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 	    pbRecipesLoading = (ImageView) findViewById(R.id.pbRecipesLoading);
 	    pbAnimator = AnimatorInflater.loadAnimator(this, R.anim.ble_progress_bar);
 	    pbAnimator.setTarget(pbRecipesLoading);
-
+	    
+	    emptyListFragment = new EmptyListFragment();
 	    onProgressStart();
-		FragmentTransaction transaction = getFragmentManager().beginTransaction();
-		newFragment = RecipeListFragment.newInstance();
+		newFragment = RecipeListFragment.newInstance();		
 		Log.d(LOG_TAG, "Setting beacon manager");
+	    FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		newFragment.setBeaconManager(beaconManager);
 		transaction.replace(R.id.flrecipelist, newFragment);
 		transaction.commit();	
@@ -84,6 +87,13 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 				Recipe newRecipe = data.getParcelableExtra("recipe");
 				if (newRecipe != null) {
 					newFragment.onNewRecipe(newRecipe);
+	                int recipeCount = newFragment.getSavedRecipesCount();
+	                Log.d(LOG_TAG, "recipe count = " + recipeCount);
+					if(recipeCount > 0){
+				      FragmentTransaction transaction = getFragmentManager().beginTransaction();
+				      transaction.replace(R.id.flrecipelist, newFragment);
+				      transaction.commit();
+					}
 				}
 			} else if (requestCode == EDIT_REQUEST_CODE) {
 				Log.d(LOG_TAG, "onEditRecipe");
@@ -93,7 +103,14 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 				if (RecipeContracts.RECIPE_ACTION_UPDATE.equals(action)) {
 					newFragment.onUpdateRecipe(newRecipe, oldRecipe);
 				} else if (RecipeContracts.RECIPE_ACTION_DELETE.equals(action)) {
-					newFragment.onDeleteRecipe(newRecipe);
+					newFragment.onDeleteRecipe(newRecipe);					
+	                int recipeCount = newFragment.getSavedRecipesCount();
+	                Log.d(LOG_TAG, "recipe count = " + recipeCount);
+	                if(recipeCount == 0){
+	                      FragmentTransaction transaction = getFragmentManager().beginTransaction();
+	                      transaction.replace(R.id.flrecipelist, emptyListFragment);
+	                      transaction.commit();
+	                }
 				} else {
 					Log.e(LOG_TAG, "Invalid Recipe action received:" + action + " , request code:" + EDIT_REQUEST_CODE);
 				}
@@ -135,7 +152,14 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 
   @Override
   public void onProgressEnd() {
-	  pbAnimator.end();
-	  pbRecipesLoading.setVisibility(ImageView.INVISIBLE);
+    pbAnimator.end();
+    pbRecipesLoading.setVisibility(ImageView.INVISIBLE);
+
+    if(newFragment.getSavedRecipesCount() == 0){
+      Log.d(LOG_TAG, "Zero recipes found, displaying empty recipe page");
+      FragmentTransaction transaction = getFragmentManager().beginTransaction();
+      transaction.replace(R.id.flrecipelist, emptyListFragment);
+      transaction.commit();
+    }
   }
 }

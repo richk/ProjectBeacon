@@ -62,5 +62,6 @@
     <string name="signin_link_hint">Sign in</string>
     <string name="signup_link_hint">Sign Up</string>
     <string name="home_greeting">Beacon Buddy lets you do cool stuff based on iBeacons around you</string>
-    
+    <string name="empty_list_desc1">Create a new beacon recipe to get started.</string>
+    <string name="empty_list_desc2">Just tap on the plus icon on top right to create your first recipe!</string>
 </resources>

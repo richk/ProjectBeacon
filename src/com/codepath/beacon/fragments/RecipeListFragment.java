@@ -56,6 +56,13 @@ public class RecipeListFragment extends Fragment implements RecipeUpdateListener
 		    mProgressListener = (OnProgressListener) activity;	
 		}
 	}
+	
+	public int getSavedRecipesCount(){
+	  if(aRecipes == null)
+	    return 0;
+	  
+	  return aRecipes.getCount();
+	}
 
 	public void findMyRecipes(int max_id, final boolean refresh) {
 		ParseQuery<Recipe> query = ParseQuery.getQuery(Recipe.class);

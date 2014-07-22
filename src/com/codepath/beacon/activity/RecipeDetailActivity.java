@@ -200,7 +200,7 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
           notif = "Notification";
 
       tvTriggerandNotification
-          .setText("Recipe: Send " + notif
+          .setText("Send " + notif
               + " when " + recipe.getTrigger().toLowerCase() + " " + recipe.getDisplayName());
     }
   }
