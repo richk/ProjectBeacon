@@ -1,8 +1,12 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+<RelativeLayout 
     android:id="@+id/tvIFThen"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context="${packageName}.${activityClass}" >
     
     <TextView
@@ -67,6 +71,7 @@
         <TextView
         android:id="@+id/tvSelectedBeacon"
         android:layout_width="wrap_content"
+        android:maxWidth="125dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/tvSelectedAction"
         android:layout_alignLeft="@id/btn_beacon"
@@ -80,25 +85,30 @@
     <TextView
         android:id="@+id/tvTriggerandNotification"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="match_parent"
         android:background="#BDBDBD"
         android:paddingLeft="30dp"
         android:textColor="#000000"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"        
         android:gravity="center_vertical"
         android:layout_below="@+id/btn_beacon"
-        android:layout_marginTop="37dp"
+        android:layout_marginTop="75dp"
         android:text="" />
     
      <TextView
         android:id="@+id/tvActivationDate"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="match_parent"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:background="#BDBDBD"
         android:textColor="#000000"
         android:paddingLeft="30dp"
         android:layout_below="@id/tvTriggerandNotification"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:gravity="center_vertical"
         android:text="" />        
 
 </RelativeLayout>
+</ScrollView>

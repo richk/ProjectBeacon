@@ -186,17 +186,25 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
     if (recipe.getBeacon() != null && recipe.getBeacon().getName() != null)
       tvSelectedBeacon.setText(recipe.getBeacon().getName());
 
-    if (recipe.getTriggerAction() != null && recipe.getTrigger() != null)
-      tvSelectedAction.setText(recipe.getTriggerActionDisplayName() + " on "
-          + recipe.getTrigger());
+    if (recipe.getTriggerAction() != null && recipe.getTrigger() != null){
+      String notif = recipe.getTriggerActionDisplayName();
+      if(notif.equalsIgnoreCase(NOTIFICATION_TYPE.NOTIFICATION.toString()))
+          notif = "Notification";
+      tvSelectedAction.setText(notif + " on " + recipe.getTrigger().toLowerCase());
+    }
 
     if (recipe.getDisplayName() != null
-        && recipe.getTriggerActionDisplayName() != null)
-      tvTriggerandNotification
-          .setText("Send " + recipe.getTriggerActionDisplayName()
-              + " when " + recipe.getTrigger() + " " + recipe.getDisplayName());
-  }
+        && recipe.getTriggerActionDisplayName() != null){
+      String notif = recipe.getTriggerActionDisplayName();
+      if(notif.equalsIgnoreCase(NOTIFICATION_TYPE.NOTIFICATION.toString()))
+          notif = "Notification";
 
+      tvTriggerandNotification
+          .setText("Recipe: Send " + notif
+              + " when " + recipe.getTrigger().toLowerCase() + " " + recipe.getDisplayName());
+    }
+  }
+  
   public void onScanBeacon(View view) {
     Intent scanIntent = new Intent(this, BleActivity.class);
     startActivityForResult(scanIntent, 0);
@@ -303,6 +311,10 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
   }
 
   public void onDeleteAction(MenuItem mi) {
+    if(createFlag){
+      finish();
+      return;
+    }
     recipe.deleteInBackground(new DeleteCallback() {
       @Override
       public void done(ParseException exception) {
