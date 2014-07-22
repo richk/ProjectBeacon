@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<color name="dialog_titlebar">#75B2DB</color>    
+	<color name="app_primary_color">#2874A2</color>    
 </resources>

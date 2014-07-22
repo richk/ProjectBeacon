@@ -13,12 +13,13 @@
         android:layout_centerVertical="true" >
 
         <TextView
+                        style="@style/Theme.Beacon.DefaultTextColor"
+            
             android:id="@+id/tvRssi"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textColor="@android:color/black"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
@@ -28,7 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="PURSE"
-            android:textColor="@android:color/black"
+            android:textStyle="bold"            
+            android:textColor="@color/app_primary_color"
             android:layout_toRightOf="@id/rlRssi"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -40,21 +42,23 @@
             android:layout_toRightOf="@id/rlRssi" >
 
             <TextView
+                            style="@style/Theme.Beacon.DefaultTextColor"
+                
                 android:id="@+id/tvUUIDString"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="UUID :"
-                android:textColor="@android:color/black"
+                android:text="UUID :"                
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
+                            style="@style/Theme.Beacon.DefaultTextColor"
+                
                 android:id="@+id/tvUUID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text=""
-                android:textColor="@android:color/black"
+                android:text=""               
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </LinearLayout>
 
@@ -66,20 +70,21 @@
             android:layout_below="@id/llUUID" >
 
             <TextView
+                            style="@style/Theme.Beacon.DefaultTextColor"
+                
                 android:id="@+id/tvMajorIdString"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="MAJOR ID :"
-                android:textColor="@android:color/black"
+                android:text="Major Id :"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
+                            style="@style/Theme.Beacon.DefaultTextColor"                
                 android:id="@+id/tvMajorId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1"
-                android:textColor="@android:color/black"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </LinearLayout>
 
@@ -91,19 +96,20 @@
             android:layout_below="@id/llMajorId" >
 
             <TextView
+                            style="@style/Theme.Beacon.DefaultTextColor"                
                 android:id="@+id/tvMinorIdString"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="MINOR ID :"
-                android:textColor="@android:color/black"
+                android:text="Minor Id :"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
+                            style="@style/Theme.Beacon.DefaultTextColor"
+                
                 android:id="@+id/tvMinorId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2"
-                android:textColor="@android:color/black"
+                android:text="2"                
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </LinearLayout>
 </RelativeLayout>

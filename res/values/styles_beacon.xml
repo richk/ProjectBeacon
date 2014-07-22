@@ -79,7 +79,11 @@
     
     <style name="Theme.Beacon.NoActionBar" parent="Theme.Beacon">
     <item name="android:windowActionBar">false</item>
-    <item name="android:windowNoTitle">true</item>
-</style>
+    <item name="android:windowNoTitle">true</item>        
+	</style>
+	
+       <style name="Theme.Beacon.DefaultTextColor" parent = "Theme.Beacon">
+              <item name="android:textColor">#555555</item>
+        </style>      
 
 </resources>

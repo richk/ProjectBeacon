@@ -8,7 +8,7 @@
         style="?android:attr/listSeparatorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:background="@android:color/holo_orange_light"
+        android:background="@color/app_primary_color"
         android:text="Saved Devices"
         android:textColor="@android:color/white"
         android:textSize="20dp" >
@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_below="@id/fl_saved_devices"
-        android:background="@android:color/holo_orange_light"
+        android:background="@color/app_primary_color"
         android:text="New Devices"
         android:textColor="@android:color/white"
         android:textSize="20dp" >

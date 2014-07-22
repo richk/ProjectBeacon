@@ -16,6 +16,7 @@
         android:layout_alignParentLeft="true"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:textColor="@color/app_primary_color"
         android:text="@string/tv_trigger_label">
     </TextView>
     
@@ -62,6 +63,7 @@
         android:layout_marginLeft="15dp"
         android:textStyle="bold"
         android:textSize="20sp"
+        android:textColor="@color/app_primary_color"
         android:text="@string/tv_action_label">
     </TextView>
     
@@ -101,6 +103,7 @@
         android:layout_marginTop="40dp"
         android:layout_marginLeft="15dp"
         android:textSize="16sp"
+        android:textColor="@color/app_primary_color"
         android:visibility="invisible"        
         android:text="Message">
     </TextView>
@@ -114,7 +117,7 @@
         android:layout_below="@+id/ivNotification"
         android:layout_alignBottom="@id/tvMessage"
         android:layout_marginTop="25dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginRight="25dp"        
         android:visibility="invisible"
         android:ems="10"
@@ -130,6 +133,7 @@
         android:layout_marginTop="35dp"
         android:layout_marginLeft="15dp"
         android:textSize="16sp"
+        android:textColor="@color/app_primary_color"
         android:visibility="invisible"        
         android:text="Phone">
     </TextView>

@@ -12,6 +12,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="27dp"
+        android:textColor="@color/app_primary_color"
         android:layout_marginTop="115dp"
         android:text="@string/if_label"
         android:textSize="22sp"
@@ -36,6 +37,7 @@
         android:layout_centerHorizontal="true"
         android:text="@string/then_label"
         android:textSize="22sp"
+        android:textColor="@color/app_primary_color"
         android:textStyle="bold" />
 
     <ImageView
@@ -56,6 +58,7 @@
         android:layout_alignLeft="@+id/btn_notification"
         android:layout_above="@id/btn_notification"
         android:background="@drawable/chatbubble"
+        android:textColor="#0d7734"
         android:layout_marginRight="10dp"
         android:gravity="center"
         android:text="@string/tvAction_lab"
@@ -68,6 +71,7 @@
         android:layout_alignBottom="@id/tvSelectedAction"
         android:layout_alignLeft="@id/btn_beacon"
         android:background="@drawable/chatbubble"
+        android:textColor="#0d7734"
         android:gravity="center"
         android:text="@string/tvBeacon_lab"
         android:textSize="14sp" />
@@ -77,8 +81,9 @@
         android:id="@+id/tvTriggerandNotification"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#FFFFFF"
+        android:background="#BDBDBD"
         android:paddingLeft="30dp"
+        android:textColor="#000000"
         android:gravity="center_vertical"
         android:layout_below="@+id/btn_beacon"
         android:layout_marginTop="37dp"
@@ -88,7 +93,8 @@
         android:id="@+id/tvActivationDate"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#FFFFFF"
+        android:background="#BDBDBD"
+        android:textColor="#000000"
         android:paddingLeft="30dp"
         android:layout_below="@id/tvTriggerandNotification"
         android:layout_marginTop="10dp"
