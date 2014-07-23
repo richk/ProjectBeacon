@@ -36,9 +36,11 @@ public class BleItemArrayAdapter extends ArrayAdapter<BleDeviceInfo> {
     TextView tvMajorId = (TextView)bleView.findViewById(R.id.tvMajorId);
     TextView tvMinorId = (TextView)bleView.findViewById(R.id.tvMinorId);
     
-    int rssi;
+    int rssi = item.getRssi();
     if (item.getRssi() == 0) {
     	rssi = BleDeviceInfoContracts.OUT_OF_RANGE_RSSI_VALUE - 1;
+    }
+    if (rssi < BleDeviceInfoContracts.OUT_OF_RANGE_RSSI_VALUE) {
     	tvRssi.setText(mContext.getResources().getString(R.string.device_not_found_string));
     	tvRssi.setTextSize(12);
     } else {
