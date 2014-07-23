@@ -34,7 +34,9 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:ems="10"
-            android:textColorHint="#CCCCCC"            
+            android:textColorHint="#CCCCCC"     
+                        android:textColor="#FFFFFF"
+                   
             android:hint="@string/login_user_hint"
             android:inputType="textEmailAddress" />
 
@@ -45,7 +47,9 @@
             android:layout_alignLeft="@+id/etSignUpEmail"
             android:layout_below="@+id/etSignUpEmail"
             android:layout_marginTop="20dp"
-            android:textColorHint="#CCCCCC"            
+            android:textColorHint="#CCCCCC"
+                        android:textColor="#FFFFFF"
+                        
             android:ems="10"
             android:hint="@string/password_hint"
             android:inputType="textPassword" />
