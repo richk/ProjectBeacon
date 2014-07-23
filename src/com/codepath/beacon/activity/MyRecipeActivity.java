@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.codepath.beacon.MapActivity;
 import com.codepath.beacon.OnProgressListener;
 import com.codepath.beacon.R;
 import com.codepath.beacon.contracts.RecipeContracts;
@@ -19,6 +20,7 @@ import com.codepath.beacon.fragments.RecipeListFragment;
 import com.codepath.beacon.models.Recipe;
 import com.codepath.beacon.scan.BeaconListener;
 import com.codepath.beacon.scan.BeaconManager;
+import com.codepath.beacon.scan.BeaconNotifier;
 import com.codepath.beacon.scan.BleDeviceInfo;
 import com.codepath.beacon.scan.BleService.State;
 

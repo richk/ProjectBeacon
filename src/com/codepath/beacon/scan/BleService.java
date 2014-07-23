@@ -305,14 +305,19 @@ public class BleService extends Service implements
         MonitorObj obj = devices.get(0);
         String message = null;
         message = obj.notif.getMessage();
+        boolean isLost = true;
         if(message == null || message.trim().length() == 0){
-          if(what == MSG_MONITOR_EXIT)
-            message = "Lost device = " + obj.device.getName();
-          else if(what == MSG_MONITOR_ENTRY)
+        	if(what == MSG_MONITOR_EXIT) {
+        		message = "Lost device = " + obj.device.getName();
+        		isLost = true;
+        	}
+          else if(what == MSG_MONITOR_ENTRY) {
             message = "Found device = " + devices.get(0).device.getName();
+            isLost = false;
+          }
         }
         if(obj.notif.getType().equals(NOTIFICATION_TYPE.NOTIFICATION.toString()))
-          uu.sendNotification(message);
+          uu.sendNotification(message, isLost);
         else if(obj.notif.getType().equals(NOTIFICATION_TYPE.SMS.toString()))
           uu.sendSMS(obj.notif.getExtra(), message);
       }

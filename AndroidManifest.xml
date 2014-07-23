@@ -12,6 +12,9 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
@@ -22,60 +25,72 @@
         android:targetSdkVersion="19" />
 
     <application
-        android:name="com.codepath.beacon.BeaconApplication"
+        android:name=".BeaconApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.Beacon" >
         <activity
-            android:name="com.codepath.beacon.activity.HomeActivity"
-            android:theme="@style/Theme.Beacon.NoActionBar"
-            android:noHistory="true" >
+            android:name=".activity.HomeActivity"
+            android:noHistory="true"
+            android:theme="@style/Theme.Beacon.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.codepath.beacon.activity.LoginActivity"
-                        android:theme="@style/Theme.Beacon.NoActionBar"            
+            android:name=".activity.LoginActivity"
             android:label="@string/app_name"
-            android:noHistory="true" 
-            android:parentActivityName="com.codepath.beacon.Activity.HomeActivity" >     
+            android:noHistory="true"
+            android:parentActivityName=".Activity.HomeActivity"
+            android:theme="@style/Theme.Beacon.NoActionBar" >
         </activity>
         <activity
-            android:name="com.codepath.beacon.activity.SignUpActivity"
-                        android:theme="@style/Theme.Beacon.NoActionBar"
-            android:noHistory="true" 
+            android:name=".activity.SignUpActivity"
             android:label="@string/title_activity_sign_up"
-            android:parentActivityName="com.codepath.beacon.Activity.HomeActivity" >
+            android:noHistory="true"
+            android:parentActivityName=".Activity.HomeActivity"
+            android:theme="@style/Theme.Beacon.NoActionBar" >
         </activity>
         <activity
-            android:name="com.codepath.beacon.activity.MyRecipeActivity"
-            android:launchMode="singleTop"                        
-            android:label="@string/title_recipe_list" >
+            android:name=".activity.MyRecipeActivity"
+            android:label="@string/title_recipe_list"
+            android:launchMode="singleTop" >
         </activity>
-        
         <activity
-            android:name="com.codepath.beacon.activity.RecipeDetailActivity"
+            android:name=".activity.RecipeDetailActivity"
             android:label="@string/title_activity_recipe_detail"
             android:launchMode="singleTop"
-            android:parentActivityName="com.codepath.beacon.activity.MyRecipeActivity" >
+            android:parentActivityName=".activity.MyRecipeActivity" >
         </activity>
 
-        <service android:name="com.codepath.beacon.scan.BleService" >            
+        <service android:name=".scan.BleService" >
         </service>
 
-        <activity 
-            android:name="com.codepath.beacon.scan.BleActivity" 
-            android:parentActivityName="com.codepath.beacon.activity.RecipeDetailActivity" 
-            android:label="@string/title_scan_screen">
+        <activity
+            android:name=".scan.BleActivity"
+            android:label="@string/title_scan_screen"
+            android:parentActivityName=".activity.RecipeDetailActivity" >
         </activity>
         <activity
-            android:name="com.codepath.beacon.ui.RecipeActionActivity1"
+            android:name=".ui.RecipeActionActivity1"
             android:label="@string/title_activity_recipe_action"
-            android:parentActivityName="com.codepath.beacon.activity.RecipeDetailActivity" >            
-        </activity>                        
+            android:parentActivityName=".activity.RecipeDetailActivity" >
+        </activity>
+        <activity
+            android:name=".MapActivity"
+            android:parentActivityName=".activity.MyRecipeActivity"
+            android:label="@string/title_activity_map" >
+        </activity>
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyCqg2nxFuozxB_b0zq8XqBj6j7MXLtj4Nc" />
+            
+        <meta-data 
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
     </application>
 
 </manifest>
