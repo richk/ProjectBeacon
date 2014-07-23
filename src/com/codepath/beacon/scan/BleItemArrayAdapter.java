@@ -17,9 +17,11 @@ import com.codepath.beacon.contracts.BleDeviceInfoContracts;
 public class BleItemArrayAdapter extends ArrayAdapter<BleDeviceInfo> {
 	private static final String LOG_TAG = BleItemArrayAdapter.class.getSimpleName();
 	private static final int DEFAULT_RSSI_VALUE = -150;
+	private final Context mContext;
 
   public BleItemArrayAdapter(Context context, List<BleDeviceInfo> items) {
     super(context, 0, items);
+    mContext = context;
   }
 
   public View getView(int position, View convertView, ViewGroup parent) {
@@ -37,7 +39,7 @@ public class BleItemArrayAdapter extends ArrayAdapter<BleDeviceInfo> {
     int rssi;
     if (item.getRssi() == 0) {
     	rssi = BleDeviceInfoContracts.OUT_OF_RANGE_RSSI_VALUE - 1;
-    	tvRssi.setText(BleDeviceInfoContracts.DEVICE_NOT_FOUND);
+    	tvRssi.setText(mContext.getResources().getString(R.string.device_not_found_string));
     	tvRssi.setTextSize(12);
     } else {
     	rssi = item.getRssi();

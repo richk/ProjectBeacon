@@ -68,5 +68,6 @@
     <string name="title_activity_map">Beacon Location</string>
     <string name="default_map_marker_snippet">Unknown</string>
     <string name="map_marker_title">Last Seen</string>
+    <string name="device_not_found_string">FAR AWAY</string>
 
 </resources>
