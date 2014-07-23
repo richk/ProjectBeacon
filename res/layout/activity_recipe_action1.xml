@@ -116,7 +116,7 @@
     <EditText
         android:id="@+id/et_message"
         android:layout_width="250dp"
-        android:textSize="14sp"        
+        android:textSize="16sp"        
         android:layout_toRightOf="@id/tvMessage"
         android:layout_height="20dp"
         android:layout_below="@+id/ivNotification"
@@ -148,7 +148,7 @@
     <EditText
         android:id="@+id/et_phone"
         android:layout_width="250dp"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:layout_height="wrap_content"
         android:layout_below="@id/et_message"
         android:layout_alignBottom="@id/tvPhone"
