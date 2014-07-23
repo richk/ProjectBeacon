@@ -125,6 +125,8 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="25dp"        
         android:visibility="invisible"
+        android:imeOptions="actionDone"
+        android:singleLine="true"
         android:ems="10"
         android:hint="@string/et_message_hint" >
         <requestFocus />

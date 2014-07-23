@@ -117,6 +117,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginBottom="5dp"
+        android:imeOptions="actionDone"
+        android:singleLine="true"        
         android:ems="10">
         <requestFocus />
     	</EditText>
