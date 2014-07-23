@@ -39,12 +39,10 @@ public class MapActivity extends Activity {
 		if (mapFragment != null) {
 			map = mapFragment.getMap();
 			if (map != null) {
-				Toast.makeText(this, "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
 				map.setMyLocationEnabled(true);
 				LatLng latLng = getIntent().getParcelableExtra(MapContracts.LAST_LOCATION_LATLNG);
 				long lastSeenTs = getIntent().getLongExtra(MapContracts.LAST_SEEN_TS_MS, 0);
 				if (latLng != null) {
-				    Log.d(LOG_TAG, "Found last location in intent:" + latLng.toString());
 				    String snippet = null;
 				    if (lastSeenTs > 0) {
 				    	snippet = getFriendlyTs(System.currentTimeMillis() - lastSeenTs);
@@ -95,14 +93,14 @@ public class MapActivity extends Activity {
 	    }
 	    long mins = secs / 60;
 	    if(mins < 60){
-	      return mins+"m";
+	      return mins+"m ago";
 	    }
 	    long hours = mins / 60;
 	    if(hours < 24){
-	      return hours+"h";
+	      return hours+"h ago";
 	    }
 	    long days = hours/24;
-	    return days+"d";
+	    return days+"d ago";
 	  }
 	
 	// Define a DialogFragment that displays the error dialog
