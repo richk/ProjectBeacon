@@ -4,6 +4,7 @@ import com.codepath.beacon.R;
 import com.codepath.beacon.R.id;
 import com.codepath.beacon.R.layout;
 import com.codepath.beacon.R.menu;
+import com.codepath.beacon.fragments.RecipeAlertDialog;
 import com.codepath.beacon.scan.BleActivity;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -12,7 +13,10 @@ import com.parse.ParseUser;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -63,6 +67,10 @@ public class LoginActivity extends Activity {
 	public void onLogin(View view) {
 //		Intent i = new Intent(this, SignUpActivity.class);
 //		startActivity(i);
+		if (!isNetworkAvailable()) {
+			showNoNetwork();
+			return;
+		}
 		ParseUser.logInInBackground(etUserName.getText().toString(), etPwd.getText().toString(), new LogInCallback() {
 			@Override
 			public void done(ParseUser user, ParseException exception) {
@@ -73,7 +81,6 @@ public class LoginActivity extends Activity {
 				} else {
 					handleUnknownLoginError();
 				}
-
 			}
 		});
 	}
@@ -106,4 +113,20 @@ public class LoginActivity extends Activity {
 	private void handleInvalidUsernamePassword() {
 		Toast.makeText(getApplicationContext(), "Invalid Username or password", Toast.LENGTH_SHORT).show();	
 	}
+	
+	  public void showNoNetwork() {
+		  RecipeAlertDialog alertDialog = new RecipeAlertDialog();
+		  Bundle args = new Bundle();
+		  args.putString("message", getResources().getString(R.string.network_error_message));
+		  alertDialog.setArguments(args);
+		  alertDialog.show(getFragmentManager(), null);
+		  return;
+	  }
+	  
+	  public boolean isNetworkAvailable() {
+		    ConnectivityManager connectivityManager 
+		          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+		    return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+		}
 }

@@ -184,13 +184,9 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
   }
   
   public void showNoNetwork() {
-//	  NetworkErrorFragment errorFragment = new NetworkErrorFragment();
-//	  FragmentTransaction errorTransaction = getFragmentManager().beginTransaction();
-//	  errorTransaction.replace(R.id.flNoNetwork, errorFragment);
-//	  errorTransaction.commit();
 	  RecipeAlertDialog alertDialog = new RecipeAlertDialog();
 	  Bundle args = new Bundle();
-	  args.putString("message", "Network not available. Please check your internet connection and try again");
+	  args.putString("message", getResources().getString(R.string.network_error_message));
 	  alertDialog.setArguments(args);
 	  alertDialog.show(getFragmentManager(), null);
 	  return;

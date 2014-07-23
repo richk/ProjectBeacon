@@ -41,8 +41,8 @@
     <string name="major_id_string">Major ID:</string>
     <string name="minor_id_string">Minor ID:</string>
     <string name="title_activity_recipe_action">Select Action</string>
-    <string name="notification_title">Beacon Buddy</string>
-    <string name="notification_text">Always on the lookout for you.</string>
+    <string name="notification_title">Beacon magic running</string>
+    <string name="notification_text">You will know when you see it</string>
     <string name="title_activity_create_recipe">CreateRecipeActivity</string>
     <string name="tvBeacon_lab">Select Beacon!</string>
     <string name="tvAction_lab">Select Action!</string>
@@ -69,5 +69,8 @@
     <string name="default_map_marker_snippet">Unknown</string>
     <string name="map_marker_title">Last Seen</string>
     <string name="device_not_found_string">FAR AWAY</string>
+    <string name="network_error_message">Looks like you dont have internet. Check you wifi/3G connection and try again.</string>
+    <string name="duplicate_recipe_error_message">You already have a recipe with same beacon and action. Check your recipe and try again.</string>
+    <string name="duplicate_beacon_name_message">You already have a beacon with that name. Try another.</string>
 
 </resources>

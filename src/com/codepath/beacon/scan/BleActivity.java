@@ -307,7 +307,7 @@ public class BleActivity extends Activity implements
   public void showNoNetwork() {
 	  RecipeAlertDialog alertDialog = new RecipeAlertDialog();
 	  Bundle args = new Bundle();
-	  args.putString("message", "Network not available. Saved Ble devices cannot be loaded");
+	  args.putString("message", getResources().getString(R.string.network_error_message));
 	  alertDialog.setArguments(args);
 	  alertDialog.show(getFragmentManager(), null);
 	  return;
