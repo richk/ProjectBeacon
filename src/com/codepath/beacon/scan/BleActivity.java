@@ -275,7 +275,7 @@ public class BleActivity extends Activity implements
     	}
     	for (BleDeviceInfo device : savedDevices) {
     		if (updatedRssiMap.get(device.getName()) == null) {
-    			updatedRssiMap.put(device.getName(), BleDeviceInfoContracts.OUT_OF_RANGE_RSSI_VALUE);
+    			updatedRssiMap.put(device.getName(), BleDeviceInfoContracts.OUT_OF_RANGE_RSSI_VALUE - 1);
     		}
     	}
         mNewDeviceList.setDevices(newDevices);
