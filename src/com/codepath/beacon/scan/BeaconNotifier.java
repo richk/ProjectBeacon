@@ -81,8 +81,7 @@ GooglePlayServicesClient.OnConnectionFailedListener {
 	public void onConnected(Bundle arg0) {
 		Location lastLocation = mLocationClient.getLastLocation();
 		LatLng lastLocationCoords = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-		Intent resultIntent = new Intent(BeaconApplication.getApplication(),
-				MapActivity.class);
+		Intent resultIntent = new Intent(BeaconApplication.getApplication(), MapActivity.class);
 		resultIntent.putExtra(MapContracts.LAST_LOCATION_LATLNG, lastLocationCoords);
 		resultIntent.putExtra(MapContracts.LAST_SEEN_TS_MS, System.currentTimeMillis());
 		fireNotification(resultIntent);
@@ -107,7 +106,7 @@ GooglePlayServicesClient.OnConnectionFailedListener {
 		}
 	}
 
-	private void fireNotification(Intent resultIntent) {
+	private void fireNotification(Intent notifyIntent) {
 		Uri alarmSound = RingtoneManager
 				.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 		NotificationCompat.Builder notiBuilder = new NotificationCompat.Builder(
@@ -117,11 +116,11 @@ GooglePlayServicesClient.OnConnectionFailedListener {
 		.setSound(alarmSound).setLights(Color.RED, 3000, 3000)
 		.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
 
-		TaskStackBuilder stackBuilder = TaskStackBuilder.create(BeaconApplication
-				.getApplication());
-		stackBuilder.addNextIntent(resultIntent);
-		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,
-				PendingIntent.FLAG_UPDATE_CURRENT);
+		notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | 
+	        Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+		PendingIntent resultPendingIntent = PendingIntent.getActivity(BeaconApplication.getApplication(), 0,
+				notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		notiBuilder.setContentIntent(resultPendingIntent);
 

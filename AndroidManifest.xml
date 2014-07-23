@@ -81,13 +81,14 @@
         </activity>
         <activity
             android:name=".MapActivity"
-            android:parentActivityName=".activity.MyRecipeActivity"
+            android:launchMode="singleTask"
+    		android:taskAffinity=""
+    		android:excludeFromRecents="true"
             android:label="@string/title_activity_map" >
         </activity>
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCqg2nxFuozxB_b0zq8XqBj6j7MXLtj4Nc" />
-            
+            android:value="AIzaSyArguVN4ouw9Y3NBhI-pfFvPITqZmotqTc" />            
         <meta-data 
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>

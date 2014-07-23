@@ -33,8 +33,8 @@ public class MapActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) { 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
-		ActionBar ab = getActionBar();
-	    ab.setDisplayHomeAsUpEnabled(true);
+//		ActionBar ab = getActionBar();
+//	    ab.setDisplayHomeAsUpEnabled(true);
 		mapFragment = ((MapFragment) getFragmentManager().findFragmentById(R.id.map));
 		if (mapFragment != null) {
 			map = mapFragment.getMap();
