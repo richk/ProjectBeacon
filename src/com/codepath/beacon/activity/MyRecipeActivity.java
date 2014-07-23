@@ -86,7 +86,7 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 	}
 	
 	public void onAddAction(MenuItem mi) {
-		if (isNetworkAvailable()) {
+		if (!isNetworkAvailable()) {
 		    showNoNetwork();	
 		} else {
 			Intent createRecipeIntent = new Intent(this, RecipeDetailActivity.class);
