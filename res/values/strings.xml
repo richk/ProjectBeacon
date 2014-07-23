@@ -16,6 +16,7 @@
     <string name="sign_up_link_hint">"Sign Up"</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="action_refresh">Refresh</string>
+    <string name="action_add">Add</string>
     <string name="scanning">Looking for devices. Please wait..</string>
     <string name="no_devices">No devices found</string>
     <string name="beacon_label">BeaconFriendlyName</string>

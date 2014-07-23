@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Set;
 
 import android.app.Application;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.codepath.beacon.models.Recipe;
@@ -68,4 +71,11 @@ public class BeaconApplication extends Application {
 		  return false;
 	  }
   }
+  
+  public boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+	}
 }

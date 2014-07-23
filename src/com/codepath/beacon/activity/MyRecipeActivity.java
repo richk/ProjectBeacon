@@ -4,23 +4,27 @@ import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
-import com.codepath.beacon.MapActivity;
+import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.OnProgressListener;
 import com.codepath.beacon.R;
 import com.codepath.beacon.contracts.RecipeContracts;
 import com.codepath.beacon.fragments.EmptyListFragment;
+import com.codepath.beacon.fragments.NetworkErrorFragment;
+import com.codepath.beacon.fragments.RecipeAlertDialog;
 import com.codepath.beacon.fragments.RecipeListFragment;
 import com.codepath.beacon.models.Recipe;
 import com.codepath.beacon.scan.BeaconListener;
 import com.codepath.beacon.scan.BeaconManager;
-import com.codepath.beacon.scan.BeaconNotifier;
 import com.codepath.beacon.scan.BleDeviceInfo;
 import com.codepath.beacon.scan.BleService.State;
 
@@ -28,46 +32,54 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 	private static final String LOG_TAG = MyRecipeActivity.class.getSimpleName();
 	private static final int CREATE_REQUEST_CODE = 20;
 	public static final int EDIT_REQUEST_CODE = 21;
-	RecipeListFragment newFragment;
-    EmptyListFragment emptyListFragment;
-	BeaconManager beaconManager;
+	RecipeListFragment mNewFragment;
+    EmptyListFragment mEmptyListFragment;
+	BeaconManager mBeaconManager;
 	ImageView pbRecipesLoading;
 	Animator pbAnimator;
+	private MenuItem mRefreshItem = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_recipe);
-
-	    beaconManager = new BeaconManager(this, null);
-	    pbRecipesLoading = (ImageView) findViewById(R.id.pbRecipesLoading);
+		mBeaconManager = new BeaconManager(this, null);
+		mEmptyListFragment = new EmptyListFragment();
+		mNewFragment = RecipeListFragment.newInstance();
+		pbRecipesLoading = (ImageView) findViewById(R.id.pbRecipesLoading);
 	    pbAnimator = AnimatorInflater.loadAnimator(this, R.anim.ble_progress_bar);
 	    pbAnimator.setTarget(pbRecipesLoading);
-	    
-	    emptyListFragment = new EmptyListFragment();
+	    displayRecipeList();
+	}
+	
+	private void displayRecipeList() {
+		if (!isNetworkAvailable()) {
+			showNoNetwork();
+		} else { 
+		    loadRecipes();
+		}
+	}
+	
+	public void loadRecipes() {
 	    onProgressStart();
-		newFragment = RecipeListFragment.newInstance();		
-		Log.d(LOG_TAG, "Setting beacon manager");
 	    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-		newFragment.setBeaconManager(beaconManager);
-		transaction.replace(R.id.flrecipelist, newFragment);
+		mNewFragment.setBeaconManager(mBeaconManager);
+		transaction.replace(R.id.flrecipelist, mNewFragment);
 		transaction.commit();	
 	}
 	
 	@Override
 	protected void onResume() {
 	  super.onResume();
-      beaconManager.startListening();
+      mBeaconManager.startListening();
 	}
 	
 	@Override
 	protected void onStop() {
 	  Log.d(LOG_TAG, "Stop listening beaconManager");
-	  beaconManager.stopListenening(); 
+      mBeaconManager.stopListenening();
   	  super.onStop();
 	}
-		
-	
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -76,9 +88,17 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 	}
 	
 	public void onAddAction(MenuItem mi) {
-		Intent createRecipeIntent = new Intent(this, RecipeDetailActivity.class);
-		createRecipeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivityForResult(createRecipeIntent, CREATE_REQUEST_CODE);
+		if (isNetworkAvailable()) {
+		    showNoNetwork();	
+		} else {
+			Intent createRecipeIntent = new Intent(this, RecipeDetailActivity.class);
+			createRecipeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivityForResult(createRecipeIntent, CREATE_REQUEST_CODE);
+		}
+	}
+	
+	public void onRefresh(MenuItem mi) {
+	    displayRecipeList();	
 	}
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -88,12 +108,12 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 				Log.d(LOG_TAG, "onNewRecipe");
 				Recipe newRecipe = data.getParcelableExtra("recipe");
 				if (newRecipe != null) {
-					newFragment.onNewRecipe(newRecipe);
-	                int recipeCount = newFragment.getSavedRecipesCount();
+					mNewFragment.onNewRecipe(newRecipe);
+	                int recipeCount = mNewFragment.getSavedRecipesCount();
 	                Log.d(LOG_TAG, "recipe count = " + recipeCount);
 					if(recipeCount > 0){
 				      FragmentTransaction transaction = getFragmentManager().beginTransaction();
-				      transaction.replace(R.id.flrecipelist, newFragment);
+				      transaction.replace(R.id.flrecipelist, mNewFragment);
 				      transaction.commit();
 					}
 				}
@@ -103,14 +123,14 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 				Recipe oldRecipe = data.getParcelableExtra("oldRecipe");
 				String action = data.getStringExtra(RecipeContracts.RECIPE_ACTION);
 				if (RecipeContracts.RECIPE_ACTION_UPDATE.equals(action)) {
-					newFragment.onUpdateRecipe(newRecipe, oldRecipe);
+					mNewFragment.onUpdateRecipe(newRecipe, oldRecipe);
 				} else if (RecipeContracts.RECIPE_ACTION_DELETE.equals(action)) {
-					newFragment.onDeleteRecipe(newRecipe);					
-	                int recipeCount = newFragment.getSavedRecipesCount();
+					mNewFragment.onDeleteRecipe(newRecipe);					
+	                int recipeCount = mNewFragment.getSavedRecipesCount();
 	                Log.d(LOG_TAG, "recipe count = " + recipeCount);
 	                if(recipeCount == 0){
 	                      FragmentTransaction transaction = getFragmentManager().beginTransaction();
-	                      transaction.replace(R.id.flrecipelist, emptyListFragment);
+	                      transaction.replace(R.id.flrecipelist, mEmptyListFragment);
 	                      transaction.commit();
 	                }
 				} else {
@@ -157,11 +177,32 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
     pbAnimator.end();
     pbRecipesLoading.setVisibility(ImageView.INVISIBLE);
 
-    if(newFragment.getSavedRecipesCount() == 0){
+    if(mNewFragment.getSavedRecipesCount() == 0){
       Log.d(LOG_TAG, "Zero recipes found, displaying empty recipe page");
       FragmentTransaction transaction = getFragmentManager().beginTransaction();
-      transaction.replace(R.id.flrecipelist, emptyListFragment);
+      transaction.replace(R.id.flrecipelist, mEmptyListFragment);
       transaction.commit();
     }
   }
+  
+  public void showNoNetwork() {
+//	  NetworkErrorFragment errorFragment = new NetworkErrorFragment();
+//	  FragmentTransaction errorTransaction = getFragmentManager().beginTransaction();
+//	  errorTransaction.replace(R.id.flNoNetwork, errorFragment);
+//	  errorTransaction.commit();
+	  RecipeAlertDialog alertDialog = new RecipeAlertDialog();
+	  Bundle args = new Bundle();
+	  args.putString("message", "Network not available. Please check your internet connection and try again");
+	  alertDialog.setArguments(args);
+	  alertDialog.show(getFragmentManager(), null);
+	  return;
+  }
+  
+  public boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+	}
+
 }

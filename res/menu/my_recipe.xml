@@ -5,7 +5,13 @@
         android:icon="@drawable/ic_add"
         android:showAsAction="ifRoom"
         android:onClick="onAddAction"
-        android:title="Add">
+        android:title="@string/action_add">
     </item>
-
+    <item
+        android:id="@+id/mi_recipe_refresh"
+        android:icon="@drawable/ic_menu_refresh"
+        android:onClick="onRefresh"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/action_refresh"/>
 </menu>
