@@ -13,7 +13,10 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -133,25 +136,29 @@ public class BleActivity extends Activity implements
 	private void loadMyDevices() {
 		ParseUser currentUser = ParseUser.getCurrentUser();
 		ParseRelation<ParseObject> relation = currentUser.getRelation(ParseUserContracts.BLEDEVICES);
-		onProgressStart();
-		relation.getQuery().findInBackground(new FindCallback<ParseObject>() {
-			@Override
-			public void done(List<ParseObject> beacons, ParseException exception) {
-				if (exception != null) {
-			        Log.e(TAG, "Parse Excetion getting saved beacons for user", exception);
-			        Toast.makeText(getApplicationContext(), "Parse Excetion getting saved beacons for user:" + exception.getMessage(), Toast.LENGTH_SHORT).show();;
-			    } else {
-			        List<BleDeviceInfo> devices = new ArrayList<BleDeviceInfo>();
-			        for (ParseObject item : beacons) {
-			        	BleDeviceInfo deviceInfo = (BleDeviceInfo) item;
-			        	devices.add(deviceInfo);
-			        	savedDevices.add(deviceInfo);
-			        	savedDeviceNames.add(deviceInfo.getName());
-			        }
-			        mMyDeviceList.setDevices(getApplicationContext(), devices);
-			    }
-			}
-		});
+		if (!isNetworkAvailable()) {
+			showNoNetwork();	
+		} else {
+			onProgressStart();
+			relation.getQuery().findInBackground(new FindCallback<ParseObject>() {
+				@Override
+				public void done(List<ParseObject> beacons, ParseException exception) {
+					if (exception != null) {
+						Log.e(TAG, "Parse Excetion getting saved beacons for user", exception);
+						Toast.makeText(getApplicationContext(), "Parse Excetion getting saved beacons for user:" + exception.getMessage(), Toast.LENGTH_SHORT).show();;
+					} else {
+						List<BleDeviceInfo> devices = new ArrayList<BleDeviceInfo>();
+						for (ParseObject item : beacons) {
+							BleDeviceInfo deviceInfo = (BleDeviceInfo) item;
+							devices.add(deviceInfo);
+							savedDevices.add(deviceInfo);
+							savedDeviceNames.add(deviceInfo.getName());
+						}
+						mMyDeviceList.setDevices(getApplicationContext(), devices);
+					}
+				}
+			});
+		}
 	}
 
 	@Override
@@ -296,4 +303,20 @@ public class BleActivity extends Activity implements
 	  pbAnimator.end();
 	  pbDevicesLoading.setVisibility(ImageView.INVISIBLE);
   }
+  
+  public void showNoNetwork() {
+	  RecipeAlertDialog alertDialog = new RecipeAlertDialog();
+	  Bundle args = new Bundle();
+	  args.putString("message", "Network not available. Saved Ble devices cannot be loaded");
+	  alertDialog.setArguments(args);
+	  alertDialog.show(getFragmentManager(), null);
+	  return;
+  }
+  
+  public boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+	}
 }
