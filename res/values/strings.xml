@@ -64,4 +64,8 @@
     <string name="home_greeting">Beacon Buddy lets you do cool stuff based on iBeacons around you</string>
     <string name="empty_list_desc1">Create a new beacon recipe to get started.</string>
     <string name="empty_list_desc2">Just tap on the plus icon on top right to create your first recipe!</string>
+    <string name="title_activity_map">Beacon Location</string>
+    <string name="default_map_marker_snippet">Unknown</string>
+    <string name="map_marker_title">Last Seen</string>
+
 </resources>

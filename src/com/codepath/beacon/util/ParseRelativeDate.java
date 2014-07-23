@@ -3,9 +3,9 @@ package com.codepath.beacon.util;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import android.net.ParseException;
 import android.text.format.DateUtils;
 
+import com.parse.ParseException;
 
 public class ParseRelativeDate {
 	//getRelativeTimeAgo("Mon Apr 01 21:16:23 +0000 2014");
@@ -15,13 +15,9 @@ public class ParseRelativeDate {
 		sf.setLenient(true);
 
 		String relativeDate = "";
-		try {
-			long dateMillis = sf.parse(rawJsonDate).getTime();
-			relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
-					System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		long dateMillis = sf.parse(rawJsonDate).getTime();
+		relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
+				System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
 
 		return relativeDate;
 	}
