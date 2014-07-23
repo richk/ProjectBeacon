@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,19 +13,14 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
-import com.codepath.beacon.OnProgressListener;
 import com.codepath.beacon.R;
 
 public class DeviceListFragment extends Fragment implements
     AbsListView.OnItemClickListener {
 
   private OnDeviceListFragmentInteractionListener mListener;
-  private OnProgressListener mProgressListener;
-
   private AbsListView mListView;
-
   private TextView mEmptyView;
-
   private BleNewItemArrayAdapter mAdapter;
 
   List<BleDeviceInfo> deviceList;
@@ -71,7 +65,6 @@ public class DeviceListFragment extends Fragment implements
     super.onAttach(activity);
     try {
     	mListener = (OnDeviceListFragmentInteractionListener) activity;	
-    	mProgressListener = (OnProgressListener) activity;
     } catch (ClassCastException e) {
       throw new ClassCastException(activity.toString()
           + " must implement OnFragmentInteractionListener");
@@ -105,7 +98,6 @@ public class DeviceListFragment extends Fragment implements
     for(BleDeviceInfo device : devices){
       mAdapter.add(device);
     }
-    mProgressListener.onProgressEnd();
   }
 
   public void setEmptyText(CharSequence emptyText) {
@@ -119,7 +111,6 @@ public class DeviceListFragment extends Fragment implements
   }
 
   public void setScanning(boolean scanning) {
-    mListView.setEnabled(!scanning);
     setEmptyText(getString(scanning ? R.string.scanning : R.string.no_devices));
   }
 }

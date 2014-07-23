@@ -20,7 +20,6 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -128,7 +127,6 @@ public class BleActivity extends Activity implements
 	private void startScan() {
 		mNewDeviceList.setDevices(null);
 		mNewDeviceList.setScanning(true);
-		onProgressStart();
 		beaconManager.startScanning();
 	}
 
