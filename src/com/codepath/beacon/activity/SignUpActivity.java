@@ -4,6 +4,7 @@ import com.codepath.beacon.R;
 import com.codepath.beacon.R.id;
 import com.codepath.beacon.R.layout;
 import com.codepath.beacon.R.menu;
+import com.codepath.beacon.fragments.RecipeAlertDialog;
 import com.codepath.beacon.scan.BleActivity;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -12,7 +13,10 @@ import com.parse.SignUpCallback;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
@@ -88,6 +92,10 @@ public class SignUpActivity extends Activity {
 		ParseUser user = new ParseUser();
 		user.setUsername(username);
 		user.setPassword(pwd);
+		if (!isNetworkAvailable()) {
+			showNoNetwork();
+			return;
+		}
 		user.signUpInBackground(new SignUpCallback() {
 			@Override
 			public void done(ParseException exception) {
@@ -108,4 +116,20 @@ public class SignUpActivity extends Activity {
 		Intent scanIntent = new Intent(this, MyRecipeActivity.class);
 		startActivity(scanIntent);
 	}
+	
+	  public void showNoNetwork() {
+		  RecipeAlertDialog alertDialog = new RecipeAlertDialog();
+		  Bundle args = new Bundle();
+		  args.putString("message", getResources().getString(R.string.network_error_message));
+		  alertDialog.setArguments(args);
+		  alertDialog.show(getFragmentManager(), null);
+		  return;
+	  }
+	  
+	  public boolean isNetworkAvailable() {
+		    ConnectivityManager connectivityManager 
+		          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+		    return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+		}
 }

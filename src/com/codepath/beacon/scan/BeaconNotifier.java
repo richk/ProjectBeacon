@@ -80,11 +80,16 @@ GooglePlayServicesClient.OnConnectionFailedListener {
 	@Override
 	public void onConnected(Bundle arg0) {
 		Location lastLocation = mLocationClient.getLastLocation();
-		LatLng lastLocationCoords = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-		Intent resultIntent = new Intent(BeaconApplication.getApplication(), MapActivity.class);
-		resultIntent.putExtra(MapContracts.LAST_LOCATION_LATLNG, lastLocationCoords);
-		resultIntent.putExtra(MapContracts.LAST_SEEN_TS_MS, System.currentTimeMillis());
-		fireNotification(resultIntent);
+		if (lastLocation != null) {
+			LatLng lastLocationCoords = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+			Intent resultIntent = new Intent(BeaconApplication.getApplication(), MapActivity.class);
+			resultIntent.putExtra(MapContracts.LAST_LOCATION_LATLNG, lastLocationCoords);
+			resultIntent.putExtra(MapContracts.LAST_SEEN_TS_MS, System.currentTimeMillis());
+			fireNotification(resultIntent);
+		} else {
+			Log.e(LOG_TAG, "Could not get last beacon location. Location:" + lastLocation);
+			deviceFound();
+		}
 		mLocationClient.disconnect();
 	}
 
