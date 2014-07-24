@@ -316,10 +316,13 @@ public class BleService extends Service implements
             isLost = false;
           }
         }
-        if(obj.notif.getType().equals(NOTIFICATION_TYPE.NOTIFICATION.toString()))
+        if(obj.notif.getType().equals(NOTIFICATION_TYPE.NOTIFICATION.toString())){
           uu.sendNotification(message, isLost);
-        else if(obj.notif.getType().equals(NOTIFICATION_TYPE.SMS.toString()))
+        }else if(obj.notif.getType().equals(NOTIFICATION_TYPE.SMS.toString())){
           uu.sendSMS(obj.notif.getExtra(), message);
+        }else if(obj.notif.getType().equals(NOTIFICATION_TYPE.RINGER_SILENT.toString())){
+          uu.turnOnSilentMode();
+        }
       }
     }
   }

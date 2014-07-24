@@ -96,9 +96,19 @@
         android:layout_height="100dp"
         android:layout_below="@+id/tv_action"
         android:layout_toRightOf="@id/ivNotification"
-        android:layout_marginLeft="25dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
         android:src="@drawable/smsgreen1" />
+    
+        <ImageView
+        android:id="@+id/ivSilentMode"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/tv_action"
+        android:layout_toRightOf="@id/ivSms"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/silent" />
     
     <TextView
         android:id="@+id/tvMessage"

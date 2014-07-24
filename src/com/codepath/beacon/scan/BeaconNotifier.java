@@ -8,11 +8,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
+import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.telephony.SmsManager;
 import android.util.Log;
 
@@ -130,5 +130,11 @@ GooglePlayServicesClient.OnConnectionFailedListener {
 		Random rr = new Random(System.currentTimeMillis());
 		notificationManager.notify(rr.nextInt(), notiBuilder.build());
 	}
+
+  public void turnOnSilentMode() {
+    AudioManager am = (AudioManager) BeaconApplication.getApplication().
+        getSystemService(Context.AUDIO_SERVICE);
+    am.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+  }
 
 }

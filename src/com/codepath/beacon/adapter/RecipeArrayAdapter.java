@@ -23,6 +23,7 @@ import com.codepath.beacon.contracts.RecipeContracts.TRIGGERS;
 import com.codepath.beacon.fragments.RecipeUpdateListener;
 import com.codepath.beacon.models.Recipe;
 import com.codepath.beacon.models.TriggerAction;
+import com.codepath.beacon.models.TriggerAction.NOTIFICATION_TYPE;
 
 public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 	private static final String LOG_TAG = RecipeArrayAdapter.class.getSimpleName();
@@ -65,8 +66,10 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 		if (recipe.getTriggerAction() != null) {
 		  if (TriggerAction.NOTIFICATION_TYPE.NOTIFICATION.name().equalsIgnoreCase(recipe.getTriggerAction().getType())) {
 		    ivAction.setImageResource(R.drawable.notification1);
-		  } else {
+		  } else if(TriggerAction.NOTIFICATION_TYPE.SMS.name().equalsIgnoreCase(recipe.getTriggerAction().getType())) {
 		    ivAction.setImageResource(R.drawable.smsgreen1);
+		  } else if(TriggerAction.NOTIFICATION_TYPE.RINGER_SILENT.name().equalsIgnoreCase(recipe.getTriggerAction().getType())){
+		    ivAction.setImageResource(R.drawable.silent);
 		  }
 		} else {
 		  Log.e(LOG_TAG, "TriggerAction is null");
@@ -78,8 +81,16 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 		  swEnable.setChecked(false);
 		
 		TextView tvRecipeDesc = (TextView) v.findViewById(R.id.tvRecipeDesc);
-		StringBuilder desc = new StringBuilder("Send ");
-		desc.append(recipe.getTriggerActionDisplayName().toLowerCase());
+		
+	      String notif = recipe.getTriggerActionDisplayName();
+	      if(notif.equalsIgnoreCase(NOTIFICATION_TYPE.NOTIFICATION.toString()))
+	          notif = "Send Notification ";
+	      if(notif.equalsIgnoreCase(NOTIFICATION_TYPE.SMS.toString()))
+	        notif = "Send SMS ";
+	      if(notif.equalsIgnoreCase(NOTIFICATION_TYPE.RINGER_SILENT.toString()))
+	        notif = "Make ringer silent ";
+
+		StringBuilder desc = new StringBuilder(notif);
 		desc.append(" when ");
 		desc.append(recipe.getTrigger().toLowerCase());
 		desc.append(" ");

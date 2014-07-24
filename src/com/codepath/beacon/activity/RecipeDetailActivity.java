@@ -168,6 +168,9 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
           }else if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.SMS.toString())){
             ibPlus2.setImageResource(R.drawable.smsgreen1);
             ibPlus2.setBackgroundResource(R.drawable.image_border);
+          }else if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.RINGER_SILENT.toString())){
+            ibPlus2.setImageResource(R.drawable.silent);
+            ibPlus2.setBackgroundResource(R.drawable.image_border);            
           }
         }
       }
@@ -180,6 +183,9 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
       }else if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.SMS.toString())){
         ibPlus2.setImageResource(R.drawable.smsgreen1);
         ibPlus2.setBackgroundResource(R.drawable.image_border);
+      }else if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.RINGER_SILENT.toString())){
+        ibPlus2.setImageResource(R.drawable.silent);
+        ibPlus2.setBackgroundResource(R.drawable.image_border);            
       }
     }
 
@@ -190,6 +196,8 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
       String notif = recipe.getTriggerActionDisplayName();
       if(notif.equalsIgnoreCase(NOTIFICATION_TYPE.NOTIFICATION.toString()))
           notif = "Notification";
+      if(notif.equalsIgnoreCase(NOTIFICATION_TYPE.RINGER_SILENT.toString()))
+        notif = "Ringer Silent";
       tvSelectedAction.setText(notif + " on " + recipe.getTrigger().toLowerCase());
     }
 
@@ -197,10 +205,12 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
         && recipe.getTriggerActionDisplayName() != null){
       String notif = recipe.getTriggerActionDisplayName();
       if(notif.equalsIgnoreCase(NOTIFICATION_TYPE.NOTIFICATION.toString()))
-          notif = "Notification";
-
-      tvTriggerandNotification
-          .setText("Send " + notif
+          notif = "Send Notification ";
+      if(notif.equalsIgnoreCase(NOTIFICATION_TYPE.SMS.toString()))
+        notif = "Send SMS ";
+      if(notif.equalsIgnoreCase(NOTIFICATION_TYPE.RINGER_SILENT.toString()))
+        notif = "Make ringer silent ";
+      tvTriggerandNotification.setText(notif
               + " when " + recipe.getTrigger().toLowerCase() + " " + recipe.getDisplayName());
     }
   }
@@ -357,23 +367,8 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
     } else if (requestCode == 1) {
       if (resultCode == RESULT_OK) {
         String trigger = data.getStringExtra("trigger");
-        String message = data.getStringExtra("message");
-        Boolean isSms = data.getBooleanExtra("isSms", false);
-        Boolean isNotification = data.getBooleanExtra("isPush", true);
-        String phn = null;
-        if (isSms) {
-          phn = data.getStringExtra("phone");
-        }
-        TriggerAction notification = new TriggerAction();
-        if (isSms) {
-          notification.setType(NOTIFICATION_TYPE.SMS.name());
-        } else {
-          notification.setType(NOTIFICATION_TYPE.NOTIFICATION.name());
-        }
-        notification.setMessage(message);
-        if (phn != null) {
-          notification.setExtra(phn);
-        }
+        TriggerAction notification = (TriggerAction)data.
+            getParcelableExtra(RecipeContracts.RECIPE_ACTION);
         recipe.setTriggerAction(notification);
         recipe.setTriggerActionDisplayName(notification.getType());
         recipe.setTrigger(trigger);
