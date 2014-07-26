@@ -69,15 +69,25 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 	@Override
 	protected void onResume() {
 	  super.onResume();
+	  mNewFragment.addListener(this);
       mBeaconManager.startListening();
+      mNewFragment.setBeaconManager(mBeaconManager);
 	}
 	
 	@Override
-	protected void onStop() {
-	  Log.d(LOG_TAG, "Stop listening beaconManager");
+	protected void onPause() {
+	  mNewFragment.removeBeaconManager();
+	  mNewFragment.removeListener(this);
       mBeaconManager.stopListenening();
-  	  super.onStop();
+	  super.onPause();
 	}
+	
+//	@Override
+//	protected void onStop() {
+//	  Log.d(LOG_TAG, "Stop listening beaconManager");
+//      mBeaconManager.stopListenening();
+//  	  super.onStop();
+//	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

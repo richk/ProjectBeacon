@@ -3,7 +3,6 @@ package com.codepath.beacon.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +15,6 @@ import android.widget.ListView;
 import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.OnProgressListener;
 import com.codepath.beacon.R;
-import com.codepath.beacon.activity.MyRecipeActivity;
 import com.codepath.beacon.adapter.RecipeArrayAdapter;
 import com.codepath.beacon.contracts.RecipeContracts;
 import com.codepath.beacon.contracts.RecipeContracts.TRIGGERS;
@@ -49,13 +47,25 @@ public class RecipeListFragment extends Fragment implements RecipeUpdateListener
 	  beaconManager = bm;
 	}
 	
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		if (activity instanceof MyRecipeActivity) {
-		    mProgressListener = (OnProgressListener) activity;	
-		}
+	public void removeBeaconManager(){
+	  beaconManager = null;
 	}
+	
+	public void addListener(OnProgressListener listener){
+	  mProgressListener = listener;
+	}
+	
+	public void removeListener(OnProgressListener listener){
+	  mProgressListener = null;
+	}
+	
+//	@Override
+//	public void onAttach(Activity activity) {
+//		super.onAttach(activity);
+//		if (activity instanceof MyRecipeActivity) {
+//		    mProgressListener = (OnProgressListener) activity;	
+//		}
+//	}
 	
 	public int getSavedRecipesCount(){
 	  if(aRecipes == null)
@@ -98,7 +108,9 @@ public class RecipeListFragment extends Fragment implements RecipeUpdateListener
 					}
 					aRecipes.addAll(recipes);
 					BeaconApplication.getApplication().addAllRecipes(recipes);
-					mProgressListener.onProgressEnd();
+					if(mProgressListener != null){
+					  mProgressListener.onProgressEnd();
+					}
 				} else {
 					Log.d(LOG_TAG, "Error: " + e.getMessage());
 				}
