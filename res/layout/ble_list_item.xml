@@ -33,7 +33,6 @@
             android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PURSE"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/app_primary_color"
             android:textStyle="bold" />
@@ -44,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvName"
-            android:text="UUID :"
+            android:text="@string/uuid_label"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
@@ -66,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvUUIDString"
             android:gravity="center"
-            android:text="Major Id :"
+            android:text="@string/major_id_label"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
@@ -76,7 +75,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvUUID"
             android:layout_toRightOf="@id/tvMajorIdString"
-            android:text="1"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
@@ -85,7 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvMajorIdString"
-            android:text="Minor Id :"
+            android:text="@string/minor_id_label"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
@@ -95,7 +93,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvMajorId"
             android:layout_toRightOf="@id/tvMinorIdString"
-            android:text="2"
             android:textAppearance="?android:attr/textAppearanceSmall" />
     </RelativeLayout>
 </RelativeLayout>

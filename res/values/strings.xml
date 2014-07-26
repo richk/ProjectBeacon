@@ -69,6 +69,10 @@
     <string name="default_map_marker_snippet">Unknown</string>
     <string name="map_marker_title">Last Seen</string>
     <string name="device_not_found_string">FAR AWAY</string>
+    <string name="uuid_label">UUID:</string>
+    <string name="major_id_label">Major Id:</string>
+    <string name="minor_id_label">Minor Id:</string>
+    
     <string name="network_error_message">Looks like you dont have internet. Check you wifi/3G connection and try again.</string>
     <string name="duplicate_recipe_error_message">You already have a recipe with same beacon and action. Check your recipe and try again.</string>
     <string name="duplicate_beacon_name_message">You already have a beacon with that name. Try another.</string>
