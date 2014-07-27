@@ -47,23 +47,16 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 		pbRecipesLoading = (ImageView) findViewById(R.id.pbRecipesLoading);
 	    pbAnimator = AnimatorInflater.loadAnimator(this, R.anim.ble_progress_bar);
 	    pbAnimator.setTarget(pbRecipesLoading);
-	    displayRecipeList();
-	}
-	
-	private void displayRecipeList() {
-		if (!isNetworkAvailable()) {
-			showNoNetwork();
-		} else { 
-		    loadRecipes();
-		}
-	}
-	
-	public void loadRecipes() {
 	    onProgressStart();
 	    FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		mNewFragment.setBeaconManager(mBeaconManager);
 		transaction.replace(R.id.flrecipelist, mNewFragment);
-		transaction.commit();	
+		transaction.commit();
+	}
+	
+	public void loadRecipes() {
+	    onProgressStart();
+	    mNewFragment.reloadRecipes();
 	}
 	
 	@Override
@@ -82,13 +75,6 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 	  super.onPause();
 	}
 	
-//	@Override
-//	protected void onStop() {
-//	  Log.d(LOG_TAG, "Stop listening beaconManager");
-//      mBeaconManager.stopListenening();
-//  	  super.onStop();
-//	}
-	
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.my_recipe, menu);
@@ -96,17 +82,14 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 	}
 	
 	public void onAddAction(MenuItem mi) {
-		if (!isNetworkAvailable()) {
-		    showNoNetwork();	
-		} else {
-			Intent createRecipeIntent = new Intent(this, RecipeDetailActivity.class);
-			createRecipeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivityForResult(createRecipeIntent, CREATE_REQUEST_CODE);
-		}
+		Intent createRecipeIntent = new Intent(this, RecipeDetailActivity.class);
+		createRecipeIntent.putExtra(RecipeContracts.RECIPE_ACTION, RecipeContracts.RECIPE_ACTION_CREATE);
+		createRecipeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivityForResult(createRecipeIntent, CREATE_REQUEST_CODE);
 	}
 	
 	public void onRefresh(MenuItem mi) {
-	    displayRecipeList();	
+	    loadRecipes();	
 	}
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

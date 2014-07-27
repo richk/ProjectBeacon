@@ -3,6 +3,7 @@ package com.codepath.beacon.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -74,7 +75,7 @@ public class RecipeListFragment extends Fragment implements RecipeUpdateListener
 	  return aRecipes.getCount();
 	}
 
-	public void findMyRecipes(int max_id, final boolean refresh) {
+	public void findMyRecipes(final boolean refresh) {
 		ParseQuery<Recipe> query = ParseQuery.getQuery(Recipe.class);
 		String currentUserID = ParseUser.getCurrentUser().getObjectId();
 		query.whereEqualTo(RecipeContracts.USERID, currentUserID);
@@ -146,7 +147,7 @@ public class RecipeListFragment extends Fragment implements RecipeUpdateListener
 		View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 		lvRecipes = (ListView) view.findViewById(R.id.lvRecipes);
 		lvRecipes.setAdapter(aRecipes);
-		findMyRecipes(0, false);  
+		findMyRecipes(false);  
 		return view;
 	}
 	
@@ -184,6 +185,10 @@ public class RecipeListFragment extends Fragment implements RecipeUpdateListener
 
 	public void onDeleteRecipe(Recipe recipe) {
 		aRecipes.remove(recipe);
+	}
+	
+	public void reloadRecipes() {
+		findMyRecipes(true);
 	}
 
 	@Override
