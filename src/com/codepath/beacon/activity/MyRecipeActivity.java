@@ -3,6 +3,7 @@ package com.codepath.beacon.activity;
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import com.codepath.beacon.scan.BleService.State;
 
 public class MyRecipeActivity extends Activity implements BeaconListener,OnProgressListener {
 	private static final String LOG_TAG = MyRecipeActivity.class.getSimpleName();
+	private static final String RECIPE_LIST_FRAGMENT_TAG = "recipes";
 	private static final int CREATE_REQUEST_CODE = 20;
 	public static final int EDIT_REQUEST_CODE = 21;
 	RecipeListFragment mNewFragment;
@@ -50,8 +52,9 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 	    onProgressStart();
 	    FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		mNewFragment.setBeaconManager(mBeaconManager);
-		transaction.replace(R.id.flrecipelist, mNewFragment);
+		transaction.replace(R.id.flrecipelist, mNewFragment, RECIPE_LIST_FRAGMENT_TAG);
 		transaction.commit();
+		loadRecipes();
 	}
 	
 	public void loadRecipes() {
@@ -99,23 +102,27 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 				Log.d(LOG_TAG, "onNewRecipe");
 				Recipe newRecipe = data.getParcelableExtra("recipe");
 				if (newRecipe != null) {
-					mNewFragment.onNewRecipe(newRecipe);
-	                int recipeCount = mNewFragment.getSavedRecipesCount();
-	                Log.d(LOG_TAG, "recipe count = " + recipeCount);
-					if(recipeCount > 0){
+				  newRecipe.saveRecipe();
+	              Fragment recipeFragment = getFragmentManager().findFragmentByTag(RECIPE_LIST_FRAGMENT_TAG);
+				  if(recipeFragment == null || !recipeFragment.isAdded()){
+					  Log.d(LOG_TAG, "Adding the recipe fragment since it was not added already");
 				      FragmentTransaction transaction = getFragmentManager().beginTransaction();
-				      transaction.replace(R.id.flrecipelist, mNewFragment);
+				      transaction.replace(R.id.flrecipelist, mNewFragment, RECIPE_LIST_FRAGMENT_TAG);
 				      transaction.commit();
-					}
+				  }
+				  getFragmentManager().executePendingTransactions();
+				  mNewFragment.onNewRecipe(newRecipe);
 				}
 			} else if (requestCode == EDIT_REQUEST_CODE) {
 				Log.d(LOG_TAG, "onEditRecipe");
 				Recipe newRecipe = data.getParcelableExtra("recipe");
 				Recipe oldRecipe = data.getParcelableExtra("oldRecipe");
+				String recipeId = data.getStringExtra("recipeId");
 				String action = data.getStringExtra(RecipeContracts.RECIPE_ACTION);
-				if (RecipeContracts.RECIPE_ACTION_UPDATE.equals(action)) {
+				if (RecipeContracts.RECIPE_ACTION_UPDATE.equalsIgnoreCase(action)) {
 					mNewFragment.onUpdateRecipe(newRecipe, oldRecipe);
-				} else if (RecipeContracts.RECIPE_ACTION_DELETE.equals(action)) {
+					newRecipe.updateRecipe(recipeId);
+				} else if (RecipeContracts.RECIPE_ACTION_DELETE.equalsIgnoreCase(action)) {
 					mNewFragment.onDeleteRecipe(newRecipe);					
 	                int recipeCount = mNewFragment.getSavedRecipesCount();
 	                Log.d(LOG_TAG, "recipe count = " + recipeCount);
@@ -127,7 +134,6 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 				} else {
 					Log.e(LOG_TAG, "Invalid Recipe action received:" + action + " , request code:" + EDIT_REQUEST_CODE);
 				}
-				
 				newRecipe.setEditState(false);
 			} else {
 				Log.e(LOG_TAG, "Invalid request code:" + requestCode);

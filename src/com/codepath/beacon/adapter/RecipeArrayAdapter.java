@@ -105,6 +105,7 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 				
 				Recipe recipe = (Recipe) v.getTag();
 				String objID = recipe.getObjectId();
+				Log.d(LOG_TAG, "Recipe object id:" + objID);
         String fn = recipe.getDisplayName();
 				activationDate = recipe.getActivationDate();
 				if (activationDate == null)
@@ -114,6 +115,7 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 				
 				Intent i = new Intent(getContext(), RecipeDetailActivity.class);
 				i.putExtra("recipe", recipe);
+				i.putExtra("recipeId", recipe.getObjectId());
 				((Activity)getContext()).startActivityForResult(i,MyRecipeActivity.EDIT_REQUEST_CODE);
 			}
 		});

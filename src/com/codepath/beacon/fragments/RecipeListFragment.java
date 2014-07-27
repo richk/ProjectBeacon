@@ -33,7 +33,6 @@ public class RecipeListFragment extends Fragment implements RecipeUpdateListener
 	protected ArrayList<Recipe> recipes;
 	protected ArrayAdapter<Recipe> aRecipes;
 	protected ListView lvRecipes;
-	protected int repCount =20;
 	BeaconManager beaconManager;
 	private OnProgressListener mProgressListener;
 
@@ -59,14 +58,6 @@ public class RecipeListFragment extends Fragment implements RecipeUpdateListener
 	public void removeListener(OnProgressListener listener){
 	  mProgressListener = null;
 	}
-	
-//	@Override
-//	public void onAttach(Activity activity) {
-//		super.onAttach(activity);
-//		if (activity instanceof MyRecipeActivity) {
-//		    mProgressListener = (OnProgressListener) activity;	
-//		}
-//	}
 	
 	public int getSavedRecipesCount(){
 	  if(aRecipes == null)
@@ -114,6 +105,7 @@ public class RecipeListFragment extends Fragment implements RecipeUpdateListener
 					}
 				} else {
 					Log.d(LOG_TAG, "Error: " + e.getMessage());
+					mProgressListener.onProgressEnd();
 				}
 			}
 		});
@@ -147,10 +139,9 @@ public class RecipeListFragment extends Fragment implements RecipeUpdateListener
 		View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 		lvRecipes = (ListView) view.findViewById(R.id.lvRecipes);
 		lvRecipes.setAdapter(aRecipes);
-		findMyRecipes(false);  
 		return view;
 	}
-	
+			
 	@Override
 	public void onStop() {
     	super.onStop();
@@ -173,7 +164,7 @@ public class RecipeListFragment extends Fragment implements RecipeUpdateListener
 	
 	public void onNewRecipe(Recipe recipe) {
 		aRecipes.insert(recipe, 0);
-	}
+	}	
 	
 	public void onUpdateRecipe(Recipe recipe, Recipe oldRecipe) {
 		Log.d("RecipeListFragment", "onUpdateRecipe(): Old recipe:" + oldRecipe.getBeacon().getName() + 

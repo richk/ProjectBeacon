@@ -3,6 +3,7 @@ package com.codepath.beacon.activity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.R.integer;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
@@ -41,6 +42,7 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
       .getSimpleName();
 
   private Recipe recipe;
+  private String mRecipeId;
 
   private Recipe oldRecipe;
 
@@ -52,11 +54,16 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_recipe_detail);
+    beaconManager = new BeaconManager(this, null);
+    String action = getIntent().getStringExtra(RecipeContracts.RECIPE_ACTION);
+    Log.d(LOG_TAG, "Creating a new recipe:" + action);
+    if (action != null && RecipeContracts.RECIPE_ACTION_CREATE.equalsIgnoreCase(action)) {
+    	Log.d(LOG_TAG, "Setting createFlag to true");
+    	createFlag = true;
+    }
     ActionBar ab = getActionBar();
     ab.setDisplayHomeAsUpEnabled(true);
-    recipe = new Recipe();
     populateRecipeDetail();
-    beaconManager = new BeaconManager(this, null);
   }
 
   @Override
@@ -86,49 +93,29 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
   }
 
   private void populateRecipeDetail() {
-    oldRecipe = getIntent().getParcelableExtra("recipe");
-    recipe = new Recipe();
-    if (oldRecipe != null) {
-      recipe.setBeacon(oldRecipe.getBeacon());
-      recipe.setDisplayName(oldRecipe.getDisplayName());
-      recipe.setTriggerAction(oldRecipe.getTriggerAction());
-      recipe.setTriggerActionDisplayName(oldRecipe
-          .getTriggerActionDisplayName());
-      recipe.setActivationDate(oldRecipe.getActivationDate());
-      recipe.setTrigger(oldRecipe.getTrigger());
-      recipe.setStatus(oldRecipe.isStatus());
-      Log.e("RecipeDetailActivity",
-          "User ID for old recipe:" + oldRecipe.getUserID());
-      recipe.setUserID(oldRecipe.getUserID());
-      // recipe.setTriggeredCount(oldRecipe.getTriggeredCount());
-      recipe.setObjectId(oldRecipe.getObjectId());
-      Log.d(LOG_TAG, "Recipe object id:" + recipe.getObjectId());
-
-      Log.d("RecipeDetailActivity", "populateRecipeDetail():Old recipe:"
-          + oldRecipe.getBeacon().getName());
-      Log.d("RecipeDetailActivity", "populateRecipeDetail():New recipe:"
-          + recipe.getBeacon().getName());
-    } else {
-      createFlag = true;
-    }
-    showRecipe();
-    // findRecipeInBackground(objID);
+	  if (createFlag) {
+		  recipe = new Recipe();
+	  } else {
+		  recipe = getIntent().getParcelableExtra("recipe");
+		  mRecipeId = getIntent().getStringExtra("recipeId");
+		  Log.d(LOG_TAG, "Recipe object id:" + mRecipeId);
+		  oldRecipe = new Recipe();
+		  if (recipe != null) {
+			  oldRecipe.setBeacon(recipe.getBeacon());
+			  oldRecipe.setDisplayName(recipe.getDisplayName());
+			  oldRecipe.setTriggerAction(recipe.getTriggerAction());
+			  oldRecipe.setTriggerActionDisplayName(recipe.getTriggerActionDisplayName());
+			  oldRecipe.setActivationDate(recipe.getActivationDate());
+			  oldRecipe.setTrigger(recipe.getTrigger());
+			  oldRecipe.setStatus(recipe.isStatus());
+			  oldRecipe.setUserID(recipe.getUserID());
+		  }
+	  }
+	  showRecipe();
   }
 
   private void showRecipe() {
     TextView tvActivationDate = (TextView) findViewById(R.id.tvActivationDate);
-    if (recipe.getActivationDate() != null) {
-      SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-      String reportDate = sdf.format(recipe.getActivationDate());
-      tvActivationDate.setText("Activated on " + reportDate);
-    }
-
-    //if(recipe.isStatus()){
-    // miToggleSwitch.setIcon(R.drawable.ic_action_switch_on);
-    // }else{
-    // miToggleSwitch.setIcon(R.drawable.ic_action_switch_off);
-    //}
-    
     TextView tvSelectedBeacon = (TextView) findViewById(R.id.tvSelectedBeacon);
     TextView tvSelectedAction = (TextView) findViewById(R.id.tvSelectedAction);
     ImageView ibPlus1 = (ImageView) findViewById(R.id.btn_beacon);
@@ -141,11 +128,6 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
         String reportDate = sdf.format(recipe.getActivationDate());
         tvActivationDate.setText("Activated on " + reportDate);
       }
-      // if(recipe.isStatus()){
-      // miToggleSwitch.setIcon(R.drawable.ic_action_switch_on);
-      // }else{
-      // miToggleSwitch.setIcon(R.drawable.ic_action_switch_off);
-      // }
     } else {
       tvActivationDate.setVisibility(View.GONE);
       tvTriggerandNotification.setVisibility(View.GONE);
@@ -235,7 +217,7 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
                   }
                 }
               });
-          recipe.getParseObject(RecipeContracts.RECIPE_ACTION)
+          recipe.getParseObject(RecipeContracts.TRIGGERACTION)
               .fetchIfNeededInBackground(new GetCallback<ParseObject>() {
 
                 @Override
@@ -258,16 +240,22 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
   }
 
   public void onSaveAction(MenuItem mi) {
+	  Log.d(LOG_TAG, "Checking if recipe already exists");
+	  Log.d(LOG_TAG, "Recipe exists:" + BeaconApplication.getApplication().recipeExists(recipe));
+	  Log.d(LOG_TAG, "Recipe being edited:" + recipe.isBeingEdited());
     if (BeaconApplication.getApplication().recipeExists(recipe)
         && recipe.isBeingEdited()) {
+    	Log.d(LOG_TAG, "Recipe already exists");
       RecipeAlertDialog alert = new RecipeAlertDialog();
       Bundle args = new Bundle();
       args.putString(
           "message",
-          "Recipe on that beacon already exists. Create recipe with another beacon or add more actions to existing");
+          "Recipe on that beacon and trigger already exists. Create recipe with another beacon or trigger.");
       alert.setArguments(args);
       alert.show(getFragmentManager(), null);
       return;
+    } else {
+    	Log.d(LOG_TAG, "Recipe does not exist. Allowing create/edit to it.");
     }
     if (recipe.getBeacon() == null || recipe.getTrigger() == null || recipe.getTriggerAction() == null) {
     	RecipeAlertDialog alert = new RecipeAlertDialog();
@@ -279,6 +267,7 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
         alert.show(getFragmentManager(), null);
         return;
     }
+    String action;
     if (createFlag) {
       String userID = ParseUser.getCurrentUser().getObjectId();
       recipe.setUserID(userID);
@@ -286,63 +275,46 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
       recipe.setStatus(true);
       recipe.setActivationDate(new Date());
       recipe.setTriggeredCount(0);
+      action = RecipeContracts.RECIPE_ACTION_CREATE;
+      BeaconApplication.getApplication().addNewRecipe(recipe);
+    } else {
+    	action = RecipeContracts.RECIPE_ACTION_UPDATE;
+    	BeaconApplication.getApplication().deleteRecipe(oldRecipe);
+    	BeaconApplication.getApplication().addNewRecipe(recipe);
     }
-
-    Log.d(LOG_TAG, "Saving an existing recipe:" + recipe.getObjectId());
-    recipe.saveInBackground(new SaveCallback() {
-      @Override
-      public void done(ParseException exception) {
-        if (exception == null) {
-          Log.d("Recipe", "Recipe saved successfully");
-          if (!createFlag)
-            BeaconApplication.getApplication().deleteRecipe(oldRecipe);
-          BeaconApplication.getApplication().addNewRecipe(recipe);
-          if (TRIGGERS.APPROACHING.name().equalsIgnoreCase(recipe.getTrigger())) {
-            beaconManager.monitorDeviceEntry(recipe.getBeacon(), recipe.getTriggerAction());
-          } else if (TRIGGERS.LEAVING.name().equalsIgnoreCase(
-              recipe.getTrigger())) {
-            beaconManager.monitorDeviceExit(recipe.getBeacon(), recipe.getTriggerAction());
-          }
-          returnToMyRecipe(RecipeContracts.RECIPE_ACTION_UPDATE);
-
-        } else {
-          Log.e("Recipe", "ParseException on save", exception);
-        }
-      }
-    });
+    if (TRIGGERS.APPROACHING.name().equalsIgnoreCase(recipe.getTrigger())) {
+    	beaconManager.monitorDeviceEntry(recipe.getBeacon(), recipe.getTriggerAction());
+    } else if (TRIGGERS.LEAVING.name().equalsIgnoreCase(
+        recipe.getTrigger())) {
+    	beaconManager.monitorDeviceExit(recipe.getBeacon(), recipe.getTriggerAction());
+    }
+    returnToMyRecipe(action);
   }
 
   public void onSetAction(View view) {
     Intent scanIntent = new Intent(this, RecipeActionActivity1.class);
-    scanIntent.putExtra(RecipeContracts.RECIPE_ACTION,
+    scanIntent.putExtra(RecipeContracts.TRIGGERACTION,
         recipe.getTriggerAction());
     scanIntent.putExtra(RecipeContracts.TRIGGER, recipe.getTrigger());
     startActivityForResult(scanIntent, 1);
   }
 
   public void onDeleteAction(MenuItem mi) {
+	  Log.d(LOG_TAG, "Deleting recipe with object id:" + recipe.getObjectId());
     if(createFlag){
       finish();
       return;
     }
-    recipe.deleteInBackground(new DeleteCallback() {
-      @Override
-      public void done(ParseException exception) {
-        if (exception == null) {
-          Log.d("Recipe", "Recipe saved successfully");
-          returnToMyRecipe(RecipeContracts.RECIPE_ACTION_DELETE);
-        } else {
-          Log.e("Recipe", "ParseException on save", exception);
-        }
-      }
-    });
+    recipe.deleteRecipe(mRecipeId);
     BeaconApplication.getApplication().deleteRecipe(recipe);
+    returnToMyRecipe(RecipeContracts.RECIPE_ACTION_DELETE);
   }
 
   public void returnToMyRecipe(String recipeAction) {
     Intent data = new Intent();
     data.putExtra("recipe", recipe);
     data.putExtra("oldRecipe", oldRecipe);
+    data.putExtra("recipeId", mRecipeId);
     data.putExtra(RecipeContracts.RECIPE_ACTION, recipeAction);
     setResult(RESULT_OK, data);
     finish();
@@ -354,10 +326,9 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
       if (resultCode == RESULT_OK) {
         BleDeviceInfo deviceInfo = (BleDeviceInfo) data
             .getParcelableExtra("beacon");
-        if (oldRecipe != null
-            && !oldRecipe.getBeacon().equals(recipe.getBeacon())) {
+        if ((createFlag && recipe.getBeacon() != null) || (oldRecipe != null
+            && !oldRecipe.getBeacon().equals(recipe.getBeacon()))) {
           recipe.setEditState(true);
-          ;
         }
         recipe.setBeacon(deviceInfo);
         recipe.setDisplayName(deviceInfo.getName());
@@ -368,21 +339,15 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
       if (resultCode == RESULT_OK) {
         String trigger = data.getStringExtra("trigger");
         TriggerAction notification = (TriggerAction)data.
-            getParcelableExtra(RecipeContracts.RECIPE_ACTION);
+            getParcelableExtra(RecipeContracts.TRIGGERACTION);
         recipe.setTriggerAction(notification);
         recipe.setTriggerActionDisplayName(notification.getType());
         recipe.setTrigger(trigger);
-        if (oldRecipe != null
-            && !oldRecipe.getTrigger().equals(recipe.getTrigger())) {
+        if ((createFlag && recipe.getTrigger() != null) || (oldRecipe != null
+            && !oldRecipe.getTrigger().equalsIgnoreCase(recipe.getTrigger()))) {
           recipe.setEditState(true);
         }
         showRecipe();
-//        if (TRIGGERS.APPROACHING.name().equalsIgnoreCase(recipe.getTrigger())) {
-//          beaconManager.monitorDeviceEntry(recipe.getBeacon());
-//        } else if (TRIGGERS.LEAVING.name()
-//            .equalsIgnoreCase(recipe.getTrigger())) {
-//          beaconManager.monitorDeviceExit(recipe.getBeacon());
-//        }
       }
     } else {
       Log.e("RecipeDetailActivity", "Invalid request code:" + requestCode);

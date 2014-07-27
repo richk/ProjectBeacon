@@ -132,7 +132,7 @@ public class RecipeActionActivity1 extends Activity {
       }
     }
     TriggerAction notification = getIntent().getParcelableExtra(
-        RecipeContracts.RECIPE_ACTION);
+        RecipeContracts.TRIGGERACTION);
     if (notification != null) {
       if (TriggerAction.NOTIFICATION_TYPE.SMS.name().equalsIgnoreCase(
           notification.getType())) {
@@ -193,7 +193,7 @@ public class RecipeActionActivity1 extends Activity {
     triggerAction.setExtra(phn);
     Intent returnIntent = new Intent();
     returnIntent.putExtra("trigger", trigger);
-    returnIntent.putExtra(RecipeContracts.RECIPE_ACTION, triggerAction);
+    returnIntent.putExtra(RecipeContracts.TRIGGERACTION, triggerAction);
     setResult(RESULT_OK, returnIntent);
     finish();
   }
