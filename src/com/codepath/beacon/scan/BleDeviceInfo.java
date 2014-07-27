@@ -1,10 +1,15 @@
 package com.codepath.beacon.scan;
 
 import java.util.List;
+import java.util.Locale;
 
+import com.codepath.beacon.BeaconApplication;
+import com.codepath.beacon.contracts.BleDeviceInfoContracts;
 import com.codepath.beacon.contracts.ParseUserContracts;
 import com.codepath.beacon.data.Beacon;
+import com.google.android.gms.internal.be;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -16,9 +21,11 @@ import com.parse.SaveCallback;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+import android.widget.Toast;
 
 @ParseClassName("BleDeviceInfo")
 public class BleDeviceInfo extends ParseObject implements Parcelable {
+	private static final String LOG_TAG = BleDeviceInfo.class.getSimpleName();
 	public static boolean isInitialized = false;
 	private String name;
 	private String macAddress;
@@ -26,6 +33,7 @@ public class BleDeviceInfo extends ParseObject implements Parcelable {
 	private String uuid;
 	private int majorId;
 	private int minorId;
+	private String mObjectId;
 	
 	private boolean mIsBeingEdited = false;
 
@@ -43,7 +51,7 @@ public class BleDeviceInfo extends ParseObject implements Parcelable {
 	}
 
 	public BleDeviceInfo(Parcel in) {
-		setObjectId(in.readString());
+		mObjectId = in.readString();
 		setName(in.readString());
 		setMacAddress(in.readString());
 		setUuid(in.readString());
@@ -67,6 +75,9 @@ public class BleDeviceInfo extends ParseObject implements Parcelable {
 
 	public String getName() {
 		name = getString("name");
+		if (name != null) {
+			name = name.toUpperCase(Locale.getDefault());
+		}
 		return name;
 	}
 
@@ -93,7 +104,7 @@ public class BleDeviceInfo extends ParseObject implements Parcelable {
 	public void setName(String nm) {
 		name = nm;
 		if (nm != null) {
-		    put("name", name);
+		    put("name", name.toUpperCase(Locale.getDefault()));
 		}
 	}
 	public void setMacAddress(String mac) {
@@ -187,20 +198,22 @@ public class BleDeviceInfo extends ParseObject implements Parcelable {
 	}
 
 	public void findBeaconInBackground(final boolean save) {
-		BleDeviceInfo beacon = this;
+		final BleDeviceInfo beacon = this;
 		ParseQuery<BleDeviceInfo> query = ParseQuery.getQuery(BleDeviceInfo.class);
-		query.whereEqualTo("uuid", getUUID());
-		query.whereEqualTo("majorId", beacon.getMajorId());
-		query.whereEqualTo("minorId", beacon.getMinorId());
+		query.whereEqualTo(BleDeviceInfoContracts.UUID, getUUID());
+		query.whereEqualTo(BleDeviceInfoContracts.MAJORID, beacon.getMajorId());
+		query.whereEqualTo(BleDeviceInfoContracts.MINORID, beacon.getMinorId());
 		query.findInBackground(new FindCallback<BleDeviceInfo>() {
 			public void done(List<BleDeviceInfo> itemList, ParseException e) {
 				if (e == null) {
 					if (save) {
-						if (!itemList.isEmpty()) {
-							BleDeviceInfo firstItem = itemList.get(0);
-							setObjectId(firstItem.getObjectId());
+						if (itemList.isEmpty()) {
+							saveBeacon();
+						} else {
+						    Log.e(LOG_TAG, "Beacon already exists:" + beacon.getName());
+							Toast.makeText(BeaconApplication.getApplication().getApplicationContext(), 
+									"Beacon with that name already exists.Not saved.", Toast.LENGTH_SHORT).show();
 						}
-						saveBeacon();
 					}
 				} else {
 					Log.d("item", "Error: " + e.getMessage());
@@ -211,6 +224,7 @@ public class BleDeviceInfo extends ParseObject implements Parcelable {
 
 	public void saveBeacon() {
 		final BleDeviceInfo beacon = this;
+		Log.d(LOG_TAG, "Saving beacon:" + beacon.getName());
 		saveInBackground(new SaveCallback() {
 			@Override
 			public void done(ParseException exception) {
@@ -233,5 +247,46 @@ public class BleDeviceInfo extends ParseObject implements Parcelable {
 				}
 			}
 		});
+	}
+	
+	public void updateBeacon() {
+		Log.d(LOG_TAG, "Saving updated beacon object. Name:" + getName());
+		mObjectId = getObjectId();
+		if (mObjectId != null) {
+			ParseQuery<BleDeviceInfo> query = ParseQuery.getQuery("BleDeviceInfo");
+			query.getInBackground(mObjectId, new GetCallback<BleDeviceInfo>() {
+				@Override
+				public void done(final BleDeviceInfo device, ParseException exception) {
+					if (exception == null) {
+						Log.d(LOG_TAG, "Found the beacon object. ObjectId:" + device.getObjectId() + "<---> Name:" + device.getName());
+						device.setName(getName());
+						device.setUuid(getUUID());
+						device.setMacAddress(getMacAddress());
+						device.setMajorId(getMajorId());
+						device.setMinorId(getMinorId());
+						device.saveInBackground(new SaveCallback() {
+							
+							@Override
+							public void done(ParseException exception) {
+								if (exception == null) {
+									Toast.makeText(BeaconApplication.getApplication().getApplicationContext(), 
+											"Saved beacon with name:" + device.getName(), Toast.LENGTH_SHORT);
+								} else {
+									String message = "Exception saving parse object:" + mObjectId;
+									Log.e(LOG_TAG, message, exception);
+									Toast.makeText(BeaconApplication.getApplication().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+								}
+							}
+						});
+					} else {
+						String message = "Exception retrieving parse object:" + mObjectId;
+						Log.e(LOG_TAG, message, exception);
+						Toast.makeText(BeaconApplication.getApplication().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
+		} else {
+			Log.e(LOG_TAG, "Cannot get parse object. Object ID is null");
+		}
 	}
 }

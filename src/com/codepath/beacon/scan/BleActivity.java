@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,7 +33,7 @@ import com.codepath.beacon.R;
 import com.codepath.beacon.contracts.BleDeviceInfoContracts;
 import com.codepath.beacon.contracts.ParseUserContracts;
 import com.codepath.beacon.fragments.RecipeAlertDialog;
-import com.codepath.beacon.scan.AddBeaconFragment.OnAddBeaconListener;
+import com.codepath.beacon.scan.AddBeaconFragment.OnBeaconSelectedListener;
 import com.codepath.beacon.scan.BleService.State;
 import com.codepath.beacon.scan.MyDeviceListFragment.OnMyDeviceListFragmentInteractionListener;
 import com.parse.FindCallback;
@@ -42,7 +43,7 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 public class BleActivity extends Activity implements 
-  DeviceListFragment.OnDeviceListFragmentInteractionListener, OnAddBeaconListener,
+  DeviceListFragment.OnDeviceListFragmentInteractionListener, OnBeaconSelectedListener,
     OnMyDeviceListFragmentInteractionListener, BeaconListener, OnProgressListener {
 	public static final String TAG = BleActivity.class.getSimpleName();
 	private final int ENABLE_BT = 1;
@@ -135,26 +136,23 @@ public class BleActivity extends Activity implements
 
 	private void loadMyDevices() {
 		ParseUser currentUser = ParseUser.getCurrentUser();
-		ParseRelation<ParseObject> relation = currentUser.getRelation(ParseUserContracts.BLEDEVICES);
+		ParseRelation<BleDeviceInfo> relation = currentUser.getRelation(ParseUserContracts.BLEDEVICES);
 		if (!isNetworkAvailable()) {
 			showNoNetwork();	
 		} else {
 			onProgressStart();
-			relation.getQuery().findInBackground(new FindCallback<ParseObject>() {
+			relation.getQuery().findInBackground(new FindCallback<BleDeviceInfo>() {
 				@Override
-				public void done(List<ParseObject> beacons, ParseException exception) {
+				public void done(List<BleDeviceInfo> beacons, ParseException exception) {
 					if (exception != null) {
 						Log.e(TAG, "Parse Excetion getting saved beacons for user", exception);
 						Toast.makeText(getApplicationContext(), "Parse Excetion getting saved beacons for user:" + exception.getMessage(), Toast.LENGTH_SHORT).show();;
 					} else {
-						List<BleDeviceInfo> devices = new ArrayList<BleDeviceInfo>();
-						for (ParseObject item : beacons) {
-							BleDeviceInfo deviceInfo = (BleDeviceInfo) item;
-							devices.add(deviceInfo);
-							savedDevices.add(deviceInfo);
-							savedDeviceNames.add(deviceInfo.getName());
+						for (BleDeviceInfo beacon : beacons) {
+							savedDeviceNames.add(beacon.getName());
 						}
-						mMyDeviceList.setDevices(getApplicationContext(), devices);
+						savedDevices.addAll(beacons);
+						mMyDeviceList.setDevices(getApplicationContext(), beacons);
 					}
 				}
 			});
@@ -172,8 +170,9 @@ public class BleActivity extends Activity implements
 	@Override
 	public void onDeviceListFragmentInteraction(BleDeviceInfo deviceInfo) {
 		// Show dialog fragment to the user to set a name to the bledevice and save it
+		Log.d(TAG, "Adding a new beacon");
 		FragmentManager manager = getFragmentManager();
-		AddBeaconFragment fragment = AddBeaconFragment.newInstance("Add Beacon", deviceInfo);
+		AddBeaconFragment fragment = AddBeaconFragment.newInstance("Add Beacon", deviceInfo, true);
 		fragment.show(manager, "add_beacon");
 	}
 
@@ -226,7 +225,28 @@ public class BleActivity extends Activity implements
 			Log.d(TAG, "New Device:" + device.getName());
 		    savedDeviceNames.add(device.getName());	
 		}
-		device.saveBeaconInBackground();
+		device.saveBeacon();
+		Intent returnIntent = new Intent();
+		returnIntent.putExtra("beacon", device);
+		setResult(RESULT_OK, returnIntent);
+		finish();
+	}
+	
+	@Override
+	public void onBeaconUpdated(BleDeviceInfo device, String oldName) {
+		if (savedDeviceNames.contains(device.getName()) && device.isBeingEdited()) {
+			Log.d(TAG, "Device with that name already exists:" + device.getName());
+			RecipeAlertDialog alertDialog = new RecipeAlertDialog();
+			Bundle bundle = new Bundle();
+			bundle.putString("message", "Device with that name already exists. Try again with a different name");
+			alertDialog.setArguments(bundle);
+			alertDialog.show(getFragmentManager(), null);
+			return;
+		} else {
+			savedDeviceNames.remove(oldName);
+		    savedDeviceNames.add(device.getName());	
+		}
+		device.updateBeacon();
 		Intent returnIntent = new Intent();
 		returnIntent.putExtra("beacon", device);
 		setResult(RESULT_OK, returnIntent);
@@ -235,8 +255,9 @@ public class BleActivity extends Activity implements
 
 	@Override
 	public void onMyDeviceListFragmentInteraction(BleDeviceInfo deviceInfo) {
+		Log.d(TAG, "Updating an existing beacon:" + deviceInfo.getName());
 		FragmentManager manager = getFragmentManager();
-		AddBeaconFragment fragment = AddBeaconFragment.newInstance("Update Beacon", deviceInfo);
+		AddBeaconFragment fragment = AddBeaconFragment.newInstance("Update Beacon", deviceInfo, false);
 		fragment.show(manager, "update_beacon");
 	}
 
