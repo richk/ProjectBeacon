@@ -9,33 +9,39 @@ import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.contracts.RecipeContracts;
 import com.codepath.beacon.scan.BleDeviceInfo;
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 @ParseClassName("Recipe")
 public class Recipe extends ParseObject implements Parcelable {
 	private static final String LOG_TAG = Recipe.class.getSimpleName();
 	public static boolean isInitialized = false;
-	
+
 	private boolean mIsBeingEdited = false;
-	
+	private String mObjectId;
+
 	public interface OnRecipeResultListener {
 		public void onRecipeRetrieved(Recipe recipe);
 	}
-	
+
 	public Recipe() {
 		super();
 	}
 
 	public Recipe(Parcel in) {
-		setObjectId(in.readString());
+		mObjectId = in.readString();
+		Log.d(LOG_TAG, "Reading object id from the parcel:" + mObjectId);
 		SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
 		try {
 			String date = in.readString();
@@ -48,65 +54,58 @@ public class Recipe extends ParseObject implements Parcelable {
 			Log.e(LOG_TAG, "Error parsing date", e);
 		}
 		BleDeviceInfo device = in.readParcelable(BleDeviceInfo.class.getClassLoader());
-		Log.d(LOG_TAG, "Beacon:" + device.toString());
 		setBeacon(device);
 		TriggerAction triggerAction = in.readParcelable(TriggerAction.class.getClassLoader());
-		Log.d(LOG_TAG, "Trigger Action:" + triggerAction.toString());
 		setTriggerAction(triggerAction);
 		String trigger = in.readString();
-		Log.d(LOG_TAG, "Trigger:" + trigger);
 		setTrigger(trigger);
 		String status = in.readString();
-		Log.d(LOG_TAG, "Status:" + status);
 		setStatus(Boolean.parseBoolean(status));
 		String userId = in.readString();
-		Log.d(LOG_TAG, "UserID:" + userId);
 		setUserID(userId);
 		String displayName = in.readString();
-		Log.d(LOG_TAG, "Display Name:" + displayName);
 		setDisplayName(displayName);
 		String triggerActionDisplayName = in.readString();
-		Log.d(LOG_TAG, "TriggerAction:" + triggerActionDisplayName);
 		setTriggerActionDisplayName(triggerActionDisplayName);
 		setEditState(Boolean.parseBoolean(in.readString()));
 	}
-	
+
 	public boolean isBeingEdited() {
-	    return mIsBeingEdited;	
+		return mIsBeingEdited;	
 	}
-	
+
 	public void setEditState(boolean editState) {
 		mIsBeingEdited = editState;
 	}
-	
+
 	public String getDisplayName() {
 		return getString(RecipeContracts.DISPLAYNAME);
 	}
-	
+
 	public void setDisplayName(String dn) {
 		put(RecipeContracts.DISPLAYNAME, dn);
 	}
-	
+
 	public String getTriggerActionDisplayName() {
 		return getString(RecipeContracts.TRIGGERACTIONDISPLAYNAME);
 	}
-	
+
 	public void setTriggerActionDisplayName(String triggerDisplayName) {
 		put(RecipeContracts.TRIGGERACTIONDISPLAYNAME, triggerDisplayName);
 	}
-	
+
 	public BleDeviceInfo getBeacon() {
 		return (BleDeviceInfo) getParseObject(RecipeContracts.BEACON);
 	}
-	
+
 	public void setBeacon(BleDeviceInfo device) {
 		put(RecipeContracts.BEACON, device);
 	}
-	
+
 	public TriggerAction getTriggerAction() {
 		return (TriggerAction) getParseObject(RecipeContracts.TRIGGERACTION);
 	}
-	
+
 	public void setTriggerAction(TriggerAction ta) {
 		put(RecipeContracts.TRIGGERACTION, ta);
 	}
@@ -171,6 +170,7 @@ public class Recipe extends ParseObject implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
+		Log.d(LOG_TAG, "Setting object id in the parcel:" + getObjectId());
 		dest.writeString(getObjectId());
 		Date activationDate = getActivationDate();
 		Log.e(LOG_TAG, "Setting activation date:" + activationDate.toString());
@@ -202,7 +202,7 @@ public class Recipe extends ParseObject implements Parcelable {
 			return false;
 		}
 	}
-	
+
 	public String getKey() {
 		return getDisplayName() + ":" + getTrigger();
 	}
@@ -211,7 +211,7 @@ public class Recipe extends ParseObject implements Parcelable {
 	public int hashCode() {
 		return getKey().hashCode();
 	}
-	
+
 	public static final Parcelable.Creator<Recipe> CREATOR =
 
 			new Parcelable.Creator<Recipe>() {
@@ -224,20 +224,20 @@ public class Recipe extends ParseObject implements Parcelable {
 			return new Recipe[size];
 		}
 	};
-	
+
 	public void findRecipeInBackground(final String recipeID) {
 		ParseQuery<Recipe> query = ParseQuery.getQuery(Recipe.class);
 		query.getInBackground(recipeID, new GetCallback<Recipe>() {
 			public void done(final Recipe recipe, ParseException e) {
 				if (e == null) {
 					recipe.getParseObject(RecipeContracts.BEACON).fetchIfNeededInBackground(new GetCallback<ParseObject>() {
-				        public void done(ParseObject object, ParseException e) {
-				        	if (e == null) {
-				                recipe.setBeacon((BleDeviceInfo) object);
-				        	} else {
-				        		Log.e(LOG_TAG, "ParseException", e);
-				        	}
-				        }
+						public void done(ParseObject object, ParseException e) {
+							if (e == null) {
+								recipe.setBeacon((BleDeviceInfo) object);
+							} else {
+								Log.e(LOG_TAG, "ParseException", e);
+							}
+						}
 					});
 					recipe.getParseObject(RecipeContracts.TRIGGERACTION).fetchIfNeededInBackground(new GetCallback<ParseObject>() {
 
@@ -245,20 +245,20 @@ public class Recipe extends ParseObject implements Parcelable {
 						public void done(ParseObject noticationObject,
 								ParseException done) {
 							if (done == null) {
-							    recipe.setTriggerAction((TriggerAction) noticationObject);
+								recipe.setTriggerAction((TriggerAction) noticationObject);
 							} else {
 								Log.e(LOG_TAG, "ParseException", done);
 							}
 						}
 					});
-					
+
 				} else {
 					// something went wrong
 				}
 			}
 		});
 	}
-	
+
 	public static void findMyRecipes(boolean refresh) {
 		ParseQuery<Recipe> query = ParseQuery.getQuery(Recipe.class);
 		String currentUserID = ParseUser.getCurrentUser().getObjectId();
@@ -271,13 +271,13 @@ public class Recipe extends ParseObject implements Parcelable {
 					// Access the array of results here		        	
 					for (final Recipe recipe : recipes) {
 						recipe.getParseObject(RecipeContracts.BEACON).fetchIfNeededInBackground(new GetCallback<ParseObject>() {
-					        public void done(ParseObject object, ParseException e) {
-					        	if (e == null) {
-					                recipe.setBeacon((BleDeviceInfo) object);
-					        	} else {
-					        		Log.e(LOG_TAG, "ParseException", e);
-					        	}
-					        }
+							public void done(ParseObject object, ParseException e) {
+								if (e == null) {
+									recipe.setBeacon((BleDeviceInfo) object);
+								} else {
+									Log.e(LOG_TAG, "ParseException", e);
+								}
+							}
 						});
 						recipe.getParseObject(RecipeContracts.TRIGGERACTION).fetchIfNeededInBackground(new GetCallback<ParseObject>() {
 
@@ -285,7 +285,7 @@ public class Recipe extends ParseObject implements Parcelable {
 							public void done(ParseObject noticationObject,
 									ParseException done) {
 								if (done == null) {
-								    recipe.setTriggerAction((TriggerAction) noticationObject);
+									recipe.setTriggerAction((TriggerAction) noticationObject);
 								} else {
 									Log.e(LOG_TAG, "ParseException", done);
 								}
@@ -299,6 +299,88 @@ public class Recipe extends ParseObject implements Parcelable {
 		});
 	}
 
+	public void saveRecipe() {
+		Log.d(LOG_TAG, "Saving new recipe");
+		final Recipe recipe = this;
+		saveInBackground(new SaveCallback() {
+			@Override
+			public void done(ParseException exception) {
+				if (exception == null) {
+					Log.d(LOG_TAG, "Recipe saved successfully");
+					Toast.makeText(BeaconApplication.getApplication().getApplicationContext(), "Recipe saved successfully", Toast.LENGTH_SHORT).show();
+				} else {
+					Log.e(LOG_TAG, "Failed to save recipe", exception);
+					Toast.makeText(BeaconApplication.getApplication().getApplicationContext(), "Failed to save recipe", Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+	}
 
+	public void updateRecipe(String recipeId) {
+		Log.d(LOG_TAG, "Saving updated recipe");
+		mObjectId = getObjectId();
+		ParseQuery<Recipe> query = ParseQuery.getQuery("Recipe");
+		query.getInBackground(recipeId, new GetCallback<Recipe>() {
+
+			@Override
+			public void done(Recipe recipe, ParseException exception) {
+				if (exception == null) {
+					Log.d(LOG_TAG, "Recipe retrieved successfully");
+					recipe.setDisplayName(getDisplayName());
+					recipe.setBeacon(getBeacon());
+					recipe.setStatus(isStatus());
+					recipe.setDisplayName(getDisplayName());
+					recipe.setTriggerAction(getTriggerAction());
+					recipe.setTriggerActionDisplayName(getTriggerActionDisplayName());
+					recipe.setActivationDate(getActivationDate());
+					recipe.setTriggeredCount(getTriggeredCount());
+					recipe.setTrigger(getTrigger());
+					recipe.setUserID(getUserID());
+					recipe.saveInBackground(new SaveCallback() {
+
+						@Override
+						public void done(ParseException exception) {
+							if (exception == null) {
+								Log.d(LOG_TAG, "Recipe saved successfully");
+								Toast.makeText(BeaconApplication.getApplication().getApplicationContext(), 
+										"Recipe saved successfully", Toast.LENGTH_SHORT).show();
+							} else {
+								Log.e(LOG_TAG, "Failed to save recipe", exception);
+								Toast.makeText(BeaconApplication.getApplication().getApplicationContext(), 
+										"Failed to save recipe", Toast.LENGTH_SHORT).show();
+							}
+						}
+					});
+				} else {
+					Log.e(LOG_TAG, "Failed to get recipe, objectId:" + mObjectId, exception);
+				} 
+			}
+		});
+	}
+
+	public void deleteRecipe(String recipeId) {
+		Log.d(LOG_TAG, "Deleting recipe with id:" + mObjectId);
+		ParseQuery<Recipe> query = ParseQuery.getQuery("Recipe");
+		query.getInBackground(recipeId, new GetCallback<Recipe>() {
+			@Override
+			public void done(final Recipe recipe, ParseException exception) {
+				if (exception == null) {
+					Log.d(LOG_TAG, "Recipe retrieved successfully");
+					recipe.deleteInBackground(new DeleteCallback() {
+						@Override
+						public void done(ParseException exception) {
+							if (exception == null) {
+								Log.d("Recipe", "Recipe deleted successfully");
+							} else {
+								Log.e("Recipe", "ParseException on delete", exception);
+							}
+						}
+					});
+				} else {
+					Log.e(LOG_TAG, "Failed to get recipe, objectId:" + mObjectId, exception);
+				} 
+			}
+		});
+	}
 }
 
