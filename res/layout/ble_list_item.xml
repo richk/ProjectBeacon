@@ -13,9 +13,8 @@
         android:layout_centerVertical="true" >
 
         <TextView
-                        style="@style/Theme.Beacon.DefaultTextColor"
-            
             android:id="@+id/tvRssi"
+            style="@style/Theme.Beacon.DefaultTextColor"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
@@ -23,93 +22,77 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
+    <RelativeLayout
+        android:id="@+id/rlBeaconDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_toRightOf="@id/rlRssi" >
+
         <TextView
             android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="PURSE"
-            android:textStyle="bold"            
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/app_primary_color"
-            android:layout_toRightOf="@id/rlRssi"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textStyle="bold" />
 
-        <LinearLayout
-            android:id="@+id/llUUID"
+        <TextView
+            android:id="@+id/tvUUIDString"
+            style="@style/Theme.Beacon.DefaultTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvName"
-            android:layout_toRightOf="@id/rlRssi" >
+            android:text="@string/uuid_label"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-            <TextView
-                            style="@style/Theme.Beacon.DefaultTextColor"
-                
-                android:id="@+id/tvUUIDString"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="UUID :"                
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+        <TextView
+            android:id="@+id/tvUUID"
+            style="@style/Theme.Beacon.DefaultTextColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvName"
+            android:layout_toRightOf="@id/tvUUIDString"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-            <TextView
-                            style="@style/Theme.Beacon.DefaultTextColor"
-                
-                android:id="@+id/tvUUID"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:text=""               
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llMajorId"
+        <TextView
+            android:id="@+id/tvMajorIdString"
+            style="@style/Theme.Beacon.DefaultTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/rlRssi"
-            android:layout_below="@id/llUUID" >
+            android:layout_below="@id/tvUUIDString"
+            android:gravity="center"
+            android:text="@string/major_id_label"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-            <TextView
-                            style="@style/Theme.Beacon.DefaultTextColor"
-                
-                android:id="@+id/tvMajorIdString"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Major Id :"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-
-            <TextView
-                            style="@style/Theme.Beacon.DefaultTextColor"                
-                android:id="@+id/tvMajorId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llMinorId"
+        <TextView
+            android:id="@+id/tvMajorId"
+            style="@style/Theme.Beacon.DefaultTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/rlRssi"
-            android:layout_below="@id/llMajorId" >
+            android:layout_below="@id/tvUUID"
+            android:layout_toRightOf="@id/tvMajorIdString"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-            <TextView
-                            style="@style/Theme.Beacon.DefaultTextColor"                
-                android:id="@+id/tvMinorIdString"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Minor Id :"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+        <TextView
+            android:id="@+id/tvMinorIdString"
+            style="@style/Theme.Beacon.DefaultTextColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvMajorIdString"
+            android:text="@string/minor_id_label"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-            <TextView
-                            style="@style/Theme.Beacon.DefaultTextColor"
-                
-                android:id="@+id/tvMinorId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2"                
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tvMinorId"
+            style="@style/Theme.Beacon.DefaultTextColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvMajorId"
+            android:layout_toRightOf="@id/tvMinorIdString"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+    </RelativeLayout>
 </RelativeLayout>

@@ -21,7 +21,7 @@ public class DeviceListFragment extends Fragment implements
   private OnDeviceListFragmentInteractionListener mListener;
   private AbsListView mListView;
   private TextView mEmptyView;
-  private BleNewItemArrayAdapter mAdapter;
+  private BleItemArrayAdapter mAdapter;
 
   List<BleDeviceInfo> deviceList;
 
@@ -36,7 +36,7 @@ public class DeviceListFragment extends Fragment implements
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     deviceList = new ArrayList<BleDeviceInfo>();
-    mAdapter = new BleNewItemArrayAdapter(getActivity(), deviceList);
+    mAdapter = new BleItemArrayAdapter(getActivity(), deviceList);
   }
 
   @Override
