@@ -307,10 +307,10 @@ public class Recipe extends ParseObject implements Parcelable {
 			public void done(ParseException exception) {
 				if (exception == null) {
 					Log.d(LOG_TAG, "Recipe saved successfully");
-					Toast.makeText(BeaconApplication.getApplication().getApplicationContext(), "Recipe saved successfully", Toast.LENGTH_SHORT).show();
+					//Toast.makeText(BeaconApplication.getApplication().getApplicationContext(), "Recipe saved successfully", Toast.LENGTH_SHORT).show();
 				} else {
 					Log.e(LOG_TAG, "Failed to save recipe", exception);
-					Toast.makeText(BeaconApplication.getApplication().getApplicationContext(), "Failed to save recipe", Toast.LENGTH_SHORT).show();
+					//Toast.makeText(BeaconApplication.getApplication().getApplicationContext(), "Failed to save recipe", Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
@@ -342,12 +342,12 @@ public class Recipe extends ParseObject implements Parcelable {
 						public void done(ParseException exception) {
 							if (exception == null) {
 								Log.d(LOG_TAG, "Recipe saved successfully");
-								Toast.makeText(BeaconApplication.getApplication().getApplicationContext(), 
-										"Recipe saved successfully", Toast.LENGTH_SHORT).show();
+//								Toast.makeText(BeaconApplication.getApplication().getApplicationContext(), 
+//										"Recipe saved successfully", Toast.LENGTH_SHORT).show();
 							} else {
 								Log.e(LOG_TAG, "Failed to save recipe", exception);
-								Toast.makeText(BeaconApplication.getApplication().getApplicationContext(), 
-										"Failed to save recipe", Toast.LENGTH_SHORT).show();
+//								Toast.makeText(BeaconApplication.getApplication().getApplicationContext(), 
+//										"Failed to save recipe", Toast.LENGTH_SHORT).show();
 							}
 						}
 					});

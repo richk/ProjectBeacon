@@ -104,7 +104,7 @@ public class LoginActivity extends Activity {
 	}
 
 	protected void handleSuccessfulLogin() {
-		Toast.makeText(getApplicationContext(), "Hooray..the user can login", Toast.LENGTH_SHORT).show();
+		//Toast.makeText(getApplicationContext(), "Hooray..the user can login", Toast.LENGTH_SHORT).show();
 		Intent scanIntent = new Intent(this, MyRecipeActivity.class);
 		startActivity(scanIntent);
 		
