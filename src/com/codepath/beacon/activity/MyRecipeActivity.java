@@ -37,7 +37,6 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 	BeaconManager mBeaconManager;
 	ImageView pbRecipesLoading;
 	Animator pbAnimator;
-	private MenuItem mRefreshItem = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +48,6 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 		pbRecipesLoading = (ImageView) findViewById(R.id.pbRecipesLoading);
 	    pbAnimator = AnimatorInflater.loadAnimator(this, R.anim.ble_progress_bar);
 	    pbAnimator.setTarget(pbRecipesLoading);
-	    onProgressStart();
 	    FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		mNewFragment.setBeaconManager(mBeaconManager);
 		transaction.replace(R.id.flrecipelist, mNewFragment, RECIPE_LIST_FRAGMENT_TAG);
@@ -58,8 +56,12 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 	}
 	
 	public void loadRecipes() {
+	  if(isNetworkAvailable()){
 	    onProgressStart();
 	    mNewFragment.reloadRecipes();
+	  }else{
+	    showNoNetwork();
+	  }
 	}
 	
 	@Override
@@ -185,7 +187,7 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
   public void showNoNetwork() {
 	  RecipeAlertDialog alertDialog = new RecipeAlertDialog();
 	  Bundle args = new Bundle();
-	  args.putString("message", getResources().getString(R.string.network_error_message));
+	  args.putString("message", "Cannot load saved recipes as Internet is not available. You can still create new recipes though.");
 	  alertDialog.setArguments(args);
 	  alertDialog.show(getFragmentManager(), null);
 	  return;
