@@ -18,6 +18,7 @@ import android.util.Log;
 
 import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.MapActivity;
+import com.codepath.beacon.NotificationBubble;
 import com.codepath.beacon.R;
 import com.codepath.beacon.activity.MyRecipeActivity;
 import com.codepath.beacon.contracts.MapContracts;
@@ -34,8 +35,10 @@ GooglePlayServicesClient.OnConnectionFailedListener {
 
 	private LocationClient mLocationClient;
 	private String mMessage;
+	Context context;
 
-	public BeaconNotifier() {
+	public BeaconNotifier(Context ctxt) {
+	    context = ctxt;
 		mLocationClient = new LocationClient(BeaconApplication.getApplication(), this, this);
 	}
 
@@ -117,7 +120,7 @@ GooglePlayServicesClient.OnConnectionFailedListener {
 		NotificationCompat.Builder notiBuilder = new NotificationCompat.Builder(
 				BeaconApplication.getApplication())
 		.setSmallIcon(R.drawable.ic_launcher)
-		.setContentTitle("Beacon Notification").setContentText(mMessage)
+		.setContentTitle("Beacon Buddy Notification").setContentText(mMessage)
 		.setSound(alarmSound).setLights(Color.RED, 3000, 3000)
 		.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
 
@@ -134,6 +137,10 @@ GooglePlayServicesClient.OnConnectionFailedListener {
 
 		Random rr = new Random(System.currentTimeMillis());
 		notificationManager.notify(rr.nextInt(), notiBuilder.build());
+		
+		Intent bubbleIntent = new Intent(context, NotificationBubble.class); 
+		bubbleIntent.putExtra("message", mMessage);
+	    context.startService(bubbleIntent);
 	}
 
   public void turnOnSilentMode() {

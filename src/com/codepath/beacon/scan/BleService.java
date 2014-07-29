@@ -300,7 +300,7 @@ public class BleService extends Service implements
     
     private void sendDeviceMessage(List<MonitorObj> devices, int what){
 
-      BeaconNotifier uu = new BeaconNotifier();
+      BeaconNotifier uu = new BeaconNotifier(getApplicationContext());
       if(devices != null && devices.size() > 0){
         MonitorObj obj = devices.get(0);
         String message = null;
