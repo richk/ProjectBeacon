@@ -191,12 +191,12 @@ public class BleService extends Service implements
         case MSG_STOP_MONITOR_ENTRY:
           device = (BleDeviceInfo)msg.getData().getParcelable(KEY_DEVICE_DETAILS);
           Log.d(TAG, "Removing device from monitoring entry = " + device.getKey());
-          service.monitoringEntry.remove(device);
+          service.monitoringEntry.remove(device.getKey());
           break;
         case MSG_STOP_MONITOR_EXIT:
           device = (BleDeviceInfo)msg.getData().getParcelable(KEY_DEVICE_DETAILS);
           Log.d(TAG, "Removing device from monitoring exit = " + device.getKey());
-          service.monitoringExit.remove(device);
+          service.monitoringExit.remove(device.getKey());
           break;
         default:
           super.handleMessage(msg);

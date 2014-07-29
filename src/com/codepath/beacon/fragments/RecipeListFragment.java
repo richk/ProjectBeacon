@@ -184,18 +184,27 @@ public class RecipeListFragment extends Fragment implements RecipeUpdateListener
 
 	@Override
 	public void onStatusChange(Recipe recipe, boolean status) {
-		Log.d(LOG_TAG, "onStatusChange() for recipe:" + recipe.getDisplayName() + " , status:" + status);
-		recipe.setStatus(status);
-        recipe.saveInBackground();
-        if (!status) {
-        	if (TRIGGERS.APPROACHING.name().equals(recipe.getTrigger())) {
-        		Log.d(LOG_TAG, "Setting monitoring on device entry for beacon:" + recipe.getDisplayName());
-        		beaconManager.stopMonitorDeviceEntry(recipe.getBeacon());
-        	} else {
-        		Log.d(LOG_TAG, "Setting monitoring on device exit for beacon:" + recipe.getDisplayName());
-        		beaconManager.stopMonitorDeviceEexit(recipe.getBeacon());
-        	}
-        }
+	  Log.d(LOG_TAG, "onStatusChange() for recipe:" + recipe.getDisplayName() + " , status:" + status);
+	  recipe.setStatus(status);
+	  recipe.saveInBackground();
+	  if (status) {
+	    if (TRIGGERS.APPROACHING.name().equals(recipe.getTrigger())) {
+	      Log.d(LOG_TAG, "Starting monitoring on device entry for beacon:" + recipe.getDisplayName());
+	      beaconManager.monitorDeviceEntry(recipe.getBeacon(), recipe.getTriggerAction());
+	    } else {
+	      Log.d(LOG_TAG, "Setting monitoring on device exit for beacon:" + recipe.getDisplayName());
+	      beaconManager.monitorDeviceExit(recipe.getBeacon(), recipe.getTriggerAction());
+	    }          
+	  }else{
+	    if (TRIGGERS.APPROACHING.name().equals(recipe.getTrigger())) {
+	      Log.d(LOG_TAG, "Stopping monitoring on device entry for beacon:" + recipe.getDisplayName());
+	      beaconManager.stopMonitorDeviceEntry(recipe.getBeacon());
+	    } else {
+	      Log.d(LOG_TAG, "Stopping monitoring on device exit for beacon:" + recipe.getDisplayName());
+	      beaconManager.stopMonitorDeviceEexit(recipe.getBeacon());
+	    }
+
+	  }
 	}
 
 }
