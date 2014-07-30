@@ -72,6 +72,8 @@
     <string name="uuid_label">UUID:</string>
     <string name="major_id_label">Major Id:</string>
     <string name="minor_id_label">Minor Id:</string>
+    <string name="my_devices_tab_label">My Devices</string>
+    <string name="new_devices_tab_label">New Devices</string>
     
     <string name="network_error_message">Looks like you dont have internet. Check you wifi/3G connection and try again.</string>
     <string name="duplicate_recipe_error_message">You already have a recipe with same beacon and action. Check your recipe and try again.</string>
