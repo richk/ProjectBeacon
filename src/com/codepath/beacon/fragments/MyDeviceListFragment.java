@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,7 @@ public class MyDeviceListFragment extends Fragment implements OnItemClickListene
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mAdapter = new BleItemArrayAdapter(getActivity(), mDevices);
+		setRetainInstance(true);
 	}
 	
 	public void setDevices(Context context, List<BleDeviceInfo> devices) {
@@ -75,7 +77,6 @@ public class MyDeviceListFragment extends Fragment implements OnItemClickListene
 
 			// Set OnItemClickListener so we can be notified on item clicks
 			mListView.setOnItemClickListener(this);
-			mListView.setAdapter(mAdapter);
 		}
 
 		return view;
@@ -125,13 +126,17 @@ public class MyDeviceListFragment extends Fragment implements OnItemClickListene
 	}
 	
 	public void onUpdatedRssi(Map<String, Integer> updatedRssiMap) {
+		Log.d(LOG_TAG, "onUpdatedRssi");
 		if (mDevices != null) {
 			for (BleDeviceInfo device : mDevices) {
 				if (updatedRssiMap.get(device.getName()) != null) {
 					device.setRssi(updatedRssiMap.get(device.getName()));
 				}
 			}
-			mAdapter.notifyDataSetChanged();
+			if (mAdapter != null) {
+				Log.d(LOG_TAG, "onUpdatedRssi: Rssi values for saved beacons updated");
+			    mAdapter.notifyDataSetChanged();
+			}
 		}
 	}
 }

@@ -219,7 +219,7 @@ OnMyDeviceListFragmentInteractionListener, BeaconListener, OnProgressListener {
 		if (!isNetworkAvailable()) {
 			showNoNetwork();	
 		} else {
-			relation.getQuery().findInBackground(new FindCallback<BleDeviceInfo>() {
+			relation.getQuery().addDescendingOrder(BleDeviceInfoContracts.NAME).findInBackground(new FindCallback<BleDeviceInfo>() {
 				@Override
 				public void done(List<BleDeviceInfo> beacons, ParseException exception) {
 					if (exception != null) {
@@ -302,7 +302,7 @@ OnMyDeviceListFragmentInteractionListener, BeaconListener, OnProgressListener {
 			Log.d(LOG_TAG, "Device with that name already exists:" + device.getName());
 			RecipeAlertDialog alertDialog = new RecipeAlertDialog();
 			Bundle bundle = new Bundle();
-			bundle.putString("message", "Device with that name already exists. Try again with a different name");
+			bundle.putString("message", getResources().getString(R.string.duplicate_beacon_name_message));
 			alertDialog.setArguments(bundle);
 			alertDialog.show(getFragmentManager(), null);
 			return;
@@ -323,7 +323,7 @@ OnMyDeviceListFragmentInteractionListener, BeaconListener, OnProgressListener {
 			Log.d(LOG_TAG, "Device with that name already exists:" + device.getName());
 			RecipeAlertDialog alertDialog = new RecipeAlertDialog();
 			Bundle bundle = new Bundle();
-			bundle.putString("message", "Device with that name already exists. Try again with a different name");
+			bundle.putString("message", getResources().getString(R.string.duplicate_beacon_name_message));
 			alertDialog.setArguments(bundle);
 			alertDialog.show(getFragmentManager(), null);
 			return;

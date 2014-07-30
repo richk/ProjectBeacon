@@ -13,6 +13,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.R;
 import com.codepath.beacon.scan.BleDeviceInfo;
 import com.codepath.beacon.scan.BleItemArrayAdapter;
@@ -38,6 +39,7 @@ public class DeviceListFragment extends Fragment implements AbsListView.OnItemCl
 		super.onCreate(savedInstanceState);
 		deviceList = new ArrayList<BleDeviceInfo>();
 		mAdapter = new BleItemArrayAdapter(getActivity(), deviceList);
+		setRetainInstance(true);
 	}
 
 	@Override
@@ -111,6 +113,6 @@ public class DeviceListFragment extends Fragment implements AbsListView.OnItemCl
 	}
 
 	public void setScanning(boolean scanning) {
-		setEmptyText(getString(scanning ? R.string.scanning : R.string.no_devices));
+		setEmptyText(BeaconApplication.getApplication().getString(scanning ? R.string.scanning : R.string.no_devices));
 	}
 }
