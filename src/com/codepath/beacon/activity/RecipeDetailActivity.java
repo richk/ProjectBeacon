@@ -3,7 +3,6 @@ package com.codepath.beacon.activity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import android.R.integer;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
@@ -25,17 +24,14 @@ import com.codepath.beacon.models.TriggerAction;
 import com.codepath.beacon.models.TriggerAction.NOTIFICATION_TYPE;
 import com.codepath.beacon.scan.BeaconListener;
 import com.codepath.beacon.scan.BeaconManager;
-import com.codepath.beacon.scan.BleActivity;
 import com.codepath.beacon.scan.BleDeviceInfo;
 import com.codepath.beacon.scan.BleService.State;
 import com.codepath.beacon.ui.RecipeActionActivity1;
-import com.parse.DeleteCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 public class RecipeDetailActivity extends Activity implements BeaconListener {
   private static final String LOG_TAG = RecipeDetailActivity.class
@@ -198,7 +194,7 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
   }
   
   public void onScanBeacon(View view) {
-    Intent scanIntent = new Intent(this, BleActivity.class);
+    Intent scanIntent = new Intent(this, BlePagerActivity.class);
     startActivityForResult(scanIntent, 0);
   }
 

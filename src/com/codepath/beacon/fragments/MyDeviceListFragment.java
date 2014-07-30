@@ -1,11 +1,11 @@
-package com.codepath.beacon.scan;
+package com.codepath.beacon.fragments;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,12 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.codepath.beacon.OnProgressListener;
 import com.codepath.beacon.R;
+import com.codepath.beacon.scan.BleDeviceInfo;
+import com.codepath.beacon.scan.BleItemArrayAdapter;
 
 public class MyDeviceListFragment extends Fragment implements OnItemClickListener {
 	private static final String LOG_TAG = MyDeviceListFragment.class.getSimpleName();
@@ -43,19 +45,19 @@ public class MyDeviceListFragment extends Fragment implements OnItemClickListene
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mAdapter = new BleItemArrayAdapter(getActivity(), mDevices);
 	}
 	
 	public void setDevices(Context context, List<BleDeviceInfo> devices) {
 		mDevices = devices;
-		List<BleDeviceInfo> items = new ArrayList<BleDeviceInfo>();
-		if (devices != null) {
-			for (BleDeviceInfo device : devices) {
-				items.add(device);
-			}
+		if (devices == null && mAdapter != null) {
+			mAdapter.clear();
+			return;
 		}
-		mAdapter = new BleItemArrayAdapter(context, items);
-		mListView.setAdapter(mAdapter);
-		mProgressListener.onProgressEnd();
+		if (mAdapter != null) {
+			mAdapter.clear();
+			mAdapter.addAll(devices);
+		}
 	}
 
 	@Override
@@ -73,6 +75,7 @@ public class MyDeviceListFragment extends Fragment implements OnItemClickListene
 
 			// Set OnItemClickListener so we can be notified on item clicks
 			mListView.setOnItemClickListener(this);
+			mListView.setAdapter(mAdapter);
 		}
 
 		return view;
