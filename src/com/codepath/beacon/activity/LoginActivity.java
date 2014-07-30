@@ -1,32 +1,21 @@
 package com.codepath.beacon.activity;
 
-import com.codepath.beacon.R;
-import com.codepath.beacon.R.id;
-import com.codepath.beacon.R.layout;
-import com.codepath.beacon.R.menu;
-import com.codepath.beacon.fragments.RecipeAlertDialog;
-import com.codepath.beacon.scan.BleActivity;
-import com.parse.LogInCallback;
-import com.parse.ParseException;
-import com.parse.ParseUser;
-
 import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.os.Build;
+
+import com.codepath.beacon.R;
+import com.codepath.beacon.fragments.RecipeAlertDialog;
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 
 public class LoginActivity extends Activity {
 	private static final String LOG_TAG = LoginActivity.class.getSimpleName();

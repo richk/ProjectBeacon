@@ -72,7 +72,7 @@
         </service>
 
         <activity
-            android:name=".scan.BleActivity"
+            android:name=".activity.BlePagerActivity"
             android:label="@string/title_scan_screen"
             android:parentActivityName=".activity.RecipeDetailActivity" >
         </activity>
