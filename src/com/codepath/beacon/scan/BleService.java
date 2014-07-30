@@ -216,7 +216,7 @@ public class BleService extends Service implements
         return;
     }
     currentScannedDevices.clear();
-    Log.d(TAG, "Invoking scan at " + new Date());
+    //Log.d(TAG, "Invoking scan at " + new Date());
     lastScanTime = new Date().getTime();
     setState(State.SCANNING);
     if (mBluetooth == null) {
@@ -368,7 +368,7 @@ public class BleService extends Service implements
     
     if (deviceInfo != null && !currentScannedDevices.containsKey(deviceInfo.getKey())) {
       handleNewFoundDevice(deviceInfo);
-      Log.d(TAG, "Added " + device.getName() + ": " + deviceInfo.getKey());
+      //Log.d(TAG, "Added " + device.getName() + ": " + deviceInfo.getKey());
     }
   }
 
@@ -437,7 +437,7 @@ public class BleService extends Service implements
   }
 
   private void sendMessage(Message msg) {
-    Log.d(TAG, "Service sending message back to num clients = " + mClients.size());
+    //Log.d(TAG, "Service sending message back to num clients = " + mClients.size());
     for (int i = mClients.size() - 1; i >= 0; i--) {
       Messenger messenger = mClients.get(i);
       if (!sendMessage(messenger, msg)) {
