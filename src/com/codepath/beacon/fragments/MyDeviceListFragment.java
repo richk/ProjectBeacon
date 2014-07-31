@@ -122,7 +122,7 @@ public class MyDeviceListFragment extends Fragment implements OnItemClickListene
 
 	public void setScanning(boolean scanning) {
 		mListView.setEnabled(!scanning);
-		setEmptyText(getString(scanning ? R.string.scanning : R.string.no_devices));
+//		setEmptyText(getString(scanning ? R.string.scanning : R.string.no_devices));
 	}
 	
 	public void onUpdatedRssi(Map<String, Integer> updatedRssiMap) {

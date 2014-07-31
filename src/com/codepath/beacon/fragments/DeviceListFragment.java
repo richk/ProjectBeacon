@@ -113,6 +113,6 @@ public class DeviceListFragment extends Fragment implements AbsListView.OnItemCl
 	}
 
 	public void setScanning(boolean scanning) {
-		setEmptyText(BeaconApplication.getApplication().getString(scanning ? R.string.scanning : R.string.no_devices));
+//		setEmptyText(BeaconApplication.getApplication().getString(scanning ? R.string.scanning : R.string.no_devices));
 	}
 }

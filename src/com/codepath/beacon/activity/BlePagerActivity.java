@@ -219,14 +219,20 @@ OnMyDeviceListFragmentInteractionListener, BeaconListener, OnProgressListener {
 		if (!isNetworkAvailable()) {
 			showNoNetwork();	
 		} else {
-			relation.getQuery().addDescendingOrder(BleDeviceInfoContracts.NAME).findInBackground(new FindCallback<BleDeviceInfo>() {
+			relation.getQuery()
+			.addDescendingOrder(BleDeviceInfoContracts.UUID)
+			.addDescendingOrder(BleDeviceInfoContracts.MAJORID)
+			.addDescendingOrder(BleDeviceInfoContracts.MINORID)
+			.findInBackground(new FindCallback<BleDeviceInfo>() {
 				@Override
 				public void done(List<BleDeviceInfo> beacons, ParseException exception) {
 					if (exception != null) {
 						Log.e(LOG_TAG, "Parse Excetion getting saved beacons for user", exception);
 						Toast.makeText(getApplicationContext(), "Parse Excetion getting saved beacons for user:" + exception.getMessage(), Toast.LENGTH_SHORT).show();;
 					} else {
+						Log.d(LOG_TAG, "Saved Beacons");
 						for (BleDeviceInfo beacon : beacons) {
+							Log.d(LOG_TAG, "Beacon:" + beacon.getName());
 							mSavedDeviceNames.add(beacon.getName());
 						}
 						mSavedDevices.addAll(beacons);
