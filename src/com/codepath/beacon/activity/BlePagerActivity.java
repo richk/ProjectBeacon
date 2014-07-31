@@ -54,8 +54,8 @@ public class BlePagerActivity extends FragmentActivity implements
 DeviceListFragment.OnDeviceListFragmentInteractionListener, OnBeaconSelectedListener,
 OnMyDeviceListFragmentInteractionListener, BeaconListener, OnProgressListener {
 	private static final String LOG_TAG = BlePagerActivity.class.getSimpleName();
-	private static final String MY_DEVICES_TAB_LABEL = "My Devices";
-	private static final String NEW_DEVICES_TAB_LABEL = "New Devices";
+	private static final String MY_DEVICES_TAB_LABEL = "My Beacons";
+	private static final String NEW_DEVICES_TAB_LABEL = "New Beacons";
 	private final int ENABLE_BT = 1;
 
 	private BleService.State mState = BleService.State.UNKNOWN;

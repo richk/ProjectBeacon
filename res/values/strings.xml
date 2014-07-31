@@ -17,8 +17,8 @@
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_add">Add</string>
-    <string name="scanning">Looking for devices. Please wait..</string>
-    <string name="no_devices">No devices found</string>
+    <string name="scanning">Looking for beacons. Please wait..</string>
+    <string name="no_devices">No beacons found</string>
     <string name="beacon_label">BeaconFriendlyName</string>
     <string name="trigger_label">Approaching</string>
     <string name="action_label">send notification</string>
