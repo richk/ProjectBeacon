@@ -2,5 +2,5 @@
 <resources>
 	<color name="app_primary_color">#20C0F1</color>    
 	<color name="text_grey">#555555</color>
-   <color name="natural">#fcf9f9</color>
+        <color name="natural">#fcf9f9</color>
 </resources>
