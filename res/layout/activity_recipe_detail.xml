@@ -53,7 +53,7 @@
         android:layout_toRightOf="@+id/tvThenLabel"
         android:adjustViewBounds="true"
         android:onClick="onSetAction"
-        android:src="@drawable/notification1" />
+        android:src="@drawable/notification2" />
 
     <TextView
         android:id="@+id/tvSelectedAction"

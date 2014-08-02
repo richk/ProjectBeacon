@@ -141,13 +141,13 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
           ibPlus2.setImageResource(R.drawable.plus1);
         else{
           if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.NOTIFICATION.toString())){
-            ibPlus2.setImageResource(R.drawable.notification1);
+            ibPlus2.setImageResource(R.drawable.notification2);
             ibPlus2.setBackgroundResource(R.drawable.image_border);
           }else if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.SMS.toString())){
-            ibPlus2.setImageResource(R.drawable.smsgreen1);
+            ibPlus2.setImageResource(R.drawable.sms2);
             ibPlus2.setBackgroundResource(R.drawable.image_border);
           }else if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.RINGER_SILENT.toString())){
-            ibPlus2.setImageResource(R.drawable.silent);
+            ibPlus2.setImageResource(R.drawable.silent2);
             ibPlus2.setBackgroundResource(R.drawable.image_border);            
           }
         }
@@ -156,13 +156,13 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
       ibPlus1.setImageResource(R.drawable.antenna);
       ibPlus1.setBackgroundResource(R.drawable.image_border);
       if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.NOTIFICATION.toString())){
-        ibPlus2.setImageResource(R.drawable.notification1);
+        ibPlus2.setImageResource(R.drawable.notification2);
         ibPlus2.setBackgroundResource(R.drawable.image_border);
       }else if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.SMS.toString())){
-        ibPlus2.setImageResource(R.drawable.smsgreen1);
+        ibPlus2.setImageResource(R.drawable.sms2);
         ibPlus2.setBackgroundResource(R.drawable.image_border);
       }else if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.RINGER_SILENT.toString())){
-        ibPlus2.setImageResource(R.drawable.silent);
+        ibPlus2.setImageResource(R.drawable.silent2);
         ibPlus2.setBackgroundResource(R.drawable.image_border);            
       }
     }

@@ -88,7 +88,7 @@
         android:layout_alignLeft="@+id/tv_action"
         android:layout_below="@+id/tv_action"
         android:layout_marginTop="20dp"
-        android:src="@drawable/notification1" />
+        android:src="@drawable/notification2" />
     
     <ImageView
         android:id="@+id/ivSms"
@@ -98,7 +98,7 @@
         android:layout_toRightOf="@id/ivNotification"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:src="@drawable/smsgreen1" />
+        android:src="@drawable/sms2" />
     
         <ImageView
         android:id="@+id/ivSilentMode"
@@ -108,7 +108,7 @@
         android:layout_toRightOf="@id/ivSms"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:src="@drawable/silent" />
+        android:src="@drawable/silent2" />
     
     <TextView
         android:id="@+id/tvMessage"
