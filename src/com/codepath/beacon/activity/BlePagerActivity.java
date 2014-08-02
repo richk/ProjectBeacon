@@ -142,7 +142,7 @@ OnMyDeviceListFragmentInteractionListener, BeaconListener, OnProgressListener {
 	    };
 
 	    // Add 2 tabs, specifying the tab's text and TabListener
-	    actionBar.addTab(actionBar.newTab().setText(MY_DEVICES_TAB_LABEL).setTabListener(tabListener));
+	    actionBar.addTab(actionBar.newTab().setText(MY_DEVICES_TAB_LABEL).setTabListener(tabListener));	    
 	    actionBar.addTab(actionBar.newTab().setText(NEW_DEVICES_TAB_LABEL).setTabListener(tabListener));
 	    
         // Attach the page change listener inside the activity

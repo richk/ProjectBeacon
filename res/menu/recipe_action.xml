@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/recipeSave"
-        android:icon="@drawable/ic_action_confirm"
+        android:icon="@drawable/ic_save"
         android:showAsAction="ifRoom"
         android:title="Confirm">
     </item>
