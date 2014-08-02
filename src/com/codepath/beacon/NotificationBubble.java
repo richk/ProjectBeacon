@@ -78,6 +78,7 @@ public class NotificationBubble extends Service {
           case MotionEvent.ACTION_MOVE:
             params.x = initialX + (int) (event.getRawX() - initialTouchX);
             params.y = initialY + (int) (event.getRawY() - initialTouchY);
+            params.gravity = Gravity.NO_GRAVITY;
             windowManager.updateViewLayout(notifBubble, params);
             return true;
         }
