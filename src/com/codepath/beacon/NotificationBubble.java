@@ -53,7 +53,7 @@ public class NotificationBubble extends Service {
         WindowManager.LayoutParams.TYPE_PHONE,
         WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
 
-    params.gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL;
+    params.gravity = Gravity.END | Gravity.CENTER_VERTICAL;
 //    params.x = 0;
 //    params.y = 100;
 
