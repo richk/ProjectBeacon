@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/front"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="5dp"
+    android:paddingTop="5dp"
+    android:paddingRight="5dp"
+    android:padding="5dp"
+    android:tag="front" >
+
+    <ImageView
+        android:id="@+id/example_row_iv_image"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
+
+    <TextView
+        android:id="@+id/example_row_tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@id/example_row_iv_image"
+        android:text="Beacon Buddy"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+<!--     <TextView
+        android:id="@+id/example_row_tv_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/example_row_tv_title"
+        android:layout_toRightOf="@id/example_row_iv_image" />
+ -->
+</RelativeLayout>

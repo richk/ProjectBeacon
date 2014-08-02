@@ -41,6 +41,7 @@
     <string name="major_id_string">Major ID:</string>
     <string name="minor_id_string">Minor ID:</string>
     <string name="title_activity_recipe_action">Select Action</string>
+    <string name="title_activity_app_list">Select Apps</string>
     <string name="notification_title">Beacon Buddy running</string>
     <string name="notification_text">Always on the lookout for you.</string>
     <string name="title_activity_create_recipe">CreateRecipeActivity</string>
