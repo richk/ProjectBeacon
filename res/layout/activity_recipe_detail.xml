@@ -62,13 +62,13 @@
         android:layout_alignLeft="@+id/btn_notification"
         android:layout_above="@id/btn_notification"
         android:background="@drawable/chatbubble"
-        android:textColor="#0d7734"
+        android:textColor="@color/text_grey"
         android:layout_marginRight="10dp"
         android:gravity="center"
         android:text="@string/tvAction_lab"
         android:textSize="14sp" />
     
-        <TextView
+     <TextView
         android:id="@+id/tvSelectedBeacon"
         android:layout_width="wrap_content"
         android:maxWidth="125dp"
@@ -76,7 +76,7 @@
         android:layout_alignBottom="@id/tvSelectedAction"
         android:layout_alignLeft="@id/btn_beacon"
         android:background="@drawable/chatbubble"
-        android:textColor="#0d7734"
+        android:textColor="@color/text_grey"
         android:gravity="center"
         android:text="@string/tvBeacon_lab"
         android:textSize="14sp" />

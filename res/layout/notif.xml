@@ -45,9 +45,5 @@
         android:layout_toRightOf="@id/tvSeparator"
         android:layout_centerVertical="true"
         android:layout_marginRight="5dp"
-        android:src="@drawable/ic_action_cancel" />
-    
-    
-    
-
+        android:src="@drawable/ic_close" />
 </RelativeLayout>

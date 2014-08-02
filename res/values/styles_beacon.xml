@@ -64,7 +64,7 @@
     </style>
 
    <style name="ActionBarTabText.Beacon" parent="@android:style/Widget.Holo.ActionBar.TabText">
-	    <item name="android:textColor">#555555</item>
+	    <item name="android:textColor">@color/text_grey</item>
     </style>
     
     <style name="DropDownNav.Beacon" parent="@android:style/Widget.Holo.Spinner">

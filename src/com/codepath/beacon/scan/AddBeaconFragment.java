@@ -98,14 +98,14 @@ public class AddBeaconFragment extends DialogFragment {
 			}
 		});
     	
-    	btnDismissBeacon = (ImageView)view.findViewById(R.id.btn_cancel);
-    	btnDismissBeacon.setOnClickListener(new OnClickListener() {
-          
-          @Override
-          public void onClick(View arg0) {
-              dismiss();
-          }
-      });
+//    	btnDismissBeacon = (ImageView)view.findViewById(R.id.btn_cancel);
+//    	btnDismissBeacon.setOnClickListener(new OnClickListener() {
+//          
+//          @Override
+//          public void onClick(View arg0) {
+//              dismiss();
+//          }
+//      });
         
     	//getDialog().setTitle(args.getString("title"));
         if (deviceInfo.getName() != null) {

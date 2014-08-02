@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.codepath.beacon.NotificationBubble;
 import com.codepath.beacon.OnProgressListener;
 import com.codepath.beacon.R;
 import com.codepath.beacon.contracts.RecipeContracts;
@@ -91,6 +92,10 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 		createRecipeIntent.putExtra(RecipeContracts.RECIPE_ACTION, RecipeContracts.RECIPE_ACTION_CREATE);
 		createRecipeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivityForResult(createRecipeIntent, CREATE_REQUEST_CODE);
+//	      Intent bubbleIntent = new Intent(this, NotificationBubble.class); 
+//	        bubbleIntent.putExtra("message", "yo yo yo yo");
+//	        startService(bubbleIntent);
+
 	}
 	
 	public void onRefresh(MenuItem mi) {

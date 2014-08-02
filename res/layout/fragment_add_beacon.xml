@@ -14,7 +14,8 @@
             android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
         	android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"        	
+            android:layout_marginLeft="20dp" 
+            android:textColor="#EEEEEE"       	
             android:text="Select Beacon"
             android:textSize="22dp"
           />
@@ -26,7 +27,7 @@
                 android:layout_marginLeft="5dp"          
                 android:layout_width="30dp"
                 android:layout_height="match_parent"
-        android:src="@drawable/ic_action_confirm"/>
+        android:src="@drawable/ic_save"/>
             
                                             
             <View 
@@ -37,14 +38,6 @@
       android:layout_centerVertical="true"
       android:background="@android:color/darker_gray"
 		/>
-            
-       <ImageView
-                  android:id="@+id/btn_cancel"
-                  android:layout_toLeftOf="@id/separator"  
-                  android:layout_marginRight="5dp"                                  
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
-        android:src="@drawable/ic_action_cancel"/>
 
        
             

@@ -134,12 +134,15 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
       if (recipe.getBeacon() == null) {
         ibPlus1.setImageResource(R.drawable.plus1);
         ibPlus2.setImageResource(R.drawable.plus1);
+        ibPlus1.setBackgroundResource(R.drawable.dash_border);
+        ibPlus2.setBackgroundResource(R.drawable.dash_border);
       } else {
-        ibPlus1.setImageResource(R.drawable.antenna);
+        ibPlus1.setImageResource(R.drawable.ic_launcher);
         ibPlus1.setBackgroundResource(R.drawable.image_border);
-        if (recipe.getTriggerAction() == null)
+        if (recipe.getTriggerAction() == null){
           ibPlus2.setImageResource(R.drawable.plus1);
-        else{
+          ibPlus2.setBackgroundResource(R.drawable.dash_border);
+        }else{
           if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.NOTIFICATION.toString())){
             ibPlus2.setImageResource(R.drawable.notification2);
             ibPlus2.setBackgroundResource(R.drawable.image_border);
@@ -153,7 +156,7 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
         }
       }
     } else {
-      ibPlus1.setImageResource(R.drawable.antenna);
+      ibPlus1.setImageResource(R.drawable.ic_launcher);
       ibPlus1.setBackgroundResource(R.drawable.image_border);
       if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.NOTIFICATION.toString())){
         ibPlus2.setImageResource(R.drawable.notification2);
