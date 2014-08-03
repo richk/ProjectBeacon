@@ -29,6 +29,7 @@ public class RecipeActionActivity1 extends Activity {
   private ImageView ivNotification;
   private ImageView ivSms;
   private ImageView ivSilent;
+  private ImageView ivLight;
   private TextView tvPhone;
   private TextView tvMessage;
 
@@ -49,6 +50,7 @@ public class RecipeActionActivity1 extends Activity {
     ivNotification = (ImageView) findViewById(R.id.ivNotification);
     ivSms = (ImageView) findViewById(R.id.ivSms);
     ivSilent = (ImageView)findViewById(R.id.ivSilentMode);
+    ivLight = (ImageView)findViewById(R.id.ivLight);
     
     if(savedInstanceState != null){
       int noti = savedInstanceState.getInt("notification_type");
@@ -72,6 +74,7 @@ public class RecipeActionActivity1 extends Activity {
         tvPhone.setVisibility(View.INVISIBLE);
         ivSms.setBackground(null);
         ivSilent.setBackground(null);
+        ivLight.setBackground(null);
         notificationType = NOTIFICATION_TYPE.NOTIFICATION;
 
       }
@@ -89,7 +92,7 @@ public class RecipeActionActivity1 extends Activity {
         
         ivSilent.setBackground(null);
         ivNotification.setBackground(null);
-        
+        ivLight.setBackground(null);
 
         notificationType = NOTIFICATION_TYPE.SMS;
       }
@@ -106,7 +109,26 @@ public class RecipeActionActivity1 extends Activity {
         etMessage.setVisibility(View.INVISIBLE);
         ivSms.setBackground(null);
         ivNotification.setBackground(null);
+        ivLight.setBackground(null);
         notificationType = NOTIFICATION_TYPE.RINGER_SILENT;
+
+      }
+    });
+    
+    ivLight.setOnClickListener(new OnClickListener() {
+
+      @Override
+      public void onClick(View v) {
+        ivLight.setBackgroundResource(R.drawable.image_border);
+        etPhn.setVisibility(View.INVISIBLE);
+        tvPhone.setVisibility(View.INVISIBLE);
+        tvMessage.setVisibility(View.INVISIBLE);
+        etMessage.setVisibility(View.INVISIBLE);
+        ivSms.setBackground(null);
+        ivNotification.setBackground(null);
+        ivSilent.setBackground(null);
+
+        notificationType = NOTIFICATION_TYPE.LIGHT;
 
       }
     });

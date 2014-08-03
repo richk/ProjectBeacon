@@ -322,6 +322,8 @@ public class BleService extends Service implements
           uu.sendSMS(obj.notif.getExtra(), message);
         }else if(obj.notif.getType().equals(NOTIFICATION_TYPE.RINGER_SILENT.toString())){
           uu.turnOnSilentMode();
+        } else if(obj.notif.getType().equals(NOTIFICATION_TYPE.LIGHT.toString())){
+          uu.controlLights(true);
         }
       }
     }
