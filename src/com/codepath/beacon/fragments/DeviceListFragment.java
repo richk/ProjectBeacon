@@ -92,13 +92,16 @@ public class DeviceListFragment extends Fragment implements AbsListView.OnItemCl
 
 	public void setDevices(List<BleDeviceInfo> devices) {
 		deviceList = devices;
-		if (devices == null && mAdapter != null) {
-			mAdapter.clear();
+		if (devices == null) {
+			if (mAdapter != null) {
+			    mAdapter.clear();
+			}
 			return;
-		}
-		if (mAdapter != null) {
-			mAdapter.clear();
-			mAdapter.addAll(devices);
+		} else { 
+			if (mAdapter != null) {
+				mAdapter.clear();
+				mAdapter.addAll(devices);
+			}
 		}
 	}
 

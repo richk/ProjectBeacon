@@ -2,13 +2,13 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android" 
     android:shape="ring" 
     android:visible="true"
-    android:innerRadius="31dp"
+    android:innerRadius="16dp"
     android:thickness="15dp"
     android:useLevel="false" >
-    <solid android:color="#fc1414"/>
-    <!-- <solid android:color="@android:color/holo_red_light"/> -->
+    <solid android:color="#b2b1b1"/>
+    <!-- <solid android:color="@android:color/holo_blue_bright"/> -->
     <size
-    android:height="20dp"
-    android:width="20dp" />
+    android:height="10dp"
+    android:width="10dp" />
     
 </shape>

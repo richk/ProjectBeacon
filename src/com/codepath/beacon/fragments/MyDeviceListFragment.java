@@ -20,6 +20,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.codepath.beacon.OnProgressListener;
 import com.codepath.beacon.R;
+import com.codepath.beacon.contracts.BleDeviceInfoContracts;
 import com.codepath.beacon.scan.BleDeviceInfo;
 import com.codepath.beacon.scan.BleItemArrayAdapter;
 
@@ -126,11 +127,15 @@ public class MyDeviceListFragment extends Fragment implements OnItemClickListene
 	}
 	
 	public void onUpdatedRssi(Map<String, Integer> updatedRssiMap) {
-		Log.d(LOG_TAG, "onUpdatedRssi");
+		//Log.d(LOG_TAG, "onUpdatedRssi");
 		if (mDevices != null) {
 			for (BleDeviceInfo device : mDevices) {
-				if (updatedRssiMap.get(device.getName()) != null) {
-					device.setRssi(updatedRssiMap.get(device.getName()));
+				if (updatedRssiMap.containsKey(device.getKey())) {
+					int rssi = updatedRssiMap.get(device.getKey());
+					//Log.d(LOG_TAG, "Got updated rssi  = " + rssi);
+					device.setRssi(rssi);
+				}else{
+					device.setRssi(BleDeviceInfoContracts.OUT_OF_RANGE_RSSI_VALUE-1);
 				}
 			}
 			if (mAdapter != null) {

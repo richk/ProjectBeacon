@@ -27,6 +27,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -92,7 +93,7 @@ OnMyDeviceListFragmentInteractionListener, BeaconListener, OnProgressListener {
 		if(mBeaconManager == null){
 			mBeaconManager = new BeaconManager(this, this);
 		}
-		
+
 		loadMyDevices();
 		
 		final ViewPager vpPager = (ViewPager) findViewById(R.id.vpBleDevices);
@@ -111,6 +112,9 @@ OnMyDeviceListFragmentInteractionListener, BeaconListener, OnProgressListener {
 	        	switch(position) {
 	        	case 0:
 	        		Log.d(LOG_TAG, "My Devices tab selected");
+	        		if(mRefreshItem != null){
+	        			mRefreshItem.setVisible(true);
+	        		}
 	        		List<BleDeviceInfo> deviceList = new ArrayList<BleDeviceInfo>();
 	            	deviceList.addAll(mSavedDevices);
 	            	if (mAdapterViewPager != null && mAdapterViewPager.getMyDevicesView()!=null) {
@@ -119,6 +123,9 @@ OnMyDeviceListFragmentInteractionListener, BeaconListener, OnProgressListener {
 	        		break;
 	        	case 1:
 	        		Log.d(LOG_TAG, "New Devices tab selected");
+	        		if(mRefreshItem != null){
+	        			mRefreshItem.setVisible(false);
+	        		}
 	        		List<BleDeviceInfo> newDeviceList = new ArrayList<BleDeviceInfo>();
 	        		newDeviceList.addAll(mNewDevices);
 	        		if (mAdapterViewPager != null && mAdapterViewPager.getNewDevicesView()!=null) {
@@ -196,10 +203,11 @@ OnMyDeviceListFragmentInteractionListener, BeaconListener, OnProgressListener {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_refresh) {
-			mRefreshItem.setEnabled(false);
-			startScan();
-			loadMyDevices();
-			return true;
+			if(getActionBar().getSelectedTab().getPosition()==0){
+				mRefreshItem.setEnabled(false);
+				loadMyDevices();
+				return true;
+			}
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -374,19 +382,9 @@ OnMyDeviceListFragmentInteractionListener, BeaconListener, OnProgressListener {
 				List<BleDeviceInfo> discoveredDevices = new ArrayList<BleDeviceInfo>();
 				Map<String, Integer> updatedRssiMap = new HashMap<String, Integer>();
 				for(BleDeviceInfo device : devices){
+					updatedRssiMap.put(device.getKey(), device.getRssi());
 					if(!mSavedDevices.contains(device)){
 						discoveredDevices.add(device);
-					} else {
-						for (BleDeviceInfo savedDevice : mSavedDevices) {
-							if (savedDevice.equals(device)) {
-								updatedRssiMap.put(savedDevice.getName(), device.getRssi());
-							}
-						}
-					}
-				}
-				for (BleDeviceInfo device : mSavedDevices) {
-					if (updatedRssiMap.get(device.getName()) == null) {
-						updatedRssiMap.put(device.getName(), BleDeviceInfoContracts.OUT_OF_RANGE_RSSI_VALUE - 1);
 					}
 				}
 				mNewDevices.addAll(discoveredDevices);
