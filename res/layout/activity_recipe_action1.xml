@@ -4,171 +4,178 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-<RelativeLayout 
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context="com.codepath.beacon.RecipeActionActivity"
-    tools:ignore="MergeRootFrame" >
-
-    <TextView
-        android:id="@+id/tv_trigger"
+    <RelativeLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/app_primary_color"
-        android:text="@string/tv_trigger_label">
-    </TextView>
-    
-    <View 
-      android:layout_width="match_parent"
-      android:layout_below="@id/tv_trigger"
-      android:layout_height="1dp"
-      android:layout_marginTop="10dp"
-      android:background="@android:color/darker_gray"
-	/>
-    
+        tools:context="com.codepath.beacon.RecipeActionActivity"
+        tools:ignore="MergeRootFrame" >
 
-    <RadioGroup
-        android:id="@+id/rg_triggers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:orientation="horizontal"
-        android:layout_below="@+id/tv_trigger"
-        android:layout_marginTop="20dp" >
+        <TextView
+            android:id="@+id/tv_trigger"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/tv_trigger_label"
+            android:textColor="@color/app_primary_color"
+            android:textSize="20sp"
+            android:textStyle="bold" >
+        </TextView>
 
-        <RadioButton
-            android:id="@+id/rb_approaching"
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/tv_trigger"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/darker_gray" />
+
+        <RadioGroup
+            android:id="@+id/rg_triggers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="@string/rb_approaching_label" />
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tv_trigger"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal" >
 
-        <RadioButton
-            android:id="@+id/rb_leaving"
-            android:layout_marginLeft="25dp"
-            android:layout_width="wrap_content"
+            <RadioButton
+                android:id="@+id/rb_approaching"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/rb_approaching_label" />
+
+            <RadioButton
+                android:id="@+id/rb_leaving"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:text="@string/rb_leaving_label" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/tv_action"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/rb_leaving_label" />
+            android:layout_below="@id/rg_triggers"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="25dp"
+            android:text="@string/tv_action_label"
+            android:textColor="@color/app_primary_color"
+            android:textSize="20sp"
+            android:textStyle="bold" >
+        </TextView>
 
-    </RadioGroup>
-    
-    <TextView
-        android:id="@+id/tv_action"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rg_triggers"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="15dp"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:textColor="@color/app_primary_color"
-        android:text="@string/tv_action_label">
-    </TextView>
-    
-        <View 
-      android:layout_width="match_parent"
-      android:layout_below="@id/tv_action"
-      android:layout_height="1dp"
-      android:layout_marginTop="10dp"
-      android:background="@android:color/darker_gray"
-	/>
-    
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/tv_action"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/darker_gray" />
 
-    <ImageView
-        android:id="@+id/ivNotification"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignLeft="@+id/tv_action"
-        android:layout_below="@+id/tv_action"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/notification2" />
-    
-    <ImageView
-        android:id="@+id/ivSms"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_below="@+id/tv_action"
-        android:layout_toRightOf="@id/ivNotification"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/sms2" />
-    
         <ImageView
-        android:id="@+id/ivSilentMode"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_below="@+id/tv_action"
-        android:layout_toRightOf="@id/ivSms"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/silent2" />
-    
-    <TextView
-        android:id="@+id/tvMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/ivNotification"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="15dp"
-        android:textSize="16sp"
-        android:textColor="@color/app_primary_color"
-        android:visibility="invisible"        
-        android:text="Message">
-    </TextView>
-    
-    <EditText
-        android:id="@+id/et_message"
-        android:layout_width="250dp"
-        android:textSize="16sp"        
-        android:layout_toRightOf="@id/tvMessage"
-        android:layout_height="20dp"
-        android:layout_below="@+id/ivNotification"
-        android:layout_alignBottom="@id/tvMessage"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="25dp"        
-        android:visibility="invisible"
-        android:imeOptions="actionDone"
-        android:singleLine="true"
-        android:ems="10"
-        android:hint="@string/et_message_hint" >
-        <requestFocus />
-    </EditText>
-    
-    <TextView
-        android:id="@+id/tvPhone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvMessage"
-        android:layout_marginTop="35dp"
-        android:layout_marginLeft="15dp"
-        android:textSize="16sp"
-        android:textColor="@color/app_primary_color"
-        android:visibility="invisible"        
-        android:text="Phone">
-    </TextView>
-    
-    <EditText
-        android:id="@+id/et_phone"
-        android:layout_width="250dp"
-        android:textSize="16sp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/et_message"
-        android:layout_alignBottom="@id/tvPhone"
-        android:layout_toRightOf="@id/tvPhone"
-        android:layout_alignLeft="@id/et_message"
-        android:layout_marginTop="15dp"
-        android:ems="10"
-        android:visibility="invisible"        
-        android:hint="@string/et_phn_hint"
-        android:inputType="phone" />
-</RelativeLayout>
-</ScrollView>
+            android:id="@+id/ivLight"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignLeft="@+id/tv_action"
+            android:layout_below="@+id/tv_action"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_light" />
 
+        <ImageView
+            android:id="@+id/ivNotification"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@+id/tv_action"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@id/ivLight"
+            android:src="@drawable/notification2" />
+
+        <ImageView
+            android:id="@+id/ivSms"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@+id/tv_action"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@id/ivNotification"
+            android:src="@drawable/sms2" />
+
+        <ImageView
+            android:id="@+id/ivSilentMode"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@+id/tv_action"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@id/ivSms"
+            android:src="@drawable/silent2" />
+
+        <TextView
+            android:id="@+id/tvMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ivNotification"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="40dp"
+            android:text="Message"
+            android:textColor="@color/app_primary_color"
+            android:textSize="16sp"
+            android:visibility="invisible" >
+        </TextView>
+
+        <EditText
+            android:id="@+id/et_message"
+            android:layout_width="250dp"
+            android:layout_height="20dp"
+            android:layout_alignBottom="@id/tvMessage"
+            android:layout_below="@+id/ivNotification"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="25dp"
+            android:layout_toRightOf="@id/tvMessage"
+            android:ems="10"
+            android:hint="@string/et_message_hint"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:textSize="16sp"
+            android:visibility="invisible" >
+
+            <requestFocus />
+        </EditText>
+
+        <TextView
+            android:id="@+id/tvPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvMessage"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="35dp"
+            android:text="Phone"
+            android:textColor="@color/app_primary_color"
+            android:textSize="16sp"
+            android:visibility="invisible" >
+        </TextView>
+
+        <EditText
+            android:id="@+id/et_phone"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/tvPhone"
+            android:layout_alignLeft="@id/et_message"
+            android:layout_below="@id/et_message"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@id/tvPhone"
+            android:ems="10"
+            android:hint="@string/et_phn_hint"
+            android:inputType="phone"
+            android:textSize="16sp"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+</ScrollView>

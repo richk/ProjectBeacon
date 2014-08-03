@@ -1,5 +1,6 @@
 package com.codepath.beacon.scan;
 
+import java.util.List;
 import java.util.Random;
 
 import android.app.NotificationManager;
@@ -27,6 +28,10 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.model.LatLng;
+import com.philips.lighting.hue.sdk.PHHueSDK;
+import com.philips.lighting.model.PHBridge;
+import com.philips.lighting.model.PHLight;
+import com.philips.lighting.model.PHLightState;
 
 public class BeaconNotifier implements
 GooglePlayServicesClient.ConnectionCallbacks,
@@ -36,6 +41,7 @@ GooglePlayServicesClient.OnConnectionFailedListener {
 	private LocationClient mLocationClient;
 	private String mMessage;
 	Context context;
+	private PHHueSDK phHueSDK;
 
 	public BeaconNotifier(Context ctxt) {
 	    context = ctxt;
@@ -148,5 +154,22 @@ GooglePlayServicesClient.OnConnectionFailedListener {
         getSystemService(Context.AUDIO_SERVICE);
     am.setRingerMode(AudioManager.RINGER_MODE_SILENT);
   }
+
+  public void controlLights(boolean state) {
+    PHHueSDK phHueSDK = PHHueSDK.getStoredSDKObject();
+    if (phHueSDK!= null){
+            PHBridge bridge = phHueSDK.getSelectedBridge();
+            if (bridge != null)
+            {
+                    List<PHLight> allLights = bridge.getResourceCache().getAllLights();
+
+                    for (PHLight light : allLights) {
+                            PHLightState lightState = new PHLightState();
+                            lightState.setOn(state);
+                            bridge.updateLightState(light, lightState);   // If no bridge response is required then use this simpler form.
+                    }
+            }
+    }
+}
 
 }
