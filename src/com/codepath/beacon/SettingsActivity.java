@@ -41,6 +41,7 @@ public class SettingsActivity extends Activity {
 	public void onLogout(View v) {
 		ParseUser.logOut();
 		Intent intent = new Intent(this, HomeActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
 	}
 }
