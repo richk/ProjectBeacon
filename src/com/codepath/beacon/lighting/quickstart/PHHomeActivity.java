@@ -2,6 +2,7 @@ package com.codepath.beacon.lighting.quickstart;
 
 import java.util.List;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
@@ -52,7 +53,10 @@ public class PHHomeActivity extends Activity implements OnItemClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bridgelistlinear);
-        
+        ActionBar ab = getActionBar();
+        ab.setTitle("Philips Hue Bridge");
+        ab.setDisplayHomeAsUpEnabled(true);
+
         // Gets an instance of the Hue SDK.
         phHueSDK = PHHueSDK.create();
         
@@ -228,7 +232,7 @@ public class PHHomeActivity extends Activity implements OnItemClickListener {
             doBridgeSearch();
             break;
         }
-        return true;
+        return false;
     }
 
     

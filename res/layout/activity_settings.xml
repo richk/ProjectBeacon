@@ -2,32 +2,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.codepath.beacon.SettingsActivity" >
-
-    <Button
-        android:id="@+id/btnConfigureHue"
+        
+    <TextView
+        android:id="@+id/tvConfigureLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="39dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/text_grey"
+        android:textStyle="bold"
+        android:textSize="16sp"        
+        android:text="Configure Philips Hue Bridge" />
+    
+       <View
+            android:id="@+id/vDivider"           
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/tvConfigureLabel"
+            android:layout_marginTop="20dp"
+            android:background="@color/app_primary_color" />
+    
+    <TextView
+        android:id="@+id/tvLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvConfigureLabel"        
+        android:layout_below="@id/vDivider"
+        android:textColor="@color/text_grey"
+        android:textStyle="bold"
+        android:layout_marginTop="30dp"
+        android:textSize="16sp"
+        android:text="Sign out of current account" />
+    
+           <View
+            android:id="@+id/vDivider2"           
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/tvLogout"
+            android:layout_marginTop="20dp"
+            android:background="@color/app_primary_color" />
+    
+    
+        <Button
+        android:id="@+id/btnConfigureHue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/tvConfigureLabel"
+        android:layout_alignBaseline="@id/tvConfigureLabel"
+        android:layout_marginLeft="15dp"
         android:onClick="onConfigureHue"
         android:text="@string/button_label_configure_hue" />
-
+        
     <Button
         android:id="@+id/btnLogout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/btnConfigureHue"
-        android:layout_alignRight="@+id/btnConfigureHue"
-        android:layout_below="@+id/btnConfigureHue"
         android:layout_marginTop="38dp"
         android:onClick="onLogout"
-        android:text="@string/button_label_logout" />
+        android:layout_toRightOf="@id/tvLogout"
+		android:layout_alignLeft="@id/btnConfigureHue"
+		android:layout_alignBaseline="@id/tvLogout"        
+	        android:text="@string/button_label_logout" />
+
 
 </RelativeLayout>

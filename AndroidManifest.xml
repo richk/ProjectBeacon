@@ -92,10 +92,6 @@
             android:taskAffinity="" >
         </activity>
         <activity
-            android:name=".lighting.quickstart.PHHomeActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
             android:name=".lighting.quickstart.MyApplicationActivity"
             android:label="@string/txt_selectbridges" >
         </activity>
@@ -113,8 +109,16 @@
 
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings" >
+            android:launchMode="singleTop"
+            android:label="@string/title_activity_settings" 
+            android:parentActivityName=".activity.MyRecipeActivity" >
         </activity>
+        
+        <activity
+            android:name=".lighting.quickstart.PHHomeActivity"
+            android:parentActivityName=".SettingsActivity">
+        </activity>
+        
     </application>
 
 </manifest>

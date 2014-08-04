@@ -104,11 +104,11 @@
     <string name="txt_last_heartbeat">Last Heartbeat : </string>
     <string name="action_setting">Settings</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="button_label_configure_hue">Configure Your Hue</string>
-    <string name="button_label_logout">Logout</string>
     <string name="action_notification_description">NOTIFICATION</string>
     <string name="action_sms_description">SMS</string>
     <string name="action_silent_mode_description">SILENT MODE</string>
     <string name="action_hue_description">PHILIPS HUE</string>
+    <string name="button_label_configure_hue">Configure</string>
+    <string name="button_label_logout">Sign Out</string>
 
 </resources>
