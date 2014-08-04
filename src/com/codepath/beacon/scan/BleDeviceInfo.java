@@ -51,7 +51,7 @@ public class BleDeviceInfo extends ParseObject implements Parcelable {
 	}
 
 	public BleDeviceInfo(Parcel in) {
-		mObjectId = in.readString();
+		setObjectId(in.readString());
 		setName(in.readString());
 		setMacAddress(in.readString());
 		setUuid(in.readString());
