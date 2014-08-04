@@ -2,24 +2,28 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/miAdd"
-        android:icon="@drawable/ic_add"
-        android:onClick="onAddAction"
-        android:showAsAction="ifRoom"
-        android:title="@string/action_add">
-    </item>
-    <item
         android:id="@+id/mi_recipe_refresh"
         android:icon="@drawable/ic_refresh"
         android:onClick="onRefresh"
-        android:orderInCategory="100"
-        android:showAsAction="always"
+        android:orderInCategory="1"        
+        android:showAsAction="ifRoom"
+        android:menuCategory="system"        
         android:title="@string/action_refresh"/>
+     <item
+        android:id="@+id/miAdd"
+        android:icon="@drawable/ic_add"
+        android:onClick="onAddAction"
+        android:orderInCategory="2"
+        android:menuCategory="system"                
+        android:showAsAction="always"
+        android:title="@string/action_add">
+    </item>    
     <item
         android:id="@+id/miSetting"
         android:icon="@drawable/ic_setting"
         android:onClick="onLightSetting"
-        android:orderInCategory="100"
+        android:menuCategory="system"        
+        android:orderInCategory="3"
         android:showAsAction="never"
         android:title="@string/action_setting"/>
 

@@ -104,7 +104,7 @@
     <string name="txt_last_heartbeat">Last Heartbeat : </string>
     <string name="action_setting">Settings</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="button_label_configure_hue">Configure Your Hue</string>
-    <string name="button_label_logout">Logout</string>
+    <string name="button_label_configure_hue">Configure</string>
+    <string name="button_label_logout">Sign Out</string>
 
 </resources>
