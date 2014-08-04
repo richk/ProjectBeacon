@@ -331,6 +331,7 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
       if (resultCode == RESULT_OK) {
         BleDeviceInfo deviceInfo = (BleDeviceInfo) data
             .getParcelableExtra("beacon");
+        Log.d(LOG_TAG, "Beacon id:" + deviceInfo.getObjectId());
         if ((createFlag && recipe.getBeacon() != null) || (oldRecipe != null
             && !oldRecipe.getBeacon().equals(recipe.getBeacon()))) {
           recipe.setEditState(true);

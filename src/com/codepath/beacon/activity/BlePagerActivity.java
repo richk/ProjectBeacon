@@ -27,8 +27,8 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.beacon.OnProgressListener;
@@ -50,6 +50,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class BlePagerActivity extends FragmentActivity implements 
 DeviceListFragment.OnDeviceListFragmentInteractionListener, OnBeaconSelectedListener,
@@ -123,6 +124,9 @@ OnMyDeviceListFragmentInteractionListener, BeaconListener, OnProgressListener {
 	        		break;
 	        	case 1:
 	        		Log.d(LOG_TAG, "New Devices tab selected");
+	        		if (mNewDevices != null && mNewDevices.isEmpty()) {
+	        			onProgressStart();
+	        		}
 	        		if(mRefreshItem != null){
 	        			mRefreshItem.setVisible(false);
 	        		}
@@ -324,13 +328,44 @@ OnMyDeviceListFragmentInteractionListener, BeaconListener, OnProgressListener {
 			Log.d(LOG_TAG, "New Device:" + device.getName());
 			mSavedDeviceNames.add(device.getName());	
 		}
-		device.saveBeacon();
+		Log.d(LOG_TAG, "Saving beacon:" + device.getName());
+		onProgressStart();
+		device.saveInBackground(new SaveCallback() {
+			@Override
+			public void done(ParseException exception) {
+				if (exception == null) {
+					ParseUser currentUser = ParseUser.getCurrentUser();
+					ParseRelation<BleDeviceInfo> userBeacons = currentUser.getRelation(ParseUserContracts.BLEDEVICES);
+					userBeacons.add(device);
+					currentUser.saveInBackground(new SaveCallback() {
+						@Override
+						public void done(ParseException exception) {
+							onProgressEnd();
+							if (exception == null) {
+								Log.d("Beacon", "User beacons saved successfully");
+								onBeaconSaved(device);
+							} else {
+								Log.e("Beacon", "ParseException on save", exception);
+								Toast.makeText(getParent(), "Beacon not saved", Toast.LENGTH_SHORT).show();
+							}
+						}
+					});
+				} else {
+					Log.e("Beacon", "ParseException on save", exception);
+				}
+			}
+		});
+	}
+	
+	public void onBeaconSaved(BleDeviceInfo device) {
+		Log.d(LOG_TAG, "onBeaconSaved" + device.getObjectId());
+		Log.d(LOG_TAG, "Returning to detail view after saving beacon:" + device.getObjectId());
 		Intent returnIntent = new Intent();
 		returnIntent.putExtra("beacon", device);
 		setResult(RESULT_OK, returnIntent);
 		finish();
 	}
-
+	
 	@Override
 	public void onBeaconUpdated(BleDeviceInfo device, String oldName) {
 		if (mSavedDeviceNames.contains(device.getName()) && device.isBeingEdited()) {
