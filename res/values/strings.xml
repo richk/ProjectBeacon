@@ -74,12 +74,10 @@
     <string name="minor_id_label">Minor Id:</string>
     <string name="my_devices_tab_label">My Devices</string>
     <string name="new_devices_tab_label">New Devices</string>
-    
     <string name="network_error_message">Looks like you dont have internet. Check you wifi/3G connection and try again.</string>
     <string name="duplicate_recipe_error_message">You already have a recipe with same beacon and action. Check your recipe and try again.</string>
     <string name="duplicate_beacon_name_message">You already have a beacon with that name. Try another.</string>
-
-        <string name="no_bridge">No Bridge Found.   Start Bridge Search</string>
+    <string name="no_bridge">No Bridge Found.   Start Bridge Search</string>
     <string name="btn_refresh">Refresh</string>
     <string name="btn_find_bridge">Find new bridge</string>
     <string name="btn_random">Random Lights</string>
@@ -104,5 +102,9 @@
     <string name="txt_select_smartbridge">Please select a bridge to use for this app</string>
     <string name="title_error">Error</string>
     <string name="txt_last_heartbeat">Last Heartbeat : </string>
-    <string name="action_setting">User Setting</string>
+    <string name="action_setting">Settings</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="button_label_configure_hue">Configure Your Hue</string>
+    <string name="button_label_logout">Logout</string>
+
 </resources>

@@ -75,52 +75,57 @@
             android:layout_below="@id/tv_action"
             android:layout_marginTop="10dp"
             android:background="@android:color/darker_gray" />
+        
+        <HorizontalScrollView
+            android:id="@+id/hsvActions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_action" >
 
-        <ImageView
-            android:id="@+id/ivLight"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignLeft="@+id/tv_action"
-            android:layout_below="@+id/tv_action"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/ic_light" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal" >
 
-        <ImageView
-            android:id="@+id/ivNotification"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_below="@+id/tv_action"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_toRightOf="@id/ivLight"
-            android:src="@drawable/notification2" />
+                <ImageView
+                    android:id="@+id/ivNotification"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/notification2" />
 
-        <ImageView
-            android:id="@+id/ivSms"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_below="@+id/tv_action"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_toRightOf="@id/ivNotification"
-            android:src="@drawable/sms2" />
+                <ImageView
+                    android:id="@+id/ivSms"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/sms2" />
 
-        <ImageView
-            android:id="@+id/ivSilentMode"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_below="@+id/tv_action"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_toRightOf="@id/ivSms"
-            android:src="@drawable/silent2" />
-
-        <TextView
+                <ImageView
+                    android:id="@+id/ivSilentMode"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/silent2" />
+                
+                <ImageView
+                    android:id="@+id/ivLight"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_light" />
+            </LinearLayout>
+        </HorizontalScrollView><TextView
             android:id="@+id/tvMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ivNotification"
+            android:layout_below="@id/hsvActions"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="40dp"
             android:text="Message"
@@ -134,7 +139,7 @@
             android:layout_width="250dp"
             android:layout_height="20dp"
             android:layout_alignBottom="@id/tvMessage"
-            android:layout_below="@+id/ivNotification"
+            android:layout_below="@+id/hsvActions"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="25dp"
             android:layout_marginTop="25dp"
@@ -145,8 +150,6 @@
             android:singleLine="true"
             android:textSize="16sp"
             android:visibility="invisible" >
-
-            <requestFocus />
         </EditText>
 
         <TextView

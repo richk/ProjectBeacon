@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import com.codepath.beacon.NotificationBubble;
 import com.codepath.beacon.OnProgressListener;
 import com.codepath.beacon.R;
+import com.codepath.beacon.SettingsActivity;
 import com.codepath.beacon.contracts.RecipeContracts;
 import com.codepath.beacon.fragments.EmptyListFragment;
 import com.codepath.beacon.fragments.RecipeAlertDialog;
@@ -105,8 +106,8 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 	}
 
 	public void onLightSetting(MenuItem mi) {
-		Intent setupBridgeIntent = new Intent(this, PHHomeActivity.class);
-		startActivity(setupBridgeIntent);
+		Intent settingsIntent = new Intent(this, SettingsActivity.class);
+		startActivity(settingsIntent);
 	}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

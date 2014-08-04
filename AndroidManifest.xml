@@ -15,10 +15,9 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_LOGS"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.GET_TASKS"/>
-    
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
@@ -72,10 +71,9 @@
 
         <service android:name=".scan.BleService" >
         </service>
-        
         <service android:name=".NotificationBubble" >
         </service>
-        
+
         <activity
             android:name=".activity.BlePagerActivity"
             android:label="@string/title_scan_screen"
@@ -88,12 +86,12 @@
         </activity>
         <activity
             android:name=".MapActivity"
+            android:excludeFromRecents="true"
+            android:label="@string/title_activity_map"
             android:launchMode="singleTask"
-    		android:taskAffinity=""
-    		android:excludeFromRecents="true"
-            android:label="@string/title_activity_map" >
+            android:taskAffinity="" >
         </activity>
-                <activity
+        <activity
             android:name=".lighting.quickstart.PHHomeActivity"
             android:label="@string/app_name" >
         </activity>
@@ -105,13 +103,18 @@
             android:name=".lighting.quickstart.PHPushlinkActivity"
             android:label="@string/app_name" >
         </activity>
-        
+
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyArguVN4ouw9Y3NBhI-pfFvPITqZmotqTc" />            
-        <meta-data 
+            android:value="AIzaSyArguVN4ouw9Y3NBhI-pfFvPITqZmotqTc" />
+        <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
     </application>
 
 </manifest>
