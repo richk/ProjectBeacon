@@ -10,6 +10,8 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.codepath.beacon.R;
@@ -32,6 +34,10 @@ public class RecipeActionActivity1 extends Activity {
   private ImageView ivLight;
   private TextView tvPhone;
   private TextView tvMessage;
+  private TextView tvNotificationDesc;
+  private TextView tvSmsDesc;
+  private TextView tvSilentDesc;
+  private TextView tvLightDesc;
 
   NOTIFICATION_TYPE notificationType = NOTIFICATION_TYPE.NONE;
 
@@ -51,6 +57,10 @@ public class RecipeActionActivity1 extends Activity {
     ivSms = (ImageView) findViewById(R.id.ivSms);
     ivSilent = (ImageView)findViewById(R.id.ivSilentMode);
     ivLight = (ImageView)findViewById(R.id.ivLight);
+    tvNotificationDesc = (TextView) findViewById(R.id.tvNotificationDesc);
+    tvSmsDesc = (TextView) findViewById(R.id.tvSmsDesc);
+    tvSilentDesc = (TextView) findViewById(R.id.tvSilentDesc);
+    tvLightDesc = (TextView) findViewById(R.id.tvLightDesc);
     
     if(savedInstanceState != null){
       int noti = savedInstanceState.getInt("notification_type");
@@ -75,6 +85,10 @@ public class RecipeActionActivity1 extends Activity {
         ivSms.setBackground(null);
         ivSilent.setBackground(null);
         ivLight.setBackground(null);
+        tvNotificationDesc.setVisibility(View.VISIBLE);
+        tvSmsDesc.setVisibility(View.INVISIBLE);
+        tvSilentDesc.setVisibility(View.INVISIBLE);
+        tvLightDesc.setVisibility(View.INVISIBLE);
         notificationType = NOTIFICATION_TYPE.NOTIFICATION;
 
       }
@@ -94,6 +108,10 @@ public class RecipeActionActivity1 extends Activity {
         ivNotification.setBackground(null);
         ivLight.setBackground(null);
 
+        tvNotificationDesc.setVisibility(View.INVISIBLE);
+        tvSmsDesc.setVisibility(View.VISIBLE);
+        tvSilentDesc.setVisibility(View.INVISIBLE);
+        tvLightDesc.setVisibility(View.INVISIBLE);
         notificationType = NOTIFICATION_TYPE.SMS;
       }
     });
@@ -110,6 +128,10 @@ public class RecipeActionActivity1 extends Activity {
         ivSms.setBackground(null);
         ivNotification.setBackground(null);
         ivLight.setBackground(null);
+        tvNotificationDesc.setVisibility(View.INVISIBLE);
+        tvSmsDesc.setVisibility(View.INVISIBLE);
+        tvSilentDesc.setVisibility(View.VISIBLE);
+        tvLightDesc.setVisibility(View.INVISIBLE);
         notificationType = NOTIFICATION_TYPE.RINGER_SILENT;
 
       }
@@ -127,6 +149,11 @@ public class RecipeActionActivity1 extends Activity {
         ivSms.setBackground(null);
         ivNotification.setBackground(null);
         ivSilent.setBackground(null);
+        
+        tvNotificationDesc.setVisibility(View.INVISIBLE);
+        tvSmsDesc.setVisibility(View.INVISIBLE);
+        tvSilentDesc.setVisibility(View.INVISIBLE);
+        tvLightDesc.setVisibility(View.VISIBLE);
 
         notificationType = NOTIFICATION_TYPE.LIGHT;
 
@@ -145,38 +172,73 @@ public class RecipeActionActivity1 extends Activity {
   }
 
   private void populateTriggerAndAction() {
-    String trigger = getIntent().getStringExtra(RecipeContracts.TRIGGER);
-    if (trigger != null) {
-      if (rbLeaving.getText().toString().equalsIgnoreCase(trigger)) {
-        rbLeaving.setChecked(true);
-      } else {
-        rbApproaching.setChecked(true);
-      }
-    }
-    TriggerAction notification = getIntent().getParcelableExtra(
-        RecipeContracts.TRIGGERACTION);
-    if (notification != null) {
-      if (TriggerAction.NOTIFICATION_TYPE.SMS.name().equalsIgnoreCase(
-          notification.getType())) {
-        ivSms.setBackgroundResource(R.drawable.image_border);
-        etMessage.setVisibility(View.VISIBLE);
-        etPhn.setVisibility(View.VISIBLE);
-        tvMessage.setVisibility(View.VISIBLE);
-        tvPhone.setVisibility(View.VISIBLE);
-        notificationType = TriggerAction.NOTIFICATION_TYPE.SMS;
-      } else {
-        ivNotification.setBackgroundResource(R.drawable.image_border);
-        etMessage.setVisibility(View.VISIBLE);
-        tvMessage.setVisibility(View.VISIBLE);
-        notificationType = TriggerAction.NOTIFICATION_TYPE.NOTIFICATION;
-      }
-      if (notification.getMessage() != null) {
-        etMessage.setText(notification.getMessage());
-      }
-      if (notification.getExtra() != null) {
-        etPhn.setText(notification.getExtra());
-      }
-    }
+	  String trigger = getIntent().getStringExtra(RecipeContracts.TRIGGER);
+	  if (trigger != null) {
+		  if (rbLeaving.getText().toString().equalsIgnoreCase(trigger)) {
+			  rbLeaving.setChecked(true);
+		  } else {
+			  rbApproaching.setChecked(true);
+		  }
+	  }
+	  TriggerAction notification = getIntent().getParcelableExtra(
+			  RecipeContracts.TRIGGERACTION);
+	  if (notification != null) {
+		  NOTIFICATION_TYPE notificationType = Enum.valueOf(NOTIFICATION_TYPE.class, notification.getType());
+		  switch(notificationType) {
+		  case SMS :
+			  ivSms.setBackgroundResource(R.drawable.image_border);
+			  etMessage.setVisibility(View.VISIBLE);
+			  etPhn.setVisibility(View.VISIBLE);
+			  tvMessage.setVisibility(View.VISIBLE);
+			  tvPhone.setVisibility(View.VISIBLE);
+			  tvNotificationDesc.setVisibility(View.INVISIBLE);
+			  tvSmsDesc.setVisibility(View.VISIBLE);
+			  tvSilentDesc.setVisibility(View.INVISIBLE);
+			  tvLightDesc.setVisibility(View.INVISIBLE);
+			  notificationType = TriggerAction.NOTIFICATION_TYPE.SMS;
+			  break;
+		  case NOTIFICATION:
+			  ivNotification.setBackgroundResource(R.drawable.image_border);
+			  etMessage.setVisibility(View.VISIBLE);
+			  tvMessage.setVisibility(View.VISIBLE);
+			  tvNotificationDesc.setVisibility(View.VISIBLE);
+			  tvSmsDesc.setVisibility(View.INVISIBLE);
+			  tvSilentDesc.setVisibility(View.INVISIBLE);
+			  tvLightDesc.setVisibility(View.INVISIBLE);
+			  notificationType = TriggerAction.NOTIFICATION_TYPE.NOTIFICATION;
+			  break;
+		  case RINGER_SILENT :
+			  ivSilent.setBackgroundResource(R.drawable.image_border);
+			  tvNotificationDesc.setVisibility(View.INVISIBLE);
+			  tvSmsDesc.setVisibility(View.INVISIBLE);
+			  tvSilentDesc.setVisibility(View.VISIBLE);
+			  tvLightDesc.setVisibility(View.INVISIBLE);
+			  notificationType = TriggerAction.NOTIFICATION_TYPE.RINGER_SILENT;
+		  case LIGHT :
+			  ivLight.setBackgroundResource(R.drawable.image_border);
+			  tvNotificationDesc.setVisibility(View.INVISIBLE);
+			  tvSmsDesc.setVisibility(View.INVISIBLE);
+			  tvSilentDesc.setVisibility(View.INVISIBLE);
+			  tvLightDesc.setVisibility(View.VISIBLE);
+			  notificationType = TriggerAction.NOTIFICATION_TYPE.LIGHT;
+		  }
+		  if (notification.getMessage() != null) {
+			  etMessage.setText(notification.getMessage());
+		  }
+		  if (notification.getExtra() != null) {
+			  etPhn.setText(notification.getExtra());
+		  }
+	  } 
+//	  else {
+//		  ivNotification.setBackgroundResource(R.drawable.image_border);
+//		  etMessage.setVisibility(View.VISIBLE);
+//		  tvMessage.setVisibility(View.VISIBLE);
+//		  tvNotificationDesc.setVisibility(View.VISIBLE);
+//		  tvSmsDesc.setVisibility(View.INVISIBLE);
+//		  tvSilentDesc.setVisibility(View.INVISIBLE);
+//		  tvLightDesc.setVisibility(View.INVISIBLE);
+//		  notificationType = TriggerAction.NOTIFICATION_TYPE.NOTIFICATION;
+//	  }
   }
 
   @Override

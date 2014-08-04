@@ -1,6 +1,8 @@
 package com.codepath.beacon;
 
+import com.codepath.beacon.activity.HomeActivity;
 import com.codepath.beacon.lighting.quickstart.PHHomeActivity;
+import com.parse.ParseUser;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -32,5 +34,11 @@ public class SettingsActivity extends Activity {
 	public void onConfigureHue(View v) {
 		Intent setupBridgeIntent = new Intent(this, PHHomeActivity.class);
 		startActivity(setupBridgeIntent);
+	}
+	
+	public void onLogout(View v) {
+		ParseUser.logOut();
+		Intent intent = new Intent(this, HomeActivity.class);
+		startActivity(intent);
 	}
 }

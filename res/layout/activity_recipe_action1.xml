@@ -70,6 +70,7 @@
         </TextView>
 
         <View
+            android:id="@+id/tvActionDivider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/tv_action"
@@ -80,7 +81,7 @@
             android:id="@+id/hsvActions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_action" >
+            android:layout_below="@id/tvActionDivider" >
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -88,40 +89,110 @@
                 android:layout_marginBottom="15dp"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal" >
-
-                <ImageView
+                
+                <LinearLayout
+                    android:id="@+id/llNotification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical" >
+                    <TextView
+                        android:id="@+id/tvNotificationDesc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="invisible"
+                        android:textColor="@color/text_grey"
+                        android:text="@string/action_notification_description" />
+                    <ImageView
                     android:id="@+id/ivNotification"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/notification2" />
+                    
+                </LinearLayout>
+
+               <LinearLayout
+                    android:id="@+id/llSms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
-                    android:src="@drawable/notification2" />
-
-                <ImageView
+                    android:orientation="vertical" >
+                    <TextView
+                        android:id="@+id/tvSmsDesc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="invisible"
+                        android:textColor="@color/text_grey"
+                        android:text="@string/action_sms_description" />
+                    <ImageView
                     android:id="@+id/ivSms"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/sms2" />
+                    
+                </LinearLayout>
+                
+                
+                <LinearLayout
+                    android:id="@+id/llSilent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
-                    android:src="@drawable/sms2" />
-
-                <ImageView
+                    android:orientation="vertical" >
+                    <TextView
+                        android:id="@+id/tvSilentDesc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="invisible"
+                        android:textColor="@color/text_grey"
+                        android:text="@string/action_silent_mode_description" />
+                    <ImageView
                     android:id="@+id/ivSilentMode"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/silent2" />
+                    
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/llLight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
-                    android:src="@drawable/silent2" />
-                
-                <ImageView
+                    android:orientation="vertical" >
+                    <TextView
+                        android:id="@+id/tvLightDesc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="invisible"
+                        android:textColor="@color/text_grey"
+                        android:text="@string/action_hue_description" />
+                    <ImageView
                     android:id="@+id/ivLight"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
+                    android:layout_gravity="center_horizontal"
                     android:src="@drawable/ic_light" />
+                    
+                </LinearLayout>
             </LinearLayout>
-        </HorizontalScrollView><TextView
+        </HorizontalScrollView>
+        
+        <TextView
             android:id="@+id/tvMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
