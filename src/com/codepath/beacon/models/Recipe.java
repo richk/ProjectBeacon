@@ -83,7 +83,9 @@ public class Recipe extends ParseObject implements Parcelable {
 	}
 
 	public void setDisplayName(String dn) {
-		put(RecipeContracts.DISPLAYNAME, dn);
+		if (dn != null) {
+		    put(RecipeContracts.DISPLAYNAME, dn);
+		}
 	}
 
 	public String getTriggerActionDisplayName() {
@@ -91,7 +93,9 @@ public class Recipe extends ParseObject implements Parcelable {
 	}
 
 	public void setTriggerActionDisplayName(String triggerDisplayName) {
-		put(RecipeContracts.TRIGGERACTIONDISPLAYNAME, triggerDisplayName);
+		if (triggerDisplayName != null) {
+		    put(RecipeContracts.TRIGGERACTIONDISPLAYNAME, triggerDisplayName);
+		}
 	}
 
 	public BleDeviceInfo getBeacon() {
@@ -99,7 +103,9 @@ public class Recipe extends ParseObject implements Parcelable {
 	}
 
 	public void setBeacon(BleDeviceInfo device) {
-		put(RecipeContracts.BEACON, device);
+		if (device != null) {
+		    put(RecipeContracts.BEACON, device);
+		}
 	}
 
 	public TriggerAction getTriggerAction() {
@@ -107,7 +113,9 @@ public class Recipe extends ParseObject implements Parcelable {
 	}
 
 	public void setTriggerAction(TriggerAction ta) {
-		put(RecipeContracts.TRIGGERACTION, ta);
+		if (ta != null) {
+		    put(RecipeContracts.TRIGGERACTION, ta);
+		}
 	}
 
 	public Date getActivationDate() {
@@ -115,7 +123,9 @@ public class Recipe extends ParseObject implements Parcelable {
 	}
 
 	public void setActivationDate(Date activationDate) {
-		put(RecipeContracts.ACTIVATIONDATE, activationDate);
+		if (activationDate != null) {
+		    put(RecipeContracts.ACTIVATIONDATE, activationDate);
+		}
 	}
 
 	public boolean isStatus() {
@@ -135,7 +145,9 @@ public class Recipe extends ParseObject implements Parcelable {
 	}
 
 	public void setUserID(String userID) {
-		put("userID", userID);
+		if (userID != null) {
+		    put("userID", userID);
+		}
 	}
 
 	public String getUserID()  {
@@ -147,7 +159,9 @@ public class Recipe extends ParseObject implements Parcelable {
 	}
 	
 	public void setTrigger(String t) {
-		put(RecipeContracts.TRIGGER, t);
+		if (t != null) {
+		    put(RecipeContracts.TRIGGER, t);
+		}
 	}
 
 	public String toString() {
@@ -173,7 +187,6 @@ public class Recipe extends ParseObject implements Parcelable {
 		Log.d(LOG_TAG, "Setting object id in the parcel:" + getObjectId());
 		dest.writeString(getObjectId());
 		Date activationDate = getActivationDate();
-		Log.e(LOG_TAG, "Setting activation date:" + activationDate.toString());
 		if (activationDate != null) {
 			dest.writeString(activationDate.toString());	
 		} else {

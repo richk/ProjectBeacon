@@ -229,16 +229,16 @@ public class RecipeActionActivity1 extends Activity {
 			  etPhn.setText(notification.getExtra());
 		  }
 	  } 
-//	  else {
-//		  ivNotification.setBackgroundResource(R.drawable.image_border);
-//		  etMessage.setVisibility(View.VISIBLE);
-//		  tvMessage.setVisibility(View.VISIBLE);
-//		  tvNotificationDesc.setVisibility(View.VISIBLE);
-//		  tvSmsDesc.setVisibility(View.INVISIBLE);
-//		  tvSilentDesc.setVisibility(View.INVISIBLE);
-//		  tvLightDesc.setVisibility(View.INVISIBLE);
-//		  notificationType = TriggerAction.NOTIFICATION_TYPE.NOTIFICATION;
-//	  }
+	  else {
+		  ivNotification.setBackgroundResource(R.drawable.image_border);
+		  etMessage.setVisibility(View.VISIBLE);
+		  tvMessage.setVisibility(View.VISIBLE);
+		  tvNotificationDesc.setVisibility(View.VISIBLE);
+		  tvSmsDesc.setVisibility(View.INVISIBLE);
+		  tvSilentDesc.setVisibility(View.INVISIBLE);
+		  tvLightDesc.setVisibility(View.INVISIBLE);
+		  notificationType = TriggerAction.NOTIFICATION_TYPE.NOTIFICATION;
+	  }
   }
 
   @Override

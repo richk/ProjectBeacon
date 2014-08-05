@@ -44,6 +44,7 @@ public class RecipeDetailActivity extends Activity implements BeaconListener, An
 
   private Recipe recipe;
   private String mRecipeId;
+  private String mAction;
 
   private Recipe oldRecipe;
 
@@ -89,9 +90,18 @@ public class RecipeDetailActivity extends Activity implements BeaconListener, An
 	triggerAnimation2 = AnimationUtils.loadAnimation(this, R.anim.from_middle);
 	triggerAnimation2.setAnimationListener(this);
     beaconManager = new BeaconManager(this, null);
-    String action = getIntent().getStringExtra(RecipeContracts.RECIPE_ACTION);
-    Log.d(LOG_TAG, "Creating a new recipe:" + action);
-    if (action != null && RecipeContracts.RECIPE_ACTION_CREATE.equalsIgnoreCase(action)) {
+    if (savedInstanceState != null) {
+        mAction = savedInstanceState.getString(RecipeContracts.RECIPE_ACTION);
+        recipe = savedInstanceState.getParcelable("recipe");
+        mRecipeId = savedInstanceState.getString("recipeId");
+    } else {
+    	mAction = getIntent().getStringExtra(RecipeContracts.RECIPE_ACTION);
+        recipe = getIntent().getParcelableExtra("recipe");
+        mRecipeId = getIntent().getStringExtra("recipeId");
+    }
+    
+    Log.d(LOG_TAG, "Creating a new recipe:" + mAction);
+    if (mAction != null && RecipeContracts.RECIPE_ACTION_CREATE.equalsIgnoreCase(mAction)) {
     	Log.d(LOG_TAG, "Setting createFlag to true");
     	createFlag = true;
     }
@@ -126,12 +136,25 @@ public class RecipeDetailActivity extends Activity implements BeaconListener, An
     return true;
   }
 
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
+	  // TODO Auto-generated method stub
+	  super.onSaveInstanceState(outState);
+	  if (mAction != null) {
+	      outState.putString(RecipeContracts.RECIPE_ACTION, getIntent().getStringExtra(RecipeContracts.RECIPE_ACTION));
+	  }
+	  if (recipe != null) {
+	      outState.putParcelable("recipe", recipe);
+	  }
+	  if (mRecipeId != null) {
+	      outState.putString("recipeId", mRecipeId);
+	  }
+  }
+
   private void populateRecipeDetail() {
-	  if (createFlag) {
+	  if (recipe == null) {
 		  recipe = new Recipe();
 	  } else {
-		  recipe = getIntent().getParcelableExtra("recipe");
-		  mRecipeId = getIntent().getStringExtra("recipeId");
 		  Log.d(LOG_TAG, "Recipe object id:" + mRecipeId);
 		  oldRecipe = new Recipe();
 		  if (recipe != null) {
@@ -469,7 +492,6 @@ public class RecipeDetailActivity extends Activity implements BeaconListener, An
   
   @Override
 	public void onAnimationEnd(Animation animation) {
-	  Toast.makeText(this, "onAnimationEnd", Toast.LENGTH_SHORT).show();
 	  if (animation==beaconAnimation1) {
 			  if (isBeaconPlusShowing) {
 					  ibPlus1.setImageResource(R.drawable.ic_launcher);
@@ -508,11 +530,9 @@ public class RecipeDetailActivity extends Activity implements BeaconListener, An
 
 	@Override
 	public void onAnimationRepeat(Animation animation) {
-		Toast.makeText(this, "onAnimationRepeat", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void onAnimationStart(Animation animation) {
-		Toast.makeText(this, "onAnimationStart", Toast.LENGTH_SHORT).show();
 	}
 }
