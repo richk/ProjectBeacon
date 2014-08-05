@@ -218,7 +218,6 @@ public class RecipeDetailActivity extends Activity implements BeaconListener, An
           }
           if(requestCode == ACTION_SELECTION && isNotificationTypeChanged){
           	Log.d(LOG_TAG, "Starting Animation");
-          	Toast.makeText(this, "Starting action animation", Toast.LENGTH_SHORT).show();
             startAnimation(ibPlus2, triggerAnimation1);        	  
           }else{
         	switch(mPendingNotificationType){
@@ -260,18 +259,6 @@ public class RecipeDetailActivity extends Activity implements BeaconListener, An
       }
       displayActionName();
     }
-
-//    if (recipe.getBeacon() != null && recipe.getBeacon().getName() != null)
-//      tvSelectedBeacon.setText(recipe.getBeacon().getName());
-//
-//    if (recipe.getTriggerAction() != null && recipe.getTrigger() != null){
-//      String notif = recipe.getTriggerActionDisplayName();
-//      if(notif.equalsIgnoreCase(NOTIFICATION_TYPE.NOTIFICATION.toString()))
-//          notif = "Notification";
-//      if(notif.equalsIgnoreCase(NOTIFICATION_TYPE.RINGER_SILENT.toString()))
-//        notif = "Ringer Silent";
-//      tvSelectedAction.setText(notif + " on " + recipe.getTrigger().toLowerCase());
-//    }
 
     if (recipe.getDisplayName() != null
         && recipe.getTriggerActionDisplayName() != null){
@@ -504,7 +491,6 @@ public class RecipeDetailActivity extends Activity implements BeaconListener, An
 	  } else if (animation == triggerAnimation1) {
 			  switch(mPendingNotificationType) {
 			  case NOTIFICATION :
-				  Toast.makeText(this, "Setting notification image", Toast.LENGTH_SHORT).show();
 				  ibPlus2.setImageResource(R.drawable.notification2);
 				  break;
 			  case SMS :
@@ -521,7 +507,6 @@ public class RecipeDetailActivity extends Activity implements BeaconListener, An
 			  ibPlus2.setBackgroundResource(R.drawable.image_border);
 			  startAnimation(ibPlus2, triggerAnimation2);
 	  } else if (animation == triggerAnimation2) {
-//	      isTriggerPlusShowing = !isTriggerPlusShowing;
 		  displayActionName();
 	  } else {
 		  Log.e(LOG_TAG, "Invalid Animation type");
