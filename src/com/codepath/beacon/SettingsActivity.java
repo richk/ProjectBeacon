@@ -1,16 +1,15 @@
 package com.codepath.beacon;
 
-import com.codepath.beacon.activity.HomeActivity;
-import com.codepath.beacon.lighting.quickstart.PHHomeActivity;
-import com.parse.ParseUser;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.codepath.beacon.activity.HomeActivity;
 import com.codepath.beacon.lighting.quickstart.PHHomeActivity;
+import com.codepath.beacon.scan.BleService;
+import com.parse.ParseUser;
 
 public class SettingsActivity extends Activity {
 
@@ -40,6 +39,7 @@ public class SettingsActivity extends Activity {
 	
 	public void onLogout(View v) {
 		ParseUser.logOut();
+		stopService(new Intent(this, BleService.class));
 		Intent intent = new Intent(this, HomeActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);

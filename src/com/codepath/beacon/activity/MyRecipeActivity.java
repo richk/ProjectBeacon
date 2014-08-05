@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
-import com.codepath.beacon.NotificationBubble;
 import com.codepath.beacon.OnProgressListener;
 import com.codepath.beacon.R;
 import com.codepath.beacon.SettingsActivity;
@@ -28,7 +27,7 @@ import com.codepath.beacon.scan.BeaconListener;
 import com.codepath.beacon.scan.BeaconManager;
 import com.codepath.beacon.scan.BleDeviceInfo;
 import com.codepath.beacon.scan.BleService.State;
-import com.codepath.beacon.lighting.quickstart.PHHomeActivity;
+import com.parse.ParseUser;
 
 
 public class MyRecipeActivity extends Activity implements BeaconListener,OnProgressListener {
@@ -56,6 +55,12 @@ public class MyRecipeActivity extends Activity implements BeaconListener,OnProgr
 		mNewFragment.setBeaconManager(mBeaconManager);
 		transaction.replace(R.id.flrecipelist, mNewFragment, RECIPE_LIST_FRAGMENT_TAG);
 		transaction.commit();
+		if(ParseUser.getCurrentUser() == null){
+	        Intent intent = new Intent(this, HomeActivity.class);
+	        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+	        startActivity(intent);
+	        return;
+		}
 		loadRecipes();
 	}
 
