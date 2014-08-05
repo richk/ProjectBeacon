@@ -39,9 +39,14 @@ public class SettingsActivity extends Activity {
 	
 	public void onLogout(View v) {
 		ParseUser.logOut();
+		clearUserData();
 		stopService(new Intent(this, BleService.class));
 		Intent intent = new Intent(this, HomeActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
+	}
+	
+	private void clearUserData() {
+		BeaconApplication.getApplication().clearRecipes();	
 	}
 }

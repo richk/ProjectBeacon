@@ -60,6 +60,10 @@ public class BeaconApplication extends Application {
 	  myRecipes.remove(recipe);
   }
   
+  public void clearRecipes() {
+	  myRecipes.clear();
+  }
+  
   public void addAllRecipes(List<Recipe> recipes) {
 	  myRecipes.addAll(recipes);
   }
