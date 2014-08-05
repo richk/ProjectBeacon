@@ -11,11 +11,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.R;
+import com.codepath.beacon.R.anim;
 import com.codepath.beacon.contracts.RecipeContracts;
 import com.codepath.beacon.contracts.RecipeContracts.TRIGGERS;
 import com.codepath.beacon.fragments.RecipeAlertDialog;
@@ -33,7 +38,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-public class RecipeDetailActivity extends Activity implements BeaconListener {
+public class RecipeDetailActivity extends Activity implements BeaconListener, AnimationListener {
   private static final String LOG_TAG = RecipeDetailActivity.class
       .getSimpleName();
 
@@ -45,11 +50,44 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
   BeaconManager beaconManager;
 
   private boolean createFlag = false;
+  
+  private Animation beaconAnimation1;
+  private Animation beaconAnimation2;
+  private Animation triggerAnimation1;
+  private Animation triggerAnimation2;
+  private boolean isBeaconPlusShowing = true;
+  private NOTIFICATION_TYPE mLastNotificationType;
+  private NOTIFICATION_TYPE mPendingNotificationType;
+  
+  TextView tvActivationDate;
+  TextView tvSelectedBeacon;
+  TextView tvSelectedAction;
+  ImageView ibPlus1;
+  ImageView ibPlus2;
+  TextView tvTriggerandNotification;
+  
+  private static final int BEACON_SELECTION=0;
+  private static final int ACTION_SELECTION=1;
+  
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_recipe_detail);
+    tvActivationDate = (TextView) findViewById(R.id.tvActivationDate);
+    tvSelectedBeacon = (TextView) findViewById(R.id.tvSelectedBeacon);
+    tvSelectedAction = (TextView) findViewById(R.id.tvSelectedAction);
+    ibPlus1 = (ImageView) findViewById(R.id.btn_beacon);
+    ibPlus2 = (ImageView) findViewById(R.id.btn_notification);
+    tvTriggerandNotification = (TextView) findViewById(R.id.tvTriggerandNotification);
+	beaconAnimation1 = AnimationUtils.loadAnimation(this, R.anim.to_middle);
+	beaconAnimation1.setAnimationListener(this);
+	beaconAnimation2 = AnimationUtils.loadAnimation(this, R.anim.from_middle);
+	beaconAnimation2.setAnimationListener(this);
+	triggerAnimation1 = AnimationUtils.loadAnimation(this, R.anim.to_middle);
+	triggerAnimation1.setAnimationListener(this);
+	triggerAnimation2 = AnimationUtils.loadAnimation(this, R.anim.from_middle);
+	triggerAnimation2.setAnimationListener(this);
     beaconManager = new BeaconManager(this, null);
     String action = getIntent().getStringExtra(RecipeContracts.RECIPE_ACTION);
     Log.d(LOG_TAG, "Creating a new recipe:" + action);
@@ -107,16 +145,10 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
 			  oldRecipe.setUserID(recipe.getUserID());
 		  }
 	  }
-	  showRecipe();
+	  showRecipe(-1);
   }
 
-  private void showRecipe() {
-    TextView tvActivationDate = (TextView) findViewById(R.id.tvActivationDate);
-    TextView tvSelectedBeacon = (TextView) findViewById(R.id.tvSelectedBeacon);
-    TextView tvSelectedAction = (TextView) findViewById(R.id.tvSelectedAction);
-    ImageView ibPlus1 = (ImageView) findViewById(R.id.btn_beacon);
-    ImageView ibPlus2 = (ImageView) findViewById(R.id.btn_notification);
-    TextView tvTriggerandNotification = (TextView) findViewById(R.id.tvTriggerandNotification);
+  private void showRecipe(int requestCode) {
 
     if (!createFlag) {
       if (recipe.getActivationDate() != null) {
@@ -133,34 +165,63 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
     if (createFlag) {
       if (recipe.getBeacon() == null) {
         ibPlus1.setImageResource(R.drawable.plus2);
-        ibPlus2.setImageResource(R.drawable.plus2);
         ibPlus1.setBackgroundResource(R.drawable.dash_border);
-        ibPlus2.setBackgroundResource(R.drawable.dash_border);
       } else {
-        ibPlus1.setImageResource(R.drawable.ic_launcher);
-        ibPlus1.setBackgroundResource(R.drawable.image_border);
+    	  if(requestCode == BEACON_SELECTION && isBeaconPlusShowing){
+	    	  startAnimation(ibPlus1, beaconAnimation1);
+    	  }else{
+    		  ibPlus1.setImageResource(R.drawable.ic_launcher);
+    		  ibPlus1.setBackgroundResource(R.drawable.image_border);
+    		  displayBeaconName();
+    	  }
+      }
         if (recipe.getTriggerAction() == null){
           ibPlus2.setImageResource(R.drawable.plus2);
           ibPlus2.setBackgroundResource(R.drawable.dash_border);
         }else{
+        	boolean isNotificationTypeChanged = false;
+          if (mLastNotificationType == null || (mLastNotificationType != null && !recipe.getTriggerAction().getType().equalsIgnoreCase(mLastNotificationType.name()))) {
+        	  isNotificationTypeChanged = true;
+          }
+          mLastNotificationType = Enum.valueOf(NOTIFICATION_TYPE.class, recipe.getTriggerAction().getType());
           if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.NOTIFICATION.toString())){
-            ibPlus2.setImageResource(R.drawable.notification2);
-            ibPlus2.setBackgroundResource(R.drawable.image_border);
+        	  mPendingNotificationType = NOTIFICATION_TYPE.NOTIFICATION;
           }else if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.SMS.toString())){
-            ibPlus2.setImageResource(R.drawable.sms2);
-            ibPlus2.setBackgroundResource(R.drawable.image_border);
+        	  mPendingNotificationType = NOTIFICATION_TYPE.SMS;
           }else if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.RINGER_SILENT.toString())){
-            ibPlus2.setImageResource(R.drawable.silent2);
-            ibPlus2.setBackgroundResource(R.drawable.image_border);            
+        	  mPendingNotificationType = NOTIFICATION_TYPE.RINGER_SILENT;
           } else if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.LIGHT.toString())){
-            ibPlus2.setImageResource(R.drawable.ic_light);
+        	  mPendingNotificationType = NOTIFICATION_TYPE.LIGHT;
+          }
+          if(requestCode == ACTION_SELECTION && isNotificationTypeChanged){
+          	Log.d(LOG_TAG, "Starting Animation");
+          	Toast.makeText(this, "Starting action animation", Toast.LENGTH_SHORT).show();
+            startAnimation(ibPlus2, triggerAnimation1);        	  
+          }else{
+        	switch(mPendingNotificationType){
+        	case NOTIFICATION:
+              ibPlus2.setImageResource(R.drawable.notification2);
+              break;
+        	case SMS:
+                ibPlus2.setImageResource(R.drawable.sms2);
+        		break;
+        	case RINGER_SILENT:
+              ibPlus2.setImageResource(R.drawable.silent2);
+        		break;
+        	case LIGHT:
+              ibPlus2.setImageResource(R.drawable.ic_light);
+        		break;
+        	default:
+        		break;
+        	}
             ibPlus2.setBackgroundResource(R.drawable.image_border);
+            displayActionName();
           }
         }
-      }
     } else {
       ibPlus1.setImageResource(R.drawable.ic_launcher);
       ibPlus1.setBackgroundResource(R.drawable.image_border);
+      displayBeaconName();
       if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.NOTIFICATION.toString())){
         ibPlus2.setImageResource(R.drawable.notification2);
         ibPlus2.setBackgroundResource(R.drawable.image_border);
@@ -174,19 +235,20 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
         ibPlus2.setImageResource(R.drawable.ic_light);
         ibPlus2.setBackgroundResource(R.drawable.image_border);
       }
+      displayActionName();
     }
 
-    if (recipe.getBeacon() != null && recipe.getBeacon().getName() != null)
-      tvSelectedBeacon.setText(recipe.getBeacon().getName());
-
-    if (recipe.getTriggerAction() != null && recipe.getTrigger() != null){
-      String notif = recipe.getTriggerActionDisplayName();
-      if(notif.equalsIgnoreCase(NOTIFICATION_TYPE.NOTIFICATION.toString()))
-          notif = "Notification";
-      if(notif.equalsIgnoreCase(NOTIFICATION_TYPE.RINGER_SILENT.toString()))
-        notif = "Ringer Silent";
-      tvSelectedAction.setText(notif + " on " + recipe.getTrigger().toLowerCase());
-    }
+//    if (recipe.getBeacon() != null && recipe.getBeacon().getName() != null)
+//      tvSelectedBeacon.setText(recipe.getBeacon().getName());
+//
+//    if (recipe.getTriggerAction() != null && recipe.getTrigger() != null){
+//      String notif = recipe.getTriggerActionDisplayName();
+//      if(notif.equalsIgnoreCase(NOTIFICATION_TYPE.NOTIFICATION.toString()))
+//          notif = "Notification";
+//      if(notif.equalsIgnoreCase(NOTIFICATION_TYPE.RINGER_SILENT.toString()))
+//        notif = "Ringer Silent";
+//      tvSelectedAction.setText(notif + " on " + recipe.getTrigger().toLowerCase());
+//    }
 
     if (recipe.getDisplayName() != null
         && recipe.getTriggerActionDisplayName() != null){
@@ -197,14 +259,39 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
         notif = "Send SMS ";
       if(notif.equalsIgnoreCase(NOTIFICATION_TYPE.RINGER_SILENT.toString()))
         notif = "Make ringer silent ";
+      if(notif.equalsIgnoreCase(NOTIFICATION_TYPE.LIGHT.toString()))
+          notif = "Turn on lights ";
       tvTriggerandNotification.setText(notif
               + " when " + recipe.getTrigger().toLowerCase() + " " + recipe.getDisplayName());
     }
   }
   
+  private void displayBeaconName() {
+	  if (recipe.getBeacon() != null && recipe.getBeacon().getName() != null)
+	      tvSelectedBeacon.setText(recipe.getBeacon().getName());	  
+  }
+  
+  private void displayActionName() {
+	  if (recipe.getTriggerAction() != null && recipe.getTrigger() != null){
+	      String notif = recipe.getTriggerActionDisplayName();
+	      if(notif.equalsIgnoreCase(NOTIFICATION_TYPE.NOTIFICATION.toString()))
+	          notif = "Notification";
+	      if(notif.equalsIgnoreCase(NOTIFICATION_TYPE.RINGER_SILENT.toString()))
+	        notif = "Ringer Silent";
+	      tvSelectedAction.setText(notif + " on " + recipe.getTrigger().toLowerCase());
+	    }	  
+  }
+  
+  private void startAnimation(ImageView img, Animation newAnimation) {
+	  img.clearAnimation();
+	  img.setAnimation(newAnimation);
+	  img.startAnimation(newAnimation);	  
+  }
+  
   public void onScanBeacon(View view) {
-    Intent scanIntent = new Intent(this, BlePagerActivity.class);
-    startActivityForResult(scanIntent, 0);
+	  Intent scanIntent = new Intent(this, BlePagerActivity.class);
+	  startActivityForResult(scanIntent, 0);
+//	  overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
   }
 
   public void findRecipeInBackground(final String recipeID) {
@@ -235,7 +322,7 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
                   }
                 }
               });
-          showRecipe();
+          showRecipe(-1);
 
         } else {
           // something went wrong
@@ -327,7 +414,7 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (requestCode == 0) {
+    if (requestCode == BEACON_SELECTION) {
       if (resultCode == RESULT_OK) {
         BleDeviceInfo deviceInfo = (BleDeviceInfo) data
             .getParcelableExtra("beacon");
@@ -339,9 +426,9 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
         recipe.setBeacon(deviceInfo);
         recipe.setDisplayName(deviceInfo.getName());
         deviceInfo.setEditState(false);
-        showRecipe();
+        showRecipe(requestCode);
       }
-    } else if (requestCode == 1) {
+    } else if (requestCode == ACTION_SELECTION) {
       if (resultCode == RESULT_OK) {
         String trigger = data.getStringExtra("trigger");
         TriggerAction notification = (TriggerAction)data.
@@ -353,7 +440,7 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
             && !oldRecipe.getTrigger().equalsIgnoreCase(recipe.getTrigger()))) {
           recipe.setEditState(true);
         }
-        showRecipe();
+        showRecipe(requestCode);
       }
     } else {
       Log.e("RecipeDetailActivity", "Invalid request code:" + requestCode);
@@ -379,4 +466,53 @@ public class RecipeDetailActivity extends Activity implements BeaconListener {
 //    Toast.makeText(BeaconApplication.getApplication(),
 //        "Found a device..." + device[0], Toast.LENGTH_SHORT).show();
   }
+  
+  @Override
+	public void onAnimationEnd(Animation animation) {
+	  Toast.makeText(this, "onAnimationEnd", Toast.LENGTH_SHORT).show();
+	  if (animation==beaconAnimation1) {
+			  if (isBeaconPlusShowing) {
+					  ibPlus1.setImageResource(R.drawable.ic_launcher);
+					  ibPlus1.setBackgroundResource(R.drawable.image_border);
+					  startAnimation(ibPlus1, beaconAnimation2);
+			  } 
+	  } else if (animation == beaconAnimation2) {
+		  isBeaconPlusShowing=!isBeaconPlusShowing;
+		  displayBeaconName();
+	  } else if (animation == triggerAnimation1) {
+			  switch(mPendingNotificationType) {
+			  case NOTIFICATION :
+				  Toast.makeText(this, "Setting notification image", Toast.LENGTH_SHORT).show();
+				  ibPlus2.setImageResource(R.drawable.notification2);
+				  break;
+			  case SMS :
+				  ibPlus2.setImageResource(R.drawable.sms2);
+				  break;
+			  case RINGER_SILENT :
+				  ibPlus2.setImageResource(R.drawable.silent2);
+				  break;
+			  case LIGHT : 
+				  ibPlus2.setImageResource(R.drawable.ic_light);
+				  break;
+			  default :
+			  }
+			  ibPlus2.setBackgroundResource(R.drawable.image_border);
+			  startAnimation(ibPlus2, triggerAnimation2);
+	  } else if (animation == triggerAnimation2) {
+//	      isTriggerPlusShowing = !isTriggerPlusShowing;
+		  displayActionName();
+	  } else {
+		  Log.e(LOG_TAG, "Invalid Animation type");
+	  }
+ 	}
+
+	@Override
+	public void onAnimationRepeat(Animation animation) {
+		Toast.makeText(this, "onAnimationRepeat", Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void onAnimationStart(Animation animation) {
+		Toast.makeText(this, "onAnimationStart", Toast.LENGTH_SHORT).show();
+	}
 }
