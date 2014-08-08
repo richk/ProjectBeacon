@@ -12,7 +12,7 @@ public class TriggerAction extends ParseObject implements Parcelable {
 	public static boolean isInitialized = false;
 	
 	public static enum NOTIFICATION_TYPE {
-		SMS, NOTIFICATION, NONE, RINGER_SILENT, LIGHT
+		SMS, NOTIFICATION, RINGER_SILENT, LIGHT
 	}
 	
 	public TriggerAction() {}

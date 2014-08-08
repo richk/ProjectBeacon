@@ -3,6 +3,7 @@ package com.codepath.beacon.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,7 +40,7 @@ public class RecipeActionActivity1 extends Activity {
   private TextView tvSilentDesc;
   private TextView tvLightDesc;
 
-  NOTIFICATION_TYPE notificationType = NOTIFICATION_TYPE.NONE;
+  NOTIFICATION_TYPE mNotificationType;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +66,7 @@ public class RecipeActionActivity1 extends Activity {
     if(savedInstanceState != null){
       int noti = savedInstanceState.getInt("notification_type");
       if(noti != 0){
-        notificationType = NOTIFICATION_TYPE.values()[noti];
+        mNotificationType = NOTIFICATION_TYPE.values()[noti];
       }
       
       rbLeaving.setChecked(savedInstanceState.getBoolean("leaving"));
@@ -89,7 +90,7 @@ public class RecipeActionActivity1 extends Activity {
         tvSmsDesc.setVisibility(View.INVISIBLE);
         tvSilentDesc.setVisibility(View.INVISIBLE);
         tvLightDesc.setVisibility(View.INVISIBLE);
-        notificationType = NOTIFICATION_TYPE.NOTIFICATION;
+        mNotificationType = NOTIFICATION_TYPE.NOTIFICATION;
 
       }
     });
@@ -112,7 +113,7 @@ public class RecipeActionActivity1 extends Activity {
         tvSmsDesc.setVisibility(View.VISIBLE);
         tvSilentDesc.setVisibility(View.INVISIBLE);
         tvLightDesc.setVisibility(View.INVISIBLE);
-        notificationType = NOTIFICATION_TYPE.SMS;
+        mNotificationType = NOTIFICATION_TYPE.SMS;
       }
     });
     
@@ -132,7 +133,7 @@ public class RecipeActionActivity1 extends Activity {
         tvSmsDesc.setVisibility(View.INVISIBLE);
         tvSilentDesc.setVisibility(View.VISIBLE);
         tvLightDesc.setVisibility(View.INVISIBLE);
-        notificationType = NOTIFICATION_TYPE.RINGER_SILENT;
+        mNotificationType = NOTIFICATION_TYPE.RINGER_SILENT;
 
       }
     });
@@ -155,7 +156,7 @@ public class RecipeActionActivity1 extends Activity {
         tvSilentDesc.setVisibility(View.INVISIBLE);
         tvLightDesc.setVisibility(View.VISIBLE);
 
-        notificationType = NOTIFICATION_TYPE.LIGHT;
+        mNotificationType = NOTIFICATION_TYPE.LIGHT;
 
       }
     });
@@ -165,7 +166,7 @@ public class RecipeActionActivity1 extends Activity {
     
   @Override
   protected void onSaveInstanceState(Bundle outState) {
-    outState.putInt("notification_type", notificationType.ordinal());
+    outState.putInt("notification_type", mNotificationType.ordinal());
     outState.putBoolean("leaving", rbLeaving.isChecked());
     outState.putBoolean("approaching", rbApproaching.isChecked());
     super.onSaveInstanceState(outState);
@@ -183,8 +184,9 @@ public class RecipeActionActivity1 extends Activity {
 	  TriggerAction notification = getIntent().getParcelableExtra(
 			  RecipeContracts.TRIGGERACTION);
 	  if (notification != null) {
-		  NOTIFICATION_TYPE notificationType = Enum.valueOf(NOTIFICATION_TYPE.class, notification.getType());
-		  switch(notificationType) {
+		  mNotificationType = Enum.valueOf(NOTIFICATION_TYPE.class, notification.getType());
+		  Log.d(LOG_TAG, "Populating with notification type:" + mNotificationType);
+		  switch(mNotificationType) {
 		  case SMS :
 			  ivSms.setBackgroundResource(R.drawable.image_border);
 			  etMessage.setVisibility(View.VISIBLE);
@@ -195,7 +197,6 @@ public class RecipeActionActivity1 extends Activity {
 			  tvSmsDesc.setVisibility(View.VISIBLE);
 			  tvSilentDesc.setVisibility(View.INVISIBLE);
 			  tvLightDesc.setVisibility(View.INVISIBLE);
-			  notificationType = TriggerAction.NOTIFICATION_TYPE.SMS;
 			  break;
 		  case NOTIFICATION:
 			  ivNotification.setBackgroundResource(R.drawable.image_border);
@@ -205,7 +206,6 @@ public class RecipeActionActivity1 extends Activity {
 			  tvSmsDesc.setVisibility(View.INVISIBLE);
 			  tvSilentDesc.setVisibility(View.INVISIBLE);
 			  tvLightDesc.setVisibility(View.INVISIBLE);
-			  notificationType = TriggerAction.NOTIFICATION_TYPE.NOTIFICATION;
 			  break;
 		  case RINGER_SILENT :
 			  ivSilent.setBackgroundResource(R.drawable.image_border);
@@ -213,14 +213,17 @@ public class RecipeActionActivity1 extends Activity {
 			  tvSmsDesc.setVisibility(View.INVISIBLE);
 			  tvSilentDesc.setVisibility(View.VISIBLE);
 			  tvLightDesc.setVisibility(View.INVISIBLE);
-			  notificationType = TriggerAction.NOTIFICATION_TYPE.RINGER_SILENT;
+			  break;
 		  case LIGHT :
 			  ivLight.setBackgroundResource(R.drawable.image_border);
 			  tvNotificationDesc.setVisibility(View.INVISIBLE);
 			  tvSmsDesc.setVisibility(View.INVISIBLE);
 			  tvSilentDesc.setVisibility(View.INVISIBLE);
 			  tvLightDesc.setVisibility(View.VISIBLE);
-			  notificationType = TriggerAction.NOTIFICATION_TYPE.LIGHT;
+			  break;
+			  default:
+				  Log.e(LOG_TAG, "Unsupprted Action Type:" + mNotificationType);
+				  mNotificationType = NOTIFICATION_TYPE.NOTIFICATION;
 		  }
 		  if (notification.getMessage() != null) {
 			  etMessage.setText(notification.getMessage());
@@ -228,7 +231,7 @@ public class RecipeActionActivity1 extends Activity {
 		  if (notification.getExtra() != null) {
 			  etPhn.setText(notification.getExtra());
 		  }
-	  } 
+	  } 	
 	  else {
 		  ivNotification.setBackgroundResource(R.drawable.image_border);
 		  etMessage.setVisibility(View.VISIBLE);
@@ -237,7 +240,7 @@ public class RecipeActionActivity1 extends Activity {
 		  tvSmsDesc.setVisibility(View.INVISIBLE);
 		  tvSilentDesc.setVisibility(View.INVISIBLE);
 		  tvLightDesc.setVisibility(View.INVISIBLE);
-		  notificationType = TriggerAction.NOTIFICATION_TYPE.NOTIFICATION;
+		  mNotificationType = TriggerAction.NOTIFICATION_TYPE.NOTIFICATION;
 	  }
   }
 
@@ -272,9 +275,14 @@ public class RecipeActionActivity1 extends Activity {
     String message = etMessage.getText().toString();
     String phn = etPhn.getText().toString();
     TriggerAction triggerAction = new TriggerAction();
-    triggerAction.setMessage(message);
-    triggerAction.setType(notificationType.name());
-    triggerAction.setExtra(phn);
+    if (message != null) {
+        triggerAction.setMessage(message);
+    }
+    Log.d(LOG_TAG, "Returning Notification Type:" + mNotificationType);
+    triggerAction.setType(mNotificationType.name());
+    if (phn != null) {
+    	triggerAction.setExtra(phn);	
+    }
     Intent returnIntent = new Intent();
     returnIntent.putExtra("trigger", trigger);
     returnIntent.putExtra(RecipeContracts.TRIGGERACTION, triggerAction);
