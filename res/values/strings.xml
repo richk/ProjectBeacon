@@ -109,6 +109,7 @@
     <string name="action_sms_description">SMS</string>
     <string name="action_silent_mode_description">SILENT MODE</string>
     <string name="action_hue_description">PHILIPS HUE</string>
+    <string name="action_apps_description">LAUNCH APPS</string>
     <string name="button_label_configure_hue">Configure</string>
     <string name="button_label_logout">Sign Out</string>
 

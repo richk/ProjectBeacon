@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.codepath.beacon.R;
 import com.codepath.beacon.adapter.PackageAdapter;
 import com.codepath.beacon.adapter.PackageItem;
 
@@ -27,6 +28,7 @@ public class AppListFragment extends ListFragment {
 	private List<PackageItem> mPackageItemList = new ArrayList<PackageItem>();;
 	private PackageAdapter mPackageAdapter;
 	private onAppSelectedListener mAppSelectedListener;
+	private View mLastSelectedView;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -61,6 +63,10 @@ public class AppListFragment extends ListFragment {
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Log.d(LOG_TAG, "onListItemClick");
 		v.setBackgroundColor(Color.YELLOW);
+		if (mLastSelectedView != null) {
+			mLastSelectedView.setBackgroundColor(getResources().getColor(R.color.natural));
+		}
+		mLastSelectedView = v;
 		mPackageAdapter.getItem(position).setIsSelected(true);
 		mAppSelectedListener.onAppSelected(mPackageAdapter.getItem(position));
 		Toast.makeText(getActivity(), 

@@ -11,26 +11,31 @@ import android.animation.AnimatorInflater;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.codepath.beacon.R;
 import com.codepath.beacon.adapter.PackageItem;
+import com.codepath.beacon.contracts.IntentTransferContracts;
 import com.codepath.beacon.fragments.AppListFragment;
 import com.codepath.beacon.fragments.AppListFragment.onAppSelectedListener;
-import com.codepath.beacon.util.PreferencesManager;
 
 public class AppListActivity extends Activity implements onAppSelectedListener {
 	private static final String LOG_TAG = AppListActivity.class.getSimpleName();
+	private static final String APPS_DELIM = ";";
 	
 	private static final int REQUEST_CODE_SETTINGS = 0;
     private ProgressDialog progressDialog;
-    AppListFragment appListFragment;
+    AppListFragment appListFragment = new AppListFragment();
     Set<PackageItem> mSelectedApps = new HashSet<PackageItem>();
+    private PackageItem mSelectedApp;
 	private ImageView pbAppsLoading;
 	private Animator pbAnimator;
     
@@ -45,12 +50,30 @@ public class AppListActivity extends Activity implements onAppSelectedListener {
         new ListAppTask().execute();
         FragmentManager fm = getFragmentManager();  
         if (fm.findFragmentById(R.id.flAppList) == null) {  
-        	appListFragment = new AppListFragment();  
         	fm.beginTransaction().add(R.id.flAppList, appListFragment).commit();  
         }
     }
-	
-	
+    
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+      // Inflate the menu; this adds items to the action bar if it is present.
+      getMenuInflater().inflate(R.menu.save_apps, menu);
+      return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+      // Handle action bar item clicks here. The action bar will
+      // automatically handle clicks on the Home/Up button, so long
+      // as you specify a parent activity in AndroidManifest.xml.
+      int id = item.getItemId();
+      if (id == R.id.appsSave) {
+        return true;
+      }
+      return super.onOptionsItemSelected(item);
+    }
 	public class ListAppTask extends AsyncTask<Void, Void, List<PackageItem>> {
 
         protected List<PackageItem> doInBackground(Void... args) {
@@ -95,6 +118,13 @@ public class AppListActivity extends Activity implements onAppSelectedListener {
 		//		if (!item.getIsSelected()) {
 		Log.d(LOG_TAG, "Item selected..adding to the list");
 		mSelectedApps.add(item);
+		PackageItem newItem = new PackageItem();
+		newItem.setName(item.getName());
+		newItem.setPackageName(item.getPackageName());
+		newItem.setIcon(item.getIcon());
+		newItem.setIsSelected(false);
+		mSelectedApps.add(newItem);
+		mSelectedApp = item;
 		//		} else {
 		//			Log.d(LOG_TAG, "Item already selected..removing from the list");
 		//			mSelectedApps.remove(item);
@@ -104,6 +134,10 @@ public class AppListActivity extends Activity implements onAppSelectedListener {
 		for (PackageItem app : mSelectedApps) {
 			Log.d(LOG_TAG, "App name:" + app.getName());
 		}
+		Intent intent = new Intent();
+		intent.putExtra(IntentTransferContracts.SELECTED_APPS_STRING, item.getPackageName());
+		setResult(RESULT_OK, intent);
+    	finish();
 	}
 	
 	public void onProgressStart() {
@@ -115,5 +149,16 @@ public class AppListActivity extends Activity implements onAppSelectedListener {
 		pbAnimator.end();
 		pbAppsLoading.setVisibility(ImageView.INVISIBLE);
 	}
-
+	
+	private String serializePackageSet() {
+		StringBuilder sb = new StringBuilder();
+		boolean first = true;
+		for (PackageItem item : mSelectedApps) {
+			if (!first) {
+				sb.append(APPS_DELIM);
+			}
+			sb.append(item.getPackageName());
+		}
+		return sb.toString();
+	}
 }

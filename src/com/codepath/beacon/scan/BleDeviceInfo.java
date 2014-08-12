@@ -6,7 +6,6 @@ import java.util.Locale;
 import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.contracts.BleDeviceInfoContracts;
 import com.codepath.beacon.contracts.ParseUserContracts;
-import com.codepath.beacon.data.Beacon;
 import com.google.android.gms.internal.be;
 import com.parse.FindCallback;
 import com.parse.GetCallback;

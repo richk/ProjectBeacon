@@ -64,20 +64,21 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 		});
 		
 		if (recipe.getTriggerAction() != null) {
-		  if (TriggerAction.NOTIFICATION_TYPE.NOTIFICATION.name().equalsIgnoreCase(recipe.getTriggerAction().getType())) {
-		    ivAction.setImageResource(R.drawable.notification2);
-		  } else if(TriggerAction.NOTIFICATION_TYPE.SMS.name().equalsIgnoreCase(recipe.getTriggerAction().getType())) {
-		    ivAction.setImageResource(R.drawable.sms2);
-		  } else if(TriggerAction.NOTIFICATION_TYPE.RINGER_SILENT.name().equalsIgnoreCase(recipe.getTriggerAction().getType())){
-		    ivAction.setImageResource(R.drawable.silent2);
-		  } else if(TriggerAction.NOTIFICATION_TYPE.LIGHT.name().equalsIgnoreCase(recipe.getTriggerAction().getType())){
-        ivAction.setImageResource(R.drawable.ic_light);
-      }
-
+			if (TriggerAction.NOTIFICATION_TYPE.NOTIFICATION.name().equalsIgnoreCase(recipe.getTriggerAction().getType())) {
+				ivAction.setImageResource(R.drawable.notification2);
+			} else if(TriggerAction.NOTIFICATION_TYPE.SMS.name().equalsIgnoreCase(recipe.getTriggerAction().getType())) {
+				ivAction.setImageResource(R.drawable.sms2);
+			} else if(TriggerAction.NOTIFICATION_TYPE.RINGER_SILENT.name().equalsIgnoreCase(recipe.getTriggerAction().getType())){
+				ivAction.setImageResource(R.drawable.silent2);
+			} else if(TriggerAction.NOTIFICATION_TYPE.LIGHT.name().equalsIgnoreCase(recipe.getTriggerAction().getType())){
+				ivAction.setImageResource(R.drawable.ic_light);
+			} else if(TriggerAction.NOTIFICATION_TYPE.LAUNCH_APPS.name().equalsIgnoreCase(recipe.getTriggerAction().getType())){
+				ivAction.setImageResource(R.drawable.apps);
+			}
 		} else {
-		  Log.e(LOG_TAG, "TriggerAction is null");
+			Log.e(LOG_TAG, "TriggerAction is null");
 		}
-		
+
 		if(recipe.isStatus()){
 		  swEnable.setChecked(true);
 		}else

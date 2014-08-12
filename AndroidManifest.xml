@@ -80,7 +80,7 @@
             android:parentActivityName=".activity.RecipeDetailActivity" >
         </activity>
         <activity
-            android:name=".ui.RecipeActionActivity1"
+            android:name="com.codepath.beacon.activity.RecipeActionActivity1"
             android:label="@string/title_activity_recipe_action"
             android:parentActivityName=".activity.RecipeDetailActivity" >
         </activity>

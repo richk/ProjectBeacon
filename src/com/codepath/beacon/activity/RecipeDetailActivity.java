@@ -16,11 +16,9 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.R;
-import com.codepath.beacon.R.anim;
 import com.codepath.beacon.contracts.RecipeContracts;
 import com.codepath.beacon.contracts.RecipeContracts.TRIGGERS;
 import com.codepath.beacon.fragments.RecipeAlertDialog;
@@ -31,7 +29,6 @@ import com.codepath.beacon.scan.BeaconListener;
 import com.codepath.beacon.scan.BeaconManager;
 import com.codepath.beacon.scan.BleDeviceInfo;
 import com.codepath.beacon.scan.BleService.State;
-import com.codepath.beacon.ui.RecipeActionActivity1;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -215,7 +212,16 @@ public class RecipeDetailActivity extends Activity implements BeaconListener, An
         	  mPendingNotificationType = NOTIFICATION_TYPE.RINGER_SILENT;
           } else if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.LIGHT.toString())){
         	  mPendingNotificationType = NOTIFICATION_TYPE.LIGHT;
+          } else if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.LAUNCH_APPS.toString())){
+        	  mPendingNotificationType = NOTIFICATION_TYPE.LAUNCH_APPS;
+          } else {
+        	  if (recipe.getTriggerAction() != null) {
+        	      Log.e(LOG_TAG, "Unsupported notification type:" + recipe.getTriggerAction().getType());
+        	  } else {
+        		  Log.e(LOG_TAG, "Unsupported notification type");
+        	  }
           }
+          
           if(requestCode == ACTION_SELECTION && isNotificationTypeChanged){
           	Log.d(LOG_TAG, "Starting Animation");
             startAnimation(ibPlus2, triggerAnimation1);        	  
@@ -256,6 +262,11 @@ public class RecipeDetailActivity extends Activity implements BeaconListener, An
       } else if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.LIGHT.toString())){
         ibPlus2.setImageResource(R.drawable.ic_light);
         ibPlus2.setBackgroundResource(R.drawable.image_border);
+      } else if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.LAUNCH_APPS.toString())){
+          ibPlus2.setImageResource(R.drawable.apps);
+          ibPlus2.setBackgroundResource(R.drawable.image_border);
+      } else {
+    	  Log.e(LOG_TAG, "Invalid Notification Type");
       }
       displayActionName();
     }
@@ -502,6 +513,9 @@ public class RecipeDetailActivity extends Activity implements BeaconListener, An
 			  case LIGHT : 
 				  ibPlus2.setImageResource(R.drawable.ic_light);
 				  break;
+			  case LAUNCH_APPS :
+			      ibPlus2.setImageResource(R.drawable.apps);
+			      break;
 			  default :
 			  }
 			  ibPlus2.setBackgroundResource(R.drawable.image_border);

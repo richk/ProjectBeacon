@@ -189,6 +189,31 @@
                     android:src="@drawable/ic_light" />
                     
                 </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/llApps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical" >
+                    
+                    <TextView
+                        android:id="@+id/tvAppsDesc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/action_apps_description"
+                        android:textColor="@color/text_grey"
+                        android:visibility="invisible" />
+
+                    <ImageView
+                        android:id="@+id/ivLaunchApps"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:src="@drawable/apps" />
+                </LinearLayout>
             </LinearLayout>
         </HorizontalScrollView>
         
@@ -250,6 +275,16 @@
             android:inputType="phone"
             android:textSize="16sp"
             android:visibility="invisible" />
+        
+            
+    <FrameLayout
+        android:id="@+id/flAppListSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/hsvActions" >
+        
+    </FrameLayout>
+        
     </RelativeLayout>
 
 </ScrollView>
