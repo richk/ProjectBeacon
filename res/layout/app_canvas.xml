@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/app_canvas_background"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/ivAppNotif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/notif_logo_background"
+        android:src="@drawable/ic_launcher" />
+    
+    <View
+    android:id="@+id/tvAppSeparator"
+    android:layout_width="1dp"
+    android:layout_height="40dp"
+    android:layout_centerVertical="true"
+    android:layout_toRightOf="@id/ivAppNotif"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="5dp"
+    android:background="@android:color/darker_gray"/>
+
+    <TextView
+        android:id="@+id/tvAppName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/tvAppSeparator"
+        android:layout_marginLeft="10dp"
+        android:layout_centerVertical="true"
+        android:textColor="#FFFFFF"
+        android:textStyle="italic"
+        android:text="" />
+
+<!--             android:background="@drawable/bubble_arrow_left" -->
+
+    <View
+    android:id="@+id/tvActionSeparator"
+    android:layout_width="1dp"
+    android:layout_height="40dp"
+    android:layout_centerVertical="true"
+    android:layout_toRightOf="@id/tvAppName"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="5dp"
+    android:background="@android:color/darker_gray"/>
+
+    
+    <ImageView
+        android:id="@+id/ivAppCancel"
+        android:layout_height="30dp"
+        android:layout_width="30dp"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/tvActionSeparator"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/ic_close" />
+</RelativeLayout>

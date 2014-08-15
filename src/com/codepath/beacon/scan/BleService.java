@@ -324,6 +324,8 @@ public class BleService extends Service implements
           uu.turnOnSilentMode();
         } else if(obj.notif.getType().equals(NOTIFICATION_TYPE.LIGHT.toString())){
           uu.controlLights(true);
+        } else if (obj.notif.getType().equals(NOTIFICATION_TYPE.LAUNCH_APPS.toString())) {
+        	uu.launchApp(obj.notif.getMessage());
         }
       }
     }

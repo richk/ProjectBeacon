@@ -6,6 +6,9 @@ import java.util.Date;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -239,6 +242,15 @@ public class RecipeDetailActivity extends Activity implements BeaconListener, An
         	case LIGHT:
               ibPlus2.setImageResource(R.drawable.ic_light);
         		break;
+        	case LAUNCH_APPS:
+        		try {
+					ApplicationInfo app = getPackageManager().getApplicationInfo(recipe.getTriggerAction().getMessage(), PackageManager.GET_META_DATA);
+					ibPlus2.setImageDrawable(app.loadIcon(getPackageManager()));
+				} catch (NameNotFoundException e) {
+					Log.e(LOG_TAG, "Appinfo not found for app:" + recipe.getTriggerAction().getMessage());
+					ibPlus2.setImageResource(R.drawable.apps);
+				}
+        		break;
         	default:
         		break;
         	}
@@ -263,7 +275,13 @@ public class RecipeDetailActivity extends Activity implements BeaconListener, An
         ibPlus2.setImageResource(R.drawable.ic_light);
         ibPlus2.setBackgroundResource(R.drawable.image_border);
       } else if(recipe.getTriggerAction().getType().equals(NOTIFICATION_TYPE.LAUNCH_APPS.toString())){
-          ibPlus2.setImageResource(R.drawable.apps);
+    	  try {
+    		  ApplicationInfo app = getPackageManager().getApplicationInfo(recipe.getTriggerAction().getMessage(), PackageManager.GET_META_DATA);
+    		  ibPlus2.setImageDrawable(app.loadIcon(getPackageManager()));
+    	  } catch (NameNotFoundException e) {
+    		  Log.e(LOG_TAG, "Appinfo not found for app:" + recipe.getTriggerAction().getMessage());
+    		  ibPlus2.setImageResource(R.drawable.apps);
+    	  }
           ibPlus2.setBackgroundResource(R.drawable.image_border);
       } else {
     	  Log.e(LOG_TAG, "Invalid Notification Type");
@@ -514,7 +532,13 @@ public class RecipeDetailActivity extends Activity implements BeaconListener, An
 				  ibPlus2.setImageResource(R.drawable.ic_light);
 				  break;
 			  case LAUNCH_APPS :
-			      ibPlus2.setImageResource(R.drawable.apps);
+				  try {
+		    		  ApplicationInfo app = getPackageManager().getApplicationInfo(recipe.getTriggerAction().getMessage(), PackageManager.GET_META_DATA);
+		    		  ibPlus2.setImageDrawable(app.loadIcon(getPackageManager()));
+		    	  } catch (NameNotFoundException e) {
+		    		  Log.e(LOG_TAG, "Appinfo not found for app:" + recipe.getTriggerAction().getMessage());
+		    		  ibPlus2.setImageResource(R.drawable.apps);
+		    	  }
 			      break;
 			  default :
 			  }

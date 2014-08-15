@@ -17,12 +17,14 @@ import android.support.v4.app.NotificationCompat;
 import android.telephony.SmsManager;
 import android.util.Log;
 
+import com.codepath.beacon.AppCanvas;
 import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.MapActivity;
 import com.codepath.beacon.NotificationBubble;
 import com.codepath.beacon.R;
 import com.codepath.beacon.activity.MyRecipeActivity;
 import com.codepath.beacon.contracts.MapContracts;
+import com.codepath.beacon.models.TriggerAction.NOTIFICATION_TYPE;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -156,20 +158,29 @@ GooglePlayServicesClient.OnConnectionFailedListener {
   }
 
   public void controlLights(boolean state) {
-    PHHueSDK phHueSDK = PHHueSDK.getStoredSDKObject();
-    if (phHueSDK!= null){
-            PHBridge bridge = phHueSDK.getSelectedBridge();
-            if (bridge != null)
-            {
-                    List<PHLight> allLights = bridge.getResourceCache().getAllLights();
+	  PHHueSDK phHueSDK = PHHueSDK.getStoredSDKObject();
+	  if (phHueSDK!= null){
+		  PHBridge bridge = phHueSDK.getSelectedBridge();
+		  if (bridge != null)
+		  {
+			  List<PHLight> allLights = bridge.getResourceCache().getAllLights();
 
-                    for (PHLight light : allLights) {
-                            PHLightState lightState = new PHLightState();
-                            lightState.setOn(state);
-                            bridge.updateLightState(light, lightState);   // If no bridge response is required then use this simpler form.
-                    }
-            }
-    }
-}
+			  for (PHLight light : allLights) {
+				  PHLightState lightState = new PHLightState();
+				  lightState.setOn(state);
+				  bridge.updateLightState(light, lightState);   // If no bridge response is required then use this simpler form.
+			  }
+		  }
+	  }
+
+  }
+  
+  public void launchApp(String appPackageName) {
+	  Log.d(LOG_TAG, "Launching App:" + appPackageName);
+	  Intent launchAppIntent = new Intent(context, AppCanvas.class); 
+	  launchAppIntent.putExtra("appName", appPackageName);
+	  launchAppIntent.putExtra("triggerType", NOTIFICATION_TYPE.LAUNCH_APPS.name());
+	  context.startService(launchAppIntent);  
+  }
 
 }

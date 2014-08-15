@@ -6,6 +6,9 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,11 +33,13 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 	
 	private List<Recipe> mRecipes;
 	private RecipeUpdateListener mRecipeUpdateListener;
+	private Context mContext;
 	
 	public RecipeArrayAdapter(Context context, List<Recipe> recipes, RecipeUpdateListener listener) {
 		super(context, R.layout.recipe_item, recipes);
 		mRecipes = recipes;
 		mRecipeUpdateListener = listener;
+		mContext = context;
 	}
 
 	@Override
@@ -73,7 +78,13 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 			} else if(TriggerAction.NOTIFICATION_TYPE.LIGHT.name().equalsIgnoreCase(recipe.getTriggerAction().getType())){
 				ivAction.setImageResource(R.drawable.ic_light);
 			} else if(TriggerAction.NOTIFICATION_TYPE.LAUNCH_APPS.name().equalsIgnoreCase(recipe.getTriggerAction().getType())){
-				ivAction.setImageResource(R.drawable.apps);
+				try {
+		    		  ApplicationInfo app = mContext.getPackageManager().getApplicationInfo(recipe.getTriggerAction().getMessage(), PackageManager.GET_META_DATA);
+		    		  ivAction.setImageDrawable(app.loadIcon(mContext.getPackageManager()));
+		    	  } catch (NameNotFoundException e) {
+		    		  Log.e(LOG_TAG, "Appinfo not found for app:" + recipe.getTriggerAction().getMessage());
+		    		  ivAction.setImageResource(R.drawable.apps);
+		    	  }
 			}
 		} else {
 			Log.e(LOG_TAG, "TriggerAction is null");
@@ -93,6 +104,18 @@ public class RecipeArrayAdapter extends ArrayAdapter<Recipe> {
 	        notif = "Send SMS ";
 	      if(notif.equalsIgnoreCase(NOTIFICATION_TYPE.RINGER_SILENT.toString()))
 	        notif = "Make ringer silent ";
+	      if (notif.equalsIgnoreCase(NOTIFICATION_TYPE.LAUNCH_APPS.toString())) {
+	    	  ApplicationInfo app = null;
+	    	  try {
+	    		  app = mContext.getPackageManager().getApplicationInfo(recipe.getTriggerAction().getMessage(), PackageManager.GET_META_DATA);
+	    		  String appName = mContext.getPackageManager().getApplicationLabel(app).toString();
+	    		  notif = "Launch app " + appName;
+	    	  } catch (NameNotFoundException e) {
+	    		  Log.e(LOG_TAG, "App not found:" + recipe.getTriggerAction().getMessage());
+	    		  notif = "Launch app";
+	    	  }
+
+	      }
 
 		StringBuilder desc = new StringBuilder(notif);
 		desc.append(" when ");

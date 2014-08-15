@@ -73,6 +73,8 @@
         </service>
         <service android:name=".NotificationBubble" >
         </service>
+        <service android:name=".AppCanvas" >
+        </service>
 
         <activity
             android:name=".activity.BlePagerActivity"
