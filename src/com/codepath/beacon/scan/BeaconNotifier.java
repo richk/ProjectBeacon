@@ -19,9 +19,9 @@ import android.util.Log;
 
 import com.codepath.beacon.AppCanvas;
 import com.codepath.beacon.BeaconApplication;
-import com.codepath.beacon.MapActivity;
 import com.codepath.beacon.NotificationBubble;
 import com.codepath.beacon.R;
+import com.codepath.beacon.activity.MapActivity;
 import com.codepath.beacon.activity.MyRecipeActivity;
 import com.codepath.beacon.contracts.MapContracts;
 import com.codepath.beacon.models.TriggerAction.NOTIFICATION_TYPE;

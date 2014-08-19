@@ -1,4 +1,4 @@
-package com.codepath.beacon;
+package com.codepath.beacon.activity;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -9,6 +9,11 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.codepath.beacon.R;
+import com.codepath.beacon.R.drawable;
+import com.codepath.beacon.R.id;
+import com.codepath.beacon.R.layout;
+import com.codepath.beacon.R.string;
 import com.codepath.beacon.contracts.MapContracts;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;

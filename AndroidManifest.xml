@@ -91,7 +91,7 @@
             android:label="@string/title_activity_app_list" >
         </activity>
         <activity
-            android:name=".MapActivity"
+            android:name="com.codepath.beacon.activity.MapActivity"
             android:excludeFromRecents="true"
             android:label="@string/title_activity_map"
             android:launchMode="singleTask"
