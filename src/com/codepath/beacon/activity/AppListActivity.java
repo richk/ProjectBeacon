@@ -89,9 +89,9 @@ public class AppListActivity extends Activity implements onAppSelectedListener {
                     if ((content.flags != ApplicationInfo.FLAG_SYSTEM) && content.enabled) {
                         if (content.icon != 0) {
                             PackageItem item = new PackageItem();
+                            item.setAppInfo(content);
                             item.setName(getPackageManager().getApplicationLabel(content).toString());
                             item.setPackageName(content.packageName);
-                            item.setIcon(getPackageManager().getDrawable(content.packageName, content.icon, content));
                             data.add(item);
                         }
                     }
@@ -121,19 +121,10 @@ public class AppListActivity extends Activity implements onAppSelectedListener {
 		PackageItem newItem = new PackageItem();
 		newItem.setName(item.getName());
 		newItem.setPackageName(item.getPackageName());
-		newItem.setIcon(item.getIcon());
 		newItem.setIsSelected(false);
+		newItem.setAppInfo(item.getAppInfo());
 		mSelectedApps.add(newItem);
 		mSelectedApp = item;
-		//		} else {
-		//			Log.d(LOG_TAG, "Item already selected..removing from the list");
-		//			mSelectedApps.remove(item);
-		//		}
-		Log.d(LOG_TAG, "New app selected:" + item.getName());
-		Log.d(LOG_TAG, "All apps selected");
-		for (PackageItem app : mSelectedApps) {
-			Log.d(LOG_TAG, "App name:" + app.getName());
-		}
 		Intent intent = new Intent();
 		intent.putExtra(IntentTransferContracts.SELECTED_APPS_STRING, item.getPackageName());
 		setResult(RESULT_OK, intent);

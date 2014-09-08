@@ -382,7 +382,6 @@ public class RecipeActionActivity1 extends Activity {
   
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	  Log.d(LOG_TAG, "onActivityResult. Request Code:" + requestCode + ", resultCode:" + resultCode);
 	  if (requestCode == APPS_REQUEST_CODE && resultCode == RESULT_OK) {
 		  String packageName = data.getStringExtra(IntentTransferContracts.SELECTED_APPS_STRING);
 		  populateSelectedAppView(packageName);
@@ -390,14 +389,12 @@ public class RecipeActionActivity1 extends Activity {
   }
   
   private void populateSelectedAppView(String packageName) {
-	  Log.d(LOG_TAG, "Finding appInfo for package:" + packageName);
 	  try {
 		  ApplicationInfo app = getPackageManager().getApplicationInfo(packageName, PackageManager.GET_META_DATA);
 		  PackageItem item = new PackageItem();
 		  item.setName(getPackageManager().getApplicationLabel(app).toString());
 		  item.setPackageName(app.packageName);
-		  item.setIcon(app.loadIcon(getPackageManager()));
-		  Log.d(LOG_TAG, "SelectedApp - Name:" + item.getName());
+		  item.setAppInfo(app);
 		  mAppList.setSelectedApp(item);
 	  } catch (NameNotFoundException e) {
 		  Log.e(LOG_TAG, "Application name not found", e);

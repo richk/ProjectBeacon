@@ -2,21 +2,29 @@ package com.codepath.beacon.adapter;
 
 import java.util.List;
 
-import android.R.color;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.R;
 
 public class PackageAdapter extends BaseAdapter {
@@ -54,7 +62,6 @@ public class PackageAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.ivImage = (ImageView) convertView.findViewById(R.id.example_row_iv_image);
             holder.tvTitle = (TextView) convertView.findViewById(R.id.example_row_tv_title);
-//            holder.tvDescription = (TextView) convertView.findViewById(R.id.example_row_tv_description);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -65,17 +72,17 @@ public class PackageAdapter extends BaseAdapter {
         } else {
         	convertView.setBackgroundColor(convertView.getResources().getColor(R.color.natural));
         }
-
-        holder.ivImage.setImageDrawable(item.getIcon());
+        ApplicationInfo appInfo = item.getAppInfo();
+        Drawable appIcon = appInfo.loadIcon(context.getPackageManager());
+        Bitmap bitmap = drawableToBitmap(appIcon, 96, 96);
+        holder.ivImage.setImageBitmap(bitmap);
         holder.tvTitle.setText(item.getName());
-//        holder.tvDescription.setText(item.getPackageName());
         return convertView;
     }
 
     static class ViewHolder {
         ImageView ivImage;
         TextView tvTitle;
-//        TextView tvDescription;
     }
 
     private boolean isPlayStoreInstalled() {
@@ -85,5 +92,22 @@ public class PackageAdapter extends BaseAdapter {
 
         return list.size() > 0;
     }
+    
+    public static Bitmap drawableToBitmap (Drawable drawable, int reqWidth, int reqHeight) {
+    	if (drawable instanceof BitmapDrawable) {
+    		Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
+    		if (drawable.getIntrinsicHeight() > 96) {
+    			Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, reqWidth, reqHeight, false);
+    			bitmap = scaledBitmap;
+    		}
+    		return bitmap;
+    	}
 
+        Bitmap bitmap = Bitmap.createBitmap(reqWidth, reqHeight, Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap); 
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
+    }
 }
