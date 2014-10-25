@@ -23,8 +23,6 @@ public class BeaconApplication extends Application {
 
   private static final String CLIENT_KEY = "q7noGevmDbpjQxX1IobD7T3ZJye3AMhRX7v99Je2";
   
-  private final Set<Recipe> myRecipes = new HashSet<Recipe>();
-
   private static BeaconApplication beaconApplication;
 
   public static BeaconApplication getApplication() {
@@ -45,35 +43,6 @@ public class BeaconApplication extends Application {
     TriggerAction.isInitialized = true;
     beaconApplication = this;
 
-  }
-  
-  public boolean addNewRecipe(Recipe recipe) {
-	  if (myRecipes.contains(recipe)) {
-		  return false;
-	  } else {
-		  myRecipes.add(recipe);
-		  return true;
-	  }
-  }
-  
-  public void deleteRecipe(Recipe recipe) {
-	  myRecipes.remove(recipe);
-  }
-  
-  public void clearRecipes() {
-	  myRecipes.clear();
-  }
-  
-  public void addAllRecipes(List<Recipe> recipes) {
-	  myRecipes.addAll(recipes);
-  }
-  
-  public boolean recipeExists(Recipe recipe) {
-	  if (myRecipes.contains(recipe)) {
-		  return true;
-	  } else {
-		  return false;
-	  }
   }
   
   public boolean isNetworkAvailable() {

@@ -28,6 +28,7 @@ import com.codepath.beacon.fragments.RecipeAlertDialog;
 import com.codepath.beacon.models.Recipe;
 import com.codepath.beacon.models.TriggerAction;
 import com.codepath.beacon.models.TriggerAction.NOTIFICATION_TYPE;
+import com.codepath.beacon.recipe.RecipeManager;
 import com.codepath.beacon.scan.BeaconListener;
 import com.codepath.beacon.scan.BeaconManager;
 import com.codepath.beacon.scan.BleDeviceInfo;
@@ -372,9 +373,9 @@ public class RecipeDetailActivity extends Activity implements BeaconListener, An
 
   public void onSaveAction(MenuItem mi) {
 	  Log.d(LOG_TAG, "Checking if recipe already exists");
-	  Log.d(LOG_TAG, "Recipe exists:" + BeaconApplication.getApplication().recipeExists(recipe));
+	  Log.d(LOG_TAG, "Recipe exists:" + RecipeManager.getInstance().recipeExists(recipe));
 	  Log.d(LOG_TAG, "Recipe being edited:" + recipe.isBeingEdited());
-    if (BeaconApplication.getApplication().recipeExists(recipe)
+    if (RecipeManager.getInstance().recipeExists(recipe)
         && recipe.isBeingEdited()) {
     	Log.d(LOG_TAG, "Recipe already exists");
       RecipeAlertDialog alert = new RecipeAlertDialog();
@@ -407,11 +408,11 @@ public class RecipeDetailActivity extends Activity implements BeaconListener, An
       recipe.setActivationDate(new Date());
       recipe.setTriggeredCount(0);
       action = RecipeContracts.RECIPE_ACTION_CREATE;
-      BeaconApplication.getApplication().addNewRecipe(recipe);
+      RecipeManager.getInstance().addNewRecipe(recipe);
     } else {
     	action = RecipeContracts.RECIPE_ACTION_UPDATE;
-    	BeaconApplication.getApplication().deleteRecipe(oldRecipe);
-    	BeaconApplication.getApplication().addNewRecipe(recipe);
+    	RecipeManager.getInstance().deleteRecipe(oldRecipe);
+    	RecipeManager.getInstance().addNewRecipe(recipe);
     }
     if (TRIGGERS.APPROACHING.name().equalsIgnoreCase(recipe.getTrigger())) {
     	beaconManager.monitorDeviceEntry(recipe.getBeacon(), recipe.getTriggerAction());
@@ -437,7 +438,7 @@ public class RecipeDetailActivity extends Activity implements BeaconListener, An
       return;
     }
     recipe.deleteRecipe(mRecipeId);
-    BeaconApplication.getApplication().deleteRecipe(recipe);
+    RecipeManager.getInstance().deleteRecipe(recipe);
     returnToMyRecipe(RecipeContracts.RECIPE_ACTION_DELETE);
   }
 

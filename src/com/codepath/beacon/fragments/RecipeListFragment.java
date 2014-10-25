@@ -21,6 +21,7 @@ import com.codepath.beacon.contracts.RecipeContracts;
 import com.codepath.beacon.contracts.RecipeContracts.TRIGGERS;
 import com.codepath.beacon.models.Recipe;
 import com.codepath.beacon.models.TriggerAction;
+import com.codepath.beacon.recipe.RecipeManager;
 import com.codepath.beacon.scan.BeaconManager;
 import com.codepath.beacon.scan.BleDeviceInfo;
 import com.parse.FindCallback;
@@ -99,7 +100,7 @@ public class RecipeListFragment extends Fragment implements RecipeUpdateListener
 						aRecipes.clear();
 					}
 					aRecipes.addAll(recipes);
-					BeaconApplication.getApplication().addAllRecipes(recipes);
+					RecipeManager.getInstance().addAllRecipes(recipes);
 					if(mProgressListener != null){
 					  mProgressListener.onProgressEnd();
 					}

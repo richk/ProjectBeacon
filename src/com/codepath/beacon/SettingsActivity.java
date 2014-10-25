@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.codepath.beacon.activity.HomeActivity;
 import com.codepath.beacon.lighting.quickstart.PHHomeActivity;
+import com.codepath.beacon.recipe.RecipeManager;
 import com.codepath.beacon.scan.BleService;
 import com.parse.ParseUser;
 
@@ -47,6 +48,6 @@ public class SettingsActivity extends Activity {
 	}
 	
 	private void clearUserData() {
-		BeaconApplication.getApplication().clearRecipes();	
+		RecipeManager.getInstance().clearRecipes();	
 	}
 }
