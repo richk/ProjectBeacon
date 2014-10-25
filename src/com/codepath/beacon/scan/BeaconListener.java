@@ -1,5 +1,7 @@
 package com.codepath.beacon.scan;
 
+import com.codepath.beacon.models.BleDeviceInfo;
+
 public interface BeaconListener {
 
   public void onStateChanged(BleService.State newState);

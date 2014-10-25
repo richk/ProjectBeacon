@@ -22,10 +22,10 @@ import com.codepath.beacon.contracts.RecipeContracts;
 import com.codepath.beacon.fragments.EmptyListFragment;
 import com.codepath.beacon.fragments.RecipeAlertDialog;
 import com.codepath.beacon.fragments.RecipeListFragment;
+import com.codepath.beacon.models.BleDeviceInfo;
 import com.codepath.beacon.models.Recipe;
 import com.codepath.beacon.scan.BeaconListener;
 import com.codepath.beacon.scan.BeaconManager;
-import com.codepath.beacon.scan.BleDeviceInfo;
 import com.codepath.beacon.scan.BleService.State;
 import com.parse.ParseUser;
 

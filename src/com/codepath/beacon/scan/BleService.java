@@ -32,6 +32,7 @@ import android.util.Log;
 
 import com.codepath.beacon.R;
 import com.codepath.beacon.activity.MyRecipeActivity;
+import com.codepath.beacon.models.BleDeviceInfo;
 import com.codepath.beacon.models.TriggerAction;
 import com.codepath.beacon.models.TriggerAction.NOTIFICATION_TYPE;
 

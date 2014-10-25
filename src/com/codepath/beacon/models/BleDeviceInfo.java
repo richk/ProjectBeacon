@@ -1,4 +1,4 @@
-package com.codepath.beacon.scan;
+package com.codepath.beacon.models;
 
 import java.util.List;
 import java.util.Locale;

@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.R;
-import com.codepath.beacon.scan.BleDeviceInfo;
+import com.codepath.beacon.models.BleDeviceInfo;
 import com.codepath.beacon.scan.BleItemArrayAdapter;
 
 public class DeviceListFragment extends Fragment implements AbsListView.OnItemClickListener {

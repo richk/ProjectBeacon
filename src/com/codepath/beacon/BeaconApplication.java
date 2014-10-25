@@ -10,9 +10,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.codepath.beacon.models.BleDeviceInfo;
 import com.codepath.beacon.models.Recipe;
 import com.codepath.beacon.models.TriggerAction;
-import com.codepath.beacon.scan.BleDeviceInfo;
 import com.parse.Parse;
 import com.parse.ParseObject;
 

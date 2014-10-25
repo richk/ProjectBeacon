@@ -15,6 +15,7 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 
+import com.codepath.beacon.models.BleDeviceInfo;
 import com.codepath.beacon.models.TriggerAction;
 
 public class BeaconManager {

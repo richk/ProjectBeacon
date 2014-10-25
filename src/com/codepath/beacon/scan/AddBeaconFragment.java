@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.beacon.R;
+import com.codepath.beacon.models.BleDeviceInfo;
 
 public class AddBeaconFragment extends DialogFragment {
     private static final String LOG_TAG = AddBeaconFragment.class.getSimpleName();

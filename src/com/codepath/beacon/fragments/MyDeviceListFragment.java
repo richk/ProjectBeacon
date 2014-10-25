@@ -21,7 +21,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.codepath.beacon.OnProgressListener;
 import com.codepath.beacon.R;
 import com.codepath.beacon.contracts.BleDeviceInfoContracts;
-import com.codepath.beacon.scan.BleDeviceInfo;
+import com.codepath.beacon.models.BleDeviceInfo;
 import com.codepath.beacon.scan.BleItemArrayAdapter;
 
 public class MyDeviceListFragment extends Fragment implements OnItemClickListener {

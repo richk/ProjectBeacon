@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.codepath.beacon.BeaconApplication;
 import com.codepath.beacon.contracts.RecipeContracts;
-import com.codepath.beacon.scan.BleDeviceInfo;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;

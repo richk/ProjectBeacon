@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.codepath.beacon.R;
 import com.codepath.beacon.contracts.BleDeviceInfoContracts;
+import com.codepath.beacon.models.BleDeviceInfo;
 
 public class BleItemArrayAdapter extends ArrayAdapter<BleDeviceInfo> {
 	private static final String LOG_TAG = BleItemArrayAdapter.class.getSimpleName();
